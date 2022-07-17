@@ -21,7 +21,7 @@ main.obj: main.cpp a.xh
 	$(CL) -c main.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 main.exe: a.obj main.obj
-	$(CL) a.obj main.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) a.obj main.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q main.exe *.obj *.xh *.xih *.h

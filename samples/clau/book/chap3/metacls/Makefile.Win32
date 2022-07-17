@@ -47,7 +47,7 @@ meta.obj: meta.cpp animal.xh fly.xh robin.xh
 	$(CL) -c meta.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 meta.exe: $(OBJS)
-	$(CL) $(OBJS) /Fe$@ $(LINK_SOMTK)
+	$(CL) $(OBJS) /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q meta.exe *.obj *.xh *.xih *.h

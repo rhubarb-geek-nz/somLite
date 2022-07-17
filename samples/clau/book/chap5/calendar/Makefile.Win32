@@ -41,7 +41,7 @@ mysvr.obj: mysvr.cpp workitem.xh caldir.xh
 	$(CL) -c mysvr.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 mysvr.exe: mysvr.obj
-	$(CL) mysvr.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) mysvr.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 calendar.dll: $(OBJS) calendar.Win32.def
 	$(CL) $(OBJS) /LD /Fe$@ $(LINK_SOMTK) /link /DEF:calendar.Win32.def

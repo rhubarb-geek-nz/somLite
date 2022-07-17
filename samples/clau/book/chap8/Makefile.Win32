@@ -9,7 +9,7 @@ browse.obj: browse.cpp
 	$(CL) -c browse.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 browse.exe: browse.obj
-	$(CL) browse.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) browse.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q browse.exe *.obj *.xh *.xih *.h

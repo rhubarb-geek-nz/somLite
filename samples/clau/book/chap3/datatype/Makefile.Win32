@@ -33,13 +33,13 @@ seq.obj: seq.cpp company.xh employee.xh
 	$(CL) -c seq.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 seq.exe: company.obj seq.obj employee.obj
-	$(CL) company.obj seq.obj employee.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) company.obj seq.obj employee.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 any.obj: any.cpp 
 	$(CL) -c any.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 any.exe: any.obj
-	$(CL) any.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) any.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q seq.exe any.exe *.obj *.xh *.xih *.h

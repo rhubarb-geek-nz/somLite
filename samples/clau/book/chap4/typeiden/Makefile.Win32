@@ -47,7 +47,7 @@ calc.obj: calc.cpp mgr.xh prg.xh empl.xh
 	$(CL) -c calc.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 calc.exe: $(OBJS)
-	$(CL) $(OBJS) /Fe$@ $(LINK_SOMTK)
+	$(CL) $(OBJS) /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q calc.exe *.obj *.xh *.xih *.h

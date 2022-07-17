@@ -21,7 +21,7 @@ testerr.obj: testerr.cpp error.xh
 	$(CL) -c testerr.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 testerr.exe: error.obj testerr.obj
-	$(CL) error.obj testerr.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) error.obj testerr.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q testerr.exe *.obj *.xh *.xih *.h

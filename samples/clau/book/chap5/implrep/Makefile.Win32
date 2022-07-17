@@ -9,7 +9,7 @@ impdef.obj: impdef.cpp
 	$(CL) -c impdef.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 impdef.exe: impdef.obj
-	$(CL) impdef.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) impdef.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q impdef.exe *.obj *.xh *.xih *.h

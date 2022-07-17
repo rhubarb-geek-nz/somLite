@@ -38,7 +38,7 @@ dynaload.obj: dynaload.cpp dog.xh cat.xh
 	$(CL) -c dynaload.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 dynaload.exe: dynaload.obj
-	$(CL) dynaload.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) dynaload.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 domestic.dll: $(OBJS) domestic.Win32.def
 	$(CL) $(OBJS) /LD /Fe$@ $(LINK_SOMTK) /link /DEF:domestic.Win32.def

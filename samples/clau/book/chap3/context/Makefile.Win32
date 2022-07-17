@@ -21,7 +21,7 @@ testctx.obj: testctx.cpp context.xh
 	$(CL) -c testctx.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 testctx.exe: context.obj testctx.obj
-	$(CL) context.obj testctx.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) context.obj testctx.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q testctx.exe *.obj *.xh *.xih *.h

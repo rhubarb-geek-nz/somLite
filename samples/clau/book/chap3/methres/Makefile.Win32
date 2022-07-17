@@ -47,7 +47,7 @@ resolve.obj: resolve.cpp car.xh leftcar.xh rightcar.xh
 	$(CL) -c resolve.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 resolve.exe: $(OBJS)
-	$(CL) $(OBJS) /Fe$@ $(LINK_SOMTK)
+	$(CL) $(OBJS) /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q resolve.exe *.obj *.xh *.xih *.h

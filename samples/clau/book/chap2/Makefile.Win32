@@ -24,10 +24,10 @@ cppMain.obj: cppMain.cpp hello.xh
 	$(CL) -c cppMain.cpp /Fo$@ -I. $(INCL_SOMTK) 
 
 cHello.exe: hello.obj cMain.obj
-	$(CL) hello.obj cMain.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) hello.obj cMain.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 cppHello.exe: hello.obj cppMain.obj
-	$(CL) hello.obj cppMain.obj /Fe$@ $(LINK_SOMTK)
+	$(CL) hello.obj cppMain.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
 clean:
 	del /Q cppHello.exe cHello.exe *.obj *.xh *.xih *.h
