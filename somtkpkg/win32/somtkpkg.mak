@@ -96,7 +96,12 @@ $(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(SOM_IR)
 	echo .Set DestinationDir=msg >> $@
 	echo $(OUTDIR_BIN)\somddmsg.dll >> $@
 
-"$(TARGET_DDF).win64arm" "$(TARGET_DDF).win32arm": "$(TARGET_DDF)"
+"$(TARGET_DDF).win64arm": "$(TARGET_DDF)"  
+	copy /Y "$(TARGET_DDF)" $@
+	echo .Set DestinationDir=msg >> $@
+	echo $(OUTDIR_BIN)\somddmsg.dll >> $@
+
+"$(TARGET_DDF).win32arm": "$(TARGET_DDF)"
 
 $(TARGET_MSI): "$(TARGET_DDF).$(PLATFORM)" ..\pkg\license.rtf "$(DDF2WXS_DLL)" "$(DEPVERS_H)" 
 	if exist $@ del $@
