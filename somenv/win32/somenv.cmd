@@ -3,6 +3,7 @@ rem $Id$
 
 if "%ProgramFiles%\somtk\bin\" == "%~dp0" set SOMBASE=%ProgramFiles%\somtk
 if "%ProgramFiles(x86)%\somtk\bin\" == "%~dp0" set SOMBASE=%ProgramFiles(x86)%\somtk
+if "%ProgramFiles(Arm)%\somtk\bin\" == "%~dp0" set SOMBASE=%ProgramFiles(Arm)%\somtk
 if "%ProgramW6432%\somtk\bin\" == "%~dp0" set SOMBASE=%ProgramW6432%\somtk
 
 if "%SOMBASE%x" == "x" if exist "%ProgramFiles%\somtk" set SOMBASE=%ProgramFiles%\somtk
