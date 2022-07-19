@@ -107,11 +107,11 @@ typedef struct byte_struct { char b; } byte_struct;
 #if defined(_WIN32) && defined(SOM_METHOD_STUBS)
 	/* makes the TypeCodes part of the CODE segment
 	   and hence read-only */
-	#ifdef __WATCOMC__
-		#pragma data_seg("_TEXT","CODE")
-	#else /* __WATCOMC__ */
+	#if defined(_MSC_VER) && (_MSC_VER >= 1800)
+		#pragma data_seg(".text$mn")
+	#else /* _MSC_VER */
 		#pragma data_seg(".text","CODE")
-	#endif /* !__WATCOMC__ */
+	#endif /* _MSC_VER */
 #endif /* _WIN32 */
 
 #define SOMTC_Scope SOM_IMPORTEXPORT_somtc
