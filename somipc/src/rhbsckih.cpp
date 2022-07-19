@@ -393,10 +393,10 @@ public:
 		if (readOnlyMTokens)
 		{
 			emitter->out_printf(out,"#if defined(_WIN32) && defined(SOM_METHOD_STUBS)\n"); 
-			emitter->out_printf(out,"#if defined(_MSC_VER) && (_MSC_VER < 1800)\n"); 
-			emitter->out_printf(out,"#pragma data_seg(\".text\",\"CODE\")\n"); 
-			emitter->out_printf(out,"#else /* _MSC_VER */\n");
+			emitter->out_printf(out,"#if defined(_MSC_VER) && (_MSC_VER >= 1800)\n"); 
 			emitter->out_printf(out,"#pragma data_seg(\".text$mn\")\n"); 
+			emitter->out_printf(out,"#else /* _MSC_VER */\n");
+			emitter->out_printf(out,"#pragma data_seg(\".text\",\"CODE\")\n"); 
 			emitter->out_printf(out,"#endif /* _MSC_VER */\n");
 			emitter->out_printf(out,"#endif /* _WIN32 */\n"); 
 		}
