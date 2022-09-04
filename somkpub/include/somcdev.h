@@ -76,8 +76,6 @@
 		(old##NewClass(old##_MajorVersion, old##_MinorVersion),		\
 		new##NewClass(new##_MajorVersion, new##_MinorVersion),		\
 		SOMClassMgrObject->somSubstituteClass(_##old->somGetName(),_##new->somGetName()))
-
-
 #else
 #	define SOM_SubstituteClass(old,new) 							\
 		(old##NewClass(old##_MajorVersion, old##_MinorVersion),		\
