@@ -125,7 +125,9 @@ interface SOMDObject :
 			somdMarshal,
 			set_to_nil,
 			_get_type_id,
-			_set_type_id;
+			_set_type_id,
+			_get_tagged_profiles,
+			_set_tagged_profiles;
 		callstyle = idl;
 		dllname = "somd.dll";
 		majorversion = 2;

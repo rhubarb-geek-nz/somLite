@@ -34,8 +34,15 @@
 
 #define SOM_Assert(condition,ecode)    (somAssert((condition) ? 1 : 0, ecode, __FILE__, __LINE__, # condition))
 
+#define SOM_Error(c) ((*SOMError) (c,__FILE__, __LINE__))
+
 #ifndef SOM_Trace
-#	define SOM_Trace(c,m)
+#	ifdef _DEBUG
+#		define SOM_Trace(c,m) if (SOM_TraceLevel > 0) \
+			somPrintf("\"%s\": %d:\tIn %s:%s \n",__FILE__, __LINE__, c, m)
+#	else
+#		define SOM_Trace(c,m)
+#	endif
 #endif
 
 #ifndef SOM_IgnoreWarning
@@ -43,8 +50,14 @@
 #endif
 
 #ifndef SOMMethodDebug
-#	define SOMMethodDebug(c,m) 
+#	define SOMMethodDebug(c,m)		SOM_Trace(c,m)
 #endif
+
+#define SOM_Test(boolexp) \
+	somTest(boolexp,SOM_Fatal,__FILE__,__LINE__,#boolexp)
+
+#define SOM_TestC(boolexp) \
+	somTest(boolexp,SOM_Warn,__FILE__,__LINE__,#boolexp)
 
 #define SOM_ResolveD(o,oc,cc,m)    \
 	((somTD_##cc##_##m)somResolve((SOMObject SOMSTAR)(void *)o,cc##ClassData.m))
@@ -56,6 +69,20 @@
 #		define SOM_Resolve(o,cc,m)    \
 			((somTD_##cc##_##m)somResolve((SOMObject SOMSTAR)(void *)o,cc##ClassData.m))
 #	endif
+#endif
+
+#ifdef __cplusplus
+#	define SOM_SubstituteClass(old,new) 							\
+		(old##NewClass(old##_MajorVersion, old##_MinorVersion),		\
+		new##NewClass(new##_MajorVersion, new##_MinorVersion),		\
+		SOMClassMgrObject->somSubstituteClass(_##old->somGetName(),_##new->somGetName()))
+
+
+#else
+#	define SOM_SubstituteClass(old,new) 							\
+		(old##NewClass(old##_MajorVersion, old##_MinorVersion),		\
+		new##NewClass(new##_MajorVersion, new##_MinorVersion),		\
+		SOMClassMgr_somSubstituteClass(SOMClassMgrObject,SOMClass_somGetName(_##old),SOMClass_somGetName(_##new)))
 #endif
 
 SOMEXTERN void 

@@ -93,8 +93,8 @@ interface SOMClassMgr : SOMObject
 			somJoinAffinityGroup,
 			somUnregisterClassLibrary,
 			somImportObject,
-			private23,
-			private24;
+			somCIBFromClassId,
+			somCopyOnImport;
 		callstyle = oidl;
 		majorversion = 1;
 		minorversion = 4;

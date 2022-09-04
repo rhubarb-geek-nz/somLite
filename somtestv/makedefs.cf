@@ -1,0 +1,3 @@
+NAME somtestv
+DEPENDS somtklib
+PROVIDES somtestv

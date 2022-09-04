@@ -63,7 +63,6 @@ SOM_Scope void  SOMLINK emregdat_someSetRegDataClientType(
 		corbastring clientType)
 {
     SOMEEMRegisterDataData *somThis = SOMEEMRegisterDataGetData(somSelf);
-    SOMEEMRegisterDataMethodDebug("SOMEEMRegisterData","emregdat_someSetRegDataClientType");
 
 	if (somThis->client_type)
 	{

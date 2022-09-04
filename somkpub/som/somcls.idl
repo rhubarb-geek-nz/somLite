@@ -85,7 +85,7 @@ interface SOMClass : SOMObject
 	boolean somSetMethodDescriptor(in somId methodId,in somId descriptor);
 	readonly attribute long somDataAlignment;
 	readonly attribute somOffsets somInstanceDataOffsets;
-	attribute SOMClassSequence somDirectInitClasses;
+	readonly attribute SOMClassSequence somDirectInitClasses;
 	somId somGetMethodDescriptor(in somId methodId);
 	long somGetMethodIndex(in somId id);
 	somMToken somGetMethodToken(in somId methodId);
@@ -184,7 +184,7 @@ interface SOMClass : SOMObject
 			somCloneClass,
 			_get_somMethodOffsets,
 			_get_somDirectInitClasses,
-			_set_somDirectInitClasses,
+			somClassAssert,
 			somGetInstanceInitMask,
 			somGetInstanceDestructionMask,
 			somCastObjCls,
@@ -206,7 +206,18 @@ interface SOMClass : SOMObject
 			_get_somDirectAssignClasses,
 			setUserPCallDispatch,
 			_get_somClassAllocate,
-			_get_somClassDeallocate;
+			_get_somClassDeallocate,
+			somGetMarshalPlan,
+			somSetMarshalPlan,
+			somGetMethodDataWithoutDescriptor,
+			somJoin,
+			somEndow,
+			somLookupTerminal,
+			somMethodImplOwner,
+			somSetUserPCallDispatch,
+			somMakeUserRdStub,
+			somGetMethodProc,
+			somImportedClass;
 		callstyle = oidl;
 		majorversion = SOMClass_MajorVersion;
 		minorversion = SOMClass_MinorVersion;

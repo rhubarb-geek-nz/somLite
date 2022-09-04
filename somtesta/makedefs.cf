@@ -1,0 +1,3 @@
+NAME somtesta
+DEPENDS somtklib
+PROVIDES somtesta
