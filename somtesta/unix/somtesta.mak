@@ -30,6 +30,7 @@ INCL=	-I$(INTDIR) \
 OBJS=$(INTDIR)/somtesta.o
 SOMTESTA_IR=$(OUTDIR_ETC)/somtesta.ir
 SOMTESTA_H=$(INTDIR)/somtesta.h
+SC=$(HOSTDIR_BIN)/sc
 
 all: $(TARGET)
 
@@ -41,11 +42,11 @@ test: $(TARGET) $(SOMTESTA_IR)
 
 $(SOMTESTA_IR): ../somtesta.idl $(OUTDIR_ETC)/som.ir
 	cp $(OUTDIR_ETC)/som.ir $@
-	SOMIR=$@ $(OUTDIR_BIN)/sc -sir -u ../somtesta.idl -I ../../somidl
+	SOMIR=$@ $(SC) -sir -u ../somtesta.idl -I ../../somidl
 	ls -ld $@
 
 $(SOMTESTA_H): ../somtesta.idl
-	$(OUTDIR_BIN)/sc -sh ../somtesta.idl -I ../../somidl -o $(INTDIR)
+	$(SC) -sh ../somtesta.idl -I ../../somidl -o $(INTDIR)
 	ls -ld $@
 
 $(INTDIR)/somtesta.o: ../src/somtesta.c $(SOMTESTA_H)

@@ -36,6 +36,7 @@ SIMPLE_H=$(INTDIR)/simple.h
 SIMPLE_XH=$(INTDIR)/simple.xh
 SIMPLE_IH=$(INTDIR)/simple.ih
 SIMPLE_XIH=$(INTDIR)/simple.xih
+SC=$(HOSTDIR_BIN)/sc
 
 all: $(TARGET_C) $(TARGET_CPP) 
 
@@ -82,19 +83,19 @@ $(TARGET_C): $(OBJS_C)
 		$(UUIDLIBS) $(STDLIB) $(LINKAPP_TAIL)
 
 $(SIMPLE_H): ../simple.idl
-	$(OUTDIR_BIN)/sc -sh ../simple.idl -I ../../somidl -o $(INTDIR)
+	$(SC) -sh ../simple.idl -I ../../somidl -o $(INTDIR)
 	ls -ld $@
 
 $(SIMPLE_XH): ../simple.idl
-	$(OUTDIR_BIN)/sc -sxh ../simple.idl -I ../../somidl -o $(INTDIR)
+	$(SC) -sxh ../simple.idl -I ../../somidl -o $(INTDIR)
 	ls -ld $@
 
 $(SIMPLE_XIH): ../simple.idl
-	$(OUTDIR_BIN)/sc -sxih ../simple.idl -I ../../somidl -o $(INTDIR)
+	$(SC) -sxih ../simple.idl -I ../../somidl -o $(INTDIR)
 	ls -ld $@
 
 $(SIMPLE_IH): ../simple.idl
-	$(OUTDIR_BIN)/sc -sih ../simple.idl -I ../../somidl -o $(INTDIR)
+	$(SC) -sih ../simple.idl -I ../../somidl -o $(INTDIR)
 	ls -ld $@
 
 dist install:
