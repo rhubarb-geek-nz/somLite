@@ -77,6 +77,12 @@ $(INTDIR)\$(APPNAME).res: ..\win32\$(APPNAME).rc
 
 dist:
 
-test:
+test: test.$(PLATFORM)
+
+test.win32i86:
 	set PATH=%ProgramFiles(x86)%\IBM\som30nt\bin;%PATH%
 	if exist "%ProgramFiles(x86)%\IBM\som30nt\bin\som.dll" $(TARGET_EXE)
+
+test.win64amd test.win32arm test.win64arm:
+
+
