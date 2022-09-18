@@ -281,7 +281,7 @@ cat >"$ROOTDIR/Library/Frameworks/SOMTK.framework/Resources/Info.plist" <<EOF
 	<key>CFBundleExecutable</key>
 	<string>SOMTK</string>
 	<key>CFBundleIdentifier</key>
-	<string>localhost.somtk</string>
+	<string>net.sf.somfree.somtk</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -330,7 +330,7 @@ case "$MACOSX_DEPLOYMENT_TARGET" in
 	fi
 	;;
 * )
-	productbuild --component "$ROOTDIR/Library/Frameworks/SOMTK.framework" /Library/Frameworks "$OUTDIR_DIST/SOMTK.pkg" 
+	productbuild --component "$ROOTDIR/Library/Frameworks/SOMTK.framework" /Library/Frameworks "$OUTDIR_DIST/SOMTK.pkg" --sign "Developer ID Installer: $APPLE_DEVELOPER"
 	mv "$OUTDIR_DIST/SOMTK.pkg" "$OUTDIR_DIST/SOMTK-$MACOSX_DEPLOYMENT_TARGET-$VERSION.pkg"
 	;;
 esac
