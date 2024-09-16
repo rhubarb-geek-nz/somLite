@@ -221,6 +221,7 @@ int RHBPreprocessor::get_next_token(char *buf)
 									else
 									{
 										escape=0;
+										if (d!='\"') text[lText++]='\\';
 										text[lText++]=d;
 									}
 

@@ -8104,6 +8104,11 @@ void RHBheader_emitter::generate_passthru(RHBoutput *out,RHBinterface *iface,con
 				}
 			}
 
+			if ((i > 1) && (p[i-2]=='\\') && (p[i-1]==' '))
+			{
+				i--;
+			}
+
 			out->write(p,i);
 			out_printf(out,"\n");
 		}
