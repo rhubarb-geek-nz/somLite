@@ -91,7 +91,7 @@ BUILDTYPE_HOST=$(BUILDTYPE)
 !ENDIF
 
 !IF "$(RHBTOOLS_BIN)" == ""
-RHBTOOLS_BIN=$(ProgramFiles)\rhubarb.geek.nz\RHBtools\bin
+RHBTOOLS_BIN=$(ProgramFiles)\rhubarb-geek-nz\RHBtools\bin
 !ENDIF
 
 !IF "$(OUTDIR_BASE)" == ""
