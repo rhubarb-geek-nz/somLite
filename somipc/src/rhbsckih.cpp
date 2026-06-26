@@ -576,8 +576,6 @@ public:
 		RHBelement_sequence va_ops;
 		/*int total=*/total_methods();
 		/*int added=*/methods.length();
-		int parent_total=1;
-		if (parent) parent_total++;
 
 		int num_vaops=emitter->get_va_operations(iface,&va_ops);
 	/*	int offset=0;*/
@@ -617,8 +615,6 @@ public:
 		char n[256];
 		/*int total=*/ total_methods();
 		/*int added=*/ methods.length();
-		int parent_total=1;
-		if (parent) parent_total++;
 		unsigned int offset=0;
 
 		emitter->get_c_name(iface,n,sizeof(n));

@@ -216,8 +216,7 @@ struct __exception *ex;
 	return -1;
 }
 #else
-int RHBSEHLINK rhbseh_push(ex)
-struct __exception *ex;
+int RHBSEHLINK rhbseh_push(struct __exception *ex)
 {
 #ifdef USE_THREADS
 #	ifdef USE_PTHREADS
@@ -270,8 +269,7 @@ struct __exception *ex;
 	return 1;
 }
 
-int RHBSEHLINK rhbseh_pop(ex)
-struct __exception *ex;
+int RHBSEHLINK rhbseh_pop(struct __exception *ex)
 {
 	if (ex->pushed)
 	{		
@@ -342,8 +340,7 @@ BOOL CALLBACK DllMain(HINSTANCE hModule,DWORD dw,LPVOID pv)
 }
 #endif
 
-int RHBSEHLINK rhbseh_raise(sig)
-int sig;
+int RHBSEHLINK rhbseh_raise(int sig)
 {
 #if defined(_DEBUG) && !defined(USE_NATIVE_SEH)
 	sigset_t s;

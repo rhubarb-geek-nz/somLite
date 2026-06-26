@@ -31,13 +31,12 @@
 #			include <config.h>
 #		endif
 #	endif
-#	define MAINLINE 				int main(int argc,char **argv)
 #else
 #	ifdef HAVE_CONFIG_H
 #		include <config.h>
 #	endif
-#	define MAINLINE 				int main(argc,argv) int argc; char **argv;
 #endif
+#define MAINLINE	 				int main(int argc,char **argv)
 
 #define COMPLETE_PROGRAM 			MAINLINE { return argv && !argc; }
 

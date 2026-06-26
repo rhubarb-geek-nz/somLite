@@ -151,19 +151,19 @@ platform_ldd_test()
 	fi
 
 	cat <<EOF >$PLATFORM_TMP/one.c
-func_one() { }
+void func_one() { }
 EOF
 
 	cat <<EOF >$PLATFORM_TMP/two.c
-func_two() { func_one(); }
+void func_two() { func_one(); }
 EOF
 
 	cat <<EOF >$PLATFORM_TMP/three.c
-func_one() { func_two(); }
+void func_one() { func_two(); }
 EOF
 
 	cat <<EOF >$PLATFORM_TMP/four.c
-main(argc,argv) int argc; char **argv; { if (!argc) func_one(); return 0; }
+int main(int argc,char **argv) { if (!argc) func_one(); return 0; }
 EOF
 
 #	ls -l
@@ -241,7 +241,8 @@ platform_dl_test()
 	fi
 
 	cat <<EOF >$PLATFORM_TMP/main.c
-main() { dlopen(0,0); }
+#include <dlfcn.h>
+int main() { dlopen(0,0); }
 EOF
 	
 	if platform_not platform_quiet $CC $PLATFORM_TMP/main.c -o $PLATFORM_TMP/main $@
@@ -295,13 +296,14 @@ platform_compile()
 }
 
 if ( platform_compile $SHARED_FPIC <<EOF
-func() { }
+void func() { }
 EOF
 )
 then
 	echo built shared lib
 	if ( platform_compile $SHARED_FPIC <<EOF
-func() { no_such_func(); }
+extern void no_such_func();
+void func() { no_such_func(); }
 EOF
 	)
 	then
@@ -318,7 +320,7 @@ EOF
 			if test "$CC_NO_UNDEFS" = ""
 			then
 				if ( platform_compile $SHARED_FPIC $d <<EOF
-func() { no_such_func(); }
+void func() { no_such_func(); }
 EOF
 				)
 				then
@@ -326,7 +328,7 @@ EOF
 				else
 					echo $d correctly stopped building with undefined symbol
 					if ( platform_compile $SHARED_FPIC -L$PLATFORM_TMP $d <<EOF
-func() {}
+void func() {}
 EOF
 					)
 					then
