@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-  <Product Id="*" Name="somLite Toolkit" Language="1033" Version="1.0.0.0" Manufacturer="rhubarb-geek-nz" UpgradeCode="FD96C86D-5639-403D-8925-36A57E876D73">
+  <Product Id="*" Name="somLite Toolkit (x64)" Language="1033" Version="1.0.0.0" Manufacturer="rhubarb-geek-nz" UpgradeCode="FD96C86D-5639-403D-8925-36A57E876D73">
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Platform="x64" Description="somLite Toolkit" Comments="object toolkit" />
     <MediaTemplate EmbedCab="yes" />
     <Feature Id="ProductFeature" Title="setup" Level="1">
