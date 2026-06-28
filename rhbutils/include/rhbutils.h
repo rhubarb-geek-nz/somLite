@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #ifndef __RHBUTILS_H__
 
 #ifdef __cplusplus

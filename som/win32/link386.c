@@ -19,8 +19,6 @@
  *
  */
 
-/* $Id$ */
-
 
 #define LINK386_RHBMTUT
 

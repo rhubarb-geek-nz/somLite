@@ -19,8 +19,6 @@
  *
  */
 
-/* $Id$ */
-
 #include <rhbopt.h>
 
 #ifdef _WIN32
@@ -40,9 +38,9 @@
 #include <som.h>
 #include <somdtype.h>
 #include <stexcep.h>
-#include <omgestio.h>
-#include <formarsh.h>
 #include <somderr.h>
+
+typedef SOMObject CosStream_StreamIO;
 
 /* this is used to marshal the somId type
 	backwards and forwards */

@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifdef __PRIVATE__
 #ifndef rhbsomuk_idl
 #define rhbsomuk_idl

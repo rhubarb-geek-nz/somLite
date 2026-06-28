@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef __RHBUNION_H__
 #define __RHBUNION_H__
 

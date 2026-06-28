@@ -1,5 +1,4 @@
 @echo off
-rem $Id$
 
 if "%ProgramFiles%\somtk\bin\" == "%~dp0" set SOMBASE=%ProgramFiles%\somtk
 if "%ProgramFiles(x86)%\somtk\bin\" == "%~dp0" set SOMBASE=%ProgramFiles(x86)%\somtk

@@ -17,15 +17,5 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
-VERS=`../../toolbox/depdirs.sh somtkpkg | ../../svnvers/unix/lastrev.sh`
-
-HIVERS=`echo $VERS / 10000 | bc`
-LOVERS=`echo $VERS % 10000 | bc`
-
-if test "$HIVERS" = ""; then HIVERS=0; fi
-if test "$LOVERS" = ""; then LOVERS=0; fi
-
-VERSION=1.0.$HIVERS.$LOVERS
+VERSION=1.0

@@ -43,14 +43,14 @@ int main(int argc, char *argv[], char *envp[])
    //******************************************
    // Create the Animal object with name Spot
    //******************************************
-   cat = mcat->createAnimal(ev, "Spot");
+   cat = mcat->createAnimal(ev, (char *)"Spot");
    cat->sleep(ev);
    somPrintf("Spot class is %s\n", cat->somGetClassName() );
 
    //*************************************************
    // Create another Animal object with name Lassie
    //*************************************************
-   dog = mcat->createAnimal(ev,"Lassie");
+   dog = mcat->createAnimal(ev,(char *)"Lassie");
    dog->sleep(ev);
 
    printf("total number of Animal objects: %d\n", mcat->_get_count(ev) );

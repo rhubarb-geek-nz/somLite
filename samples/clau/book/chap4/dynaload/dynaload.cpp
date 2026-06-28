@@ -40,7 +40,7 @@ int main(int argc, char *argv[], char *envp[])
    //******************************************************
    myClass = SOMClassMgrObject->somFindClsInFile(classId,
                                    0,0,
-                                   "domestic.dll");
+                                   (char *)"domestic.dll");
 
    if (myClass)
    {
@@ -55,7 +55,7 @@ int main(int argc, char *argv[], char *envp[])
 //      somPrintf("class name %s\n", myObj->somGetClassName() );
 
         myObj->somDispatch((somToken*)0,
-                           somIdFromString("display"),
+                           somIdFromString((char *)"display"),
                            myObj,
                            ev);
       }

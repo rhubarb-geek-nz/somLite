@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 SOM_Scope SOMClass_somOffsets  SOMLINK 
 		somcls__get_somInstanceDataOffsets(
 		SOMClass SOMSTAR somSelf)
@@ -241,9 +237,6 @@ SOM_Scope void  SOMLINK somcls_somDeallocate(SOMClass SOMSTAR somSelf,somToken m
 
 	SOMFree(memptr);
 
-#ifdef SOMClass_somRelease
-	SOMClass_somRelease(somSelf);
-#endif
 	SOM_IgnoreWarning(somSelf);
 }
 
@@ -1734,11 +1727,6 @@ static void SOMClass_unregistered(
 					}
 				}
 
-#ifdef SOMClass_somRelease
-				SOMClass SOMSTAR cls;
-				cls=tabs->mtab->classObject;
-				SOMClass_somRelease(cls);
-#endif
 				tabs=tabs->next;
 			}
 		}

@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
  /**********************************************
  * This is a historical mapping file.
  * The contents of somltype.h are now in somplatf.h

@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifdef TEST_64BIT
 #	ifndef _LP64
 #		error not 64bit

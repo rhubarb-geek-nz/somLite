@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef somderr_h
 #define somderr_h
 

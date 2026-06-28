@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #include <rhbendia.h>
 #include <stdio.h>
 

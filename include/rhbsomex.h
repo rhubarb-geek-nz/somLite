@@ -18,10 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
-/*
- * $Id$
- */
  
 /**************************************************************************
  * standardised SOM environment
@@ -138,14 +134,6 @@ struct somMethodTabStruct
 #	endif
 #else
 #	define RHBSOM_Trace(x) 
-#endif
-
-#if !defined(USE_APPLE_SOM) && !defined(SOM_NO_OBJECTS) && !defined(BUILD_SOM) && !defined(BUILD_SOMREF) && !defined(BUILD_SOMSTUBS)
-#	ifdef __cplusplus
-#		include <somref.xh>
-#	else
-#		include <somref.h>
-#	endif
 #endif
 
 #ifndef RHBOPT_throw_StExcep

@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 /* this spec follows the prototype of 'static_foreign_marshaler' */
 
 SOM_IMPORTEXPORT_som SOMEXTERN void SOMLINK 

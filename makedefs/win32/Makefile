@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id$
 
 !IF "$(BUILDTYPE)" == ""
 BUILDTYPE=Debug
@@ -154,3 +153,9 @@ $(MAKEDEFS_LST): $(MAKEDEFS_CFL)
 $(MAKEDEFS_CFL): "$(FIND_EXE)" "$(DEPENDS_EXE)"
 	"$(FIND_EXE)" ..\.. -name makedefs.cf >$@
 
+sign: "$(OUTDIR_BIN)\som.dll" "$(OUTDIR_BIN)\somipc.exe" "$(OUTDIR_BIN)\sc.exe" "$(OUTDIR_BIN)\somcpp.exe" "$(OUTDIR_BIN)\pdl.exe"
+	signtool sign /a /sha1 601A8B683F791E51F647D34AD102C38DA4DDB65F /fd SHA256 /t http://timestamp.digicert.com "$(OUTDIR_BIN)\som.dll"
+	signtool sign /a /sha1 601A8B683F791E51F647D34AD102C38DA4DDB65F /fd SHA256 /t http://timestamp.digicert.com "$(OUTDIR_BIN)\pdl.exe"
+	signtool sign /a /sha1 601A8B683F791E51F647D34AD102C38DA4DDB65F /fd SHA256 /t http://timestamp.digicert.com "$(OUTDIR_BIN)\sc.exe"
+	signtool sign /a /sha1 601A8B683F791E51F647D34AD102C38DA4DDB65F /fd SHA256 /t http://timestamp.digicert.com "$(OUTDIR_BIN)\somipc.exe"
+	signtool sign /a /sha1 601A8B683F791E51F647D34AD102C38DA4DDB65F /fd SHA256 /t http://timestamp.digicert.com "$(OUTDIR_BIN)\somcpp.exe"

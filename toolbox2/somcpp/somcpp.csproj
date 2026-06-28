@@ -1,0 +1,34 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <Authors>Roger Brown</Authors>
+    <Company>rhubarb-geek-nz</Company>
+    <Copyright>Copyright &#169; 2026 Roger Brown</Copyright>
+    <Version>1.0</Version>
+    <Description>C Preprocessor in .NET</Description>
+    <PackageProjectUrl>https://github.com/rhubarb-geek-nz/somLite</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/rhubarb-geek-nz/somLite.git</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryType>git</RepositoryType>
+    <CertificateThumbprint>601A8B683F791E51F647D34AD102C38DA4DDB65F</CertificateThumbprint>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Costura.Fody" Version="6.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="rhubarb-geek-nz.CPreProcessor" Version="1.0.1" />
+  </ItemGroup>
+
+  <Target Name="SignWindows" AfterTargets="Compile" Condition=" '$(Configuration)' == 'Release' AND '$(OS)' == 'Windows_NT' ">
+    <ItemGroup>
+        <FileToSign Include="$(IntermediateOutputPath)$(TargetFileName)" />
+    </ItemGroup>
+    <Message Importance="high" Text="Signing assemblies: @(FileToSign)" />
+    <SignFile SigningTarget="@(FileToSign)" CertificateThumbprint="$(CertificateThumbprint)" TimestampUrl="http://timestamp.digicert.com" />
+  </Target>
+
+</Project>

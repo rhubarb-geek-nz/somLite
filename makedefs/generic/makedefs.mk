@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id$
 
 STDINCL=-I../../include/$(PLATFORM)/$(BUILDTYPE) -I../../rhbseh/include -I../../include $(X11INCL)
 SOCKLIBS= 

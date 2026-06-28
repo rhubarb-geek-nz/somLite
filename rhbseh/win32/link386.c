@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #define LINK386_USER32
 
 #include <link386.h>

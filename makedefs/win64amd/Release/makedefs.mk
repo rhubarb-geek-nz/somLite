@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id$
 
 COMMONOPTS=/W3 /MD /DNDEBUG /DWIN32 /D_WIN32_DCOM /D_WIN32_WINNT=0x600 /D_CRT_SECURE_NO_DEPRECATE /Zp8 /D_PLATFORM_LITTLE_ENDIAN_ /D_PLATFORM_WIN32_ /D_CRT_NONSTDC_NO_DEPRECATE /D_WINSOCK_DEPRECATED_NO_WARNINGS
 STDOPT=$(COMMONOPTS) /WX

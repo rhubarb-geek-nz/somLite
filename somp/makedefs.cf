@@ -1,3 +1,0 @@
-NAME somp
-DEPENDS somtc somref somdprep somu
-PROVIDES somp

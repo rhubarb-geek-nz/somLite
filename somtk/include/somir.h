@@ -19,20 +19,8 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef __SOMIR__
 #define __SOMIR__
-
-#ifdef __cplusplus
-	#include <somtc.xh>
-	#include <somtcnst.xh>
-#else
-	#include <somtc.h>
-	#include <somtcnst.h>
-#endif
 
 #ifndef somModifier_defined
 	#define somModifier_defined

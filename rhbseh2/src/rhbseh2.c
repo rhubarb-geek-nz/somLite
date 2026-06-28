@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #include <rhbseh.h>
 
 #ifdef _WIN32

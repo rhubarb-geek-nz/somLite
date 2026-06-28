@@ -17,8 +17,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
 PLATFORM_CFLAGS="$PLATFORM_CFLAGS -D_REENTRANT"
 PLATFORM_CXXFLAGS="$PLATFORM_CXXFLAGS -D_REENTRANT"

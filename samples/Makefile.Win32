@@ -1,0 +1,33 @@
+all:
+	cd clau\book\chap2
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test
+	cd ..\chap3\datatype
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test
+	cd ..\except
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test
+	cd ..\metacls
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test
+	cd ..\methres
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test
+	cd ..\..\chap4\dynaload
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test
+	cd ..\releaseo
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test
+	cd ..\typeiden
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" clean
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)"
+	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" test

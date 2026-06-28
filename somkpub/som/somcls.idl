@@ -18,22 +18,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
- 
-/* 
- * $Id$
- */
 
 #ifndef somcls_idl
 #define somcls_idl
 #include <somobj.idl>
-
-#if ((SOMObject_MinorVersion >= 7)||(SOMObject_MajorVersion > 1))
-	#define SOMClass_MajorVersion	1
-	#define SOMClass_MinorVersion	6
-#else
-	#define SOMClass_MajorVersion	1
-	#define SOMClass_MinorVersion	4
-#endif
 
 #ifdef __PRIVATE__
 typedef somToken somMethodTabPtr;
@@ -219,8 +207,8 @@ interface SOMClass : SOMObject
 			somGetMethodProc,
 			somImportedClass;
 		callstyle = oidl;
-		majorversion = SOMClass_MajorVersion;
-		minorversion = SOMClass_MinorVersion;
+		majorversion = 1;
+		minorversion = 4;
 		dllname = "som.dll";
 		somClassAllocate : nonstaticaccessors;
 		somClassDeallocate : nonstaticaccessors;

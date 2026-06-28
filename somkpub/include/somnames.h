@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 /****************************************************
  * contains thunking definitions
  * and traditionally contains mapping to short names

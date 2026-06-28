@@ -1,4 +1,3 @@
-SOMBASE=/opt/somtk
 LINK_SOMTK=-L$(SOMBASE)/lib -lsom
 INCL_SOMTK=-I$(SOMBASE)/include
 SC=$(SOMBASE)/bin/sc
@@ -33,5 +32,5 @@ clean:
 	rm -rf cppHello cHello *.o *.xh *.xih *.h
 
 test:
-	LD_LIBRARY_PATH=$(SOMBASE)/lib ./cHello
-	LD_LIBRARY_PATH=$(SOMBASE)/lib ./cppHello
+	./cHello
+	./cppHello

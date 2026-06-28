@@ -18,10 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
-
- /* 
-  * $Id$
-  */
  
 using System;
 using System.Collections.Generic;

@@ -16,7 +16,6 @@
 ; You should have received a copy of the GNU Lesser General Public License
 ; along with this program.  If not, see <http://www.gnu.org/licenses/>
 ;
-; $Id$
 
 LIBRARY		SOM
 VERSION		1.0
@@ -99,12 +98,12 @@ EXPORTS
 			SOMOutCharRoutine
 			somCheckArgs
 			somFreeThreadData
-			somva_SOMObject_somDispatchV
-			somva_SOMObject_somDispatchL
-			somva_SOMObject_somDispatchA
-			somva_SOMObject_somDispatchD
-			somva_SOMObject_somDispatch
-			somva_SOMObject_somClassDispatch
+			somva_SOMObject_somDispatchV		PRIVATE
+			somva_SOMObject_somDispatchL		PRIVATE
+			somva_SOMObject_somDispatchA		PRIVATE
+			somva_SOMObject_somDispatchD		PRIVATE
+			somva_SOMObject_somDispatch			PRIVATE
+			somva_SOMObject_somClassDispatch	PRIVATE
 			va_SOMObject_somDispatchV
 			va_SOMObject_somDispatchL
 			va_SOMObject_somDispatchA

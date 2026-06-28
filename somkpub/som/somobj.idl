@@ -18,10 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
- 
-/* 
- * $Id$
- */
 
 #ifndef somobj_idl
 #define somobj_idl
@@ -34,15 +30,6 @@
 	2.5		1.5, 1.6	(1.6 with SOMPCALL, not sure what pcall really does)
 	3.0		1.7			(stringray)
 */
-
-#define SOMObject_MajorVersion   1
-#define SOMObject_MinorVersion   7
-
-#ifdef __PRIVATE__
-	#if ((SOMObject_MinorVersion >= 7) || (SOMObject_MajorVersion > 1))
-		 #define USE_SOM30 
-	#endif
-#endif
 
 interface SOMClass;
 interface SOMObject;
@@ -125,19 +112,6 @@ struct Environment
 	octet opaque_data[12];
 };
 
-#ifdef __PRIVATE__
-#	ifdef USE_SOM30
-#		define SOMD_BASE_TYPES
-#		define SOMObject_included_somdtype
-		interface InterfaceDef;
-		interface Context;
-		interface ImplementationDef;
-		interface NVList;
-		interface Request;
-#		include <somdtype.idl>
-#	endif
-#endif
-
 interface SOMObject
 {
 	typedef sequence<SOMObject> SOMObjectSequence;
@@ -162,18 +136,6 @@ interface SOMObject
 	void somDumpSelfInt(in long level);
 
 #ifdef __PRIVATE__
-	/* these migrated from SOMDObject */
-	#ifdef USE_SOM30
-		SOMObject duplicate(out Environment ev);
-		ImplementationDef get_implementation(out Environment ev);
-		InterfaceDef get_interface(out Environment ev);
-		boolean is_proxy(out Environment ev);
-		void release(out Environment ev);
-		ORBStatus create_request(out Environment ev,in Context ctx,in string operation,in NVList arg_list,inout NamedValue result,out Request request,in Flags req_flags);
-		ORBStatus create_request_args(out Environment ev,in string operation,out NVList arg_list,out NamedValue result);
-		boolean is_nil_migrated(out Environment ev);
-	#endif
-
 	/* obsolete methods, use somDispatch */
 	void somDispatchV(in somId methodId,in somId descriptor,in va_list ap);
 	long somDispatchL(in somId methodId,in somId descriptor,in va_list ap);
@@ -231,28 +193,14 @@ interface SOMObject
 			somDefaultAssign,
 			somDefaultConstAssign,
 			somDefaultVAssign,
-			somDefaultConstVAssign,
-			release,
-			duplicate,
-			get_interface,
-			get_implementation,
-			is_proxy,
-			create_request,
-			create_request_args,
-#ifdef __PRIVATE__
-			is_nil_migrated;
-#else
-			is_nil;
-#endif
+			somDefaultConstVAssign;
+
 #ifdef __PRIVATE__
 		functionprefix = somobj_;
-	#ifdef USE_SOM30
-		is_nil_migrated: procedure;
-	#endif
 #endif
 		callstyle = oidl;
-		majorversion = SOMObject_MajorVersion;
-		minorversion = SOMObject_MinorVersion;
+		majorversion = 1;
+		minorversion = 4;
 		dllname = "som.dll";
 
 		somGetClass : dual_owned_result;

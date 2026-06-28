@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #include <rhbopt.h>
 #include <rhbsomex.h>
 #include <stdio.h>

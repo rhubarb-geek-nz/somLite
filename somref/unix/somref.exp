@@ -1,8 +1,0 @@
-SOMRefObjectClassData
-SOMRefObjectNewClass
-SOMRefObjectCClassData
-somGetClassManagerReference
-somReleaseObjectReference
-somReleaseClassReference
-somReleaseClassManagerReference
-somMakeStringFromId

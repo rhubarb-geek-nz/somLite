@@ -19,26 +19,12 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef somdtype_idl
 #define somdtype_idl
 
 #pragma prefix ""
 
-#ifdef __PRIVATE__
-#	ifdef SOMObject_included_somdtype
-#		include <somobj.idl>
-#	else
-#		include <somref.idl>
-#		include <containd.idl>
-#	endif
-#else
-#	include <somobj.idl>
-#	include <containd.idl>
-#endif
+#include <somobj.idl>
 
 enum completion_status {YES,NO,MAYBE};
 #ifdef SOMRefObject
@@ -55,11 +41,7 @@ typedef unsigned long Flags;
 
 struct NamedValue
 {
-#ifdef __PRIVATE__
 	string name;
-#else
-	Identifier name;
-#endif
 	any argument;
 	long len;
 	Flags arg_modes;

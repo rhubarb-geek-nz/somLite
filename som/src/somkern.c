@@ -19,8 +19,6 @@
  *
  */
 
-/* $Id$ */
-
 #define SOMKERN_C
 
 #include <rhbopt.h>
@@ -481,36 +479,12 @@ RHBOPT_cleanup_begin(somBuildClass_cleanup,pv)
 struct somBuildClass *data=pv;
 
 	if (data->locked) somEndCriticalSection();
-#ifdef SOMClass_somRelease
-	if (data->meta_class)
-	{
-		SOMClass_somRelease(data->meta_class);
-	}
-	if (data->explicit_meta_class)
-	{
-		SOMClass_somRelease(data->explicit_meta_class);
-	}
-	while (data->seq._length--)
-	{
-		if (data->seq._buffer[data->seq._length])
-		{
-			SOMClass_somRelease(data->seq._buffer[data->seq._length]);
-		}
-	}
-#endif
 	if (data->failed)
 	{
-#ifdef SOMClass_somRelease
-		if (data->classObject)
-		{
-			SOMClass_somRelease(data->classObject);
-		}
-#else
 		if (data->classObject && data->was_created)
 		{
 			SOMClass_somFree(data->classObject);
 		}
-#endif
 		data->classObject=NULL;
 	}
 
@@ -1075,11 +1049,11 @@ static struct somMTokenData *SOMKERN_somMToken_by_name(somClassInfo info,somId i
 
 somMethodProc * SOMLINK somResolveByName(
 		SOMObject SOMSTAR obj,
-        char *methodName)
+        const char *methodName)
 {
 	somMToken m=SOMKERN_somMToken_by_name(
 		somClassInfoFromMtab(somMethodTabFromObject(obj)),
-			&methodName);
+			(somId)&methodName);
 
 	if (m) return somResolve(obj,m);
 
@@ -2077,7 +2051,7 @@ SOMEXTERN int SOMLINK somRegisterId(somId id)
 	return 0;
 }
 
-SOMEXTERN somId SOMLINK somIdFromString(char * aString)
+SOMEXTERN somId SOMLINK somIdFromString(const char * aString)
 {
 	if (aString)
 	{
@@ -2108,7 +2082,7 @@ SOMEXTERN void SOMLINK somSetExpectedIds(unsigned long numIds)
 }
 
 SOMEXTERN void SOMLINK somTest(int condition, int severity,const char * fileName,
-                               int lineNum, char * msg)
+                               int lineNum, const char * msg)
 {
 	if (!condition)
 	{

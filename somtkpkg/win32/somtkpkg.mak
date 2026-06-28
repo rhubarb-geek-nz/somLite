@@ -16,11 +16,10 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id$
 
 !include $(MAKEDEFS)
 
-APPNAME=somtk
+APPNAME=somlite
 INTDIR=$(BUILDTYPE)
 OUTDIR_TMP=$(INTDIR)\content
 MAKEDEFS_CFS=..\..\makedefs\$(PLATFORM)\$(BUILDTYPE)\makedefs.cfl
@@ -28,10 +27,9 @@ TARGET_DDF=$(INTDIR)\somtkpkg.ddf
 TARGET_CAB=$(OUTDIR_DIST)\$(APPNAME).cab
 TARGET_ZIP=$(OUTDIR_DIST)\$(APPNAME).zip
 TARGET_MSI=$(OUTDIR_DIST)\$(APPNAME).msi
-DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\netcoreapp3.1\ddf2wxs.dll
-MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\netcoreapp3.1\makezip.dll
-DEPVERS_H=..\..\include\$(PLATFORM)\depvers.h
-SOM_IR=$(INTDIR)\som.ir
+DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\net8.0\ddf2wxs.dll
+MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\net8.0\makezip.dll
+DEPVERS_H=..\..\include\win32\depvers.h
 SC=$(SOMTOOLS_BIN)\sc.exe
 
 all:
@@ -39,7 +37,7 @@ all:
 clean:
 	if exist $(OUTDIR_TMP) rmdir /S /Q $(OUTDIR_TMP)
 	$(CLEAN) "$(TARGET_MSI)" "$(TARGET_CAB)" "$(TARGET_ZIP)" "$(TARGET_DDF)" setup.inf setup.rpt "$(OUTDIR_DIST)\$(APPNAME).wixpdb" 
-	$(CLEAN) somtk.wxs somtk.wixobj "$(SOM_IR)" "$(TARGET_DDF).$(PLATFORM)" "$(TARGET_DDF).cabinet"
+	$(CLEAN) somlite.wxs somlite.wixobj "$(TARGET_DDF).cabinet"
 	
 dist: $(TARGET_CAB) $(TARGET_MSI) $(TARGET_ZIP)
 
@@ -48,7 +46,6 @@ $(INTDIR) $(OUTDIR_TMP):
 
 $(OUTDIR_TMP)\include: $(OUTDIR_TMP)
 	mkdir $@
-	copy ..\..\somtk\include\*.xh $@	
 	copy ..\..\somtk\include\*.h $@	
 	copy ..\..\somkpub\include\*.xh $@	
 	copy ..\..\somkpub\include\*.h $@	
@@ -57,7 +54,7 @@ $(OUTDIR_TMP)\include: $(OUTDIR_TMP)
 	copy ..\..\somidl\$(PLATFORM)\*.h $@
 	copy ..\..\somidl\$(PLATFORM)\somcls.api $@
 
-$(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(SOM_IR)
+$(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(OUTDIR_TMP)\som.lib
 	echo .Set CabinetName1=$(APPNAME).cab > $@
 	echo .Set DiskDirectory1=$(OUTDIR_DIST) >> $@
 	echo .Set CabinetFileCountThreshold=0 >> $@
@@ -69,58 +66,28 @@ $(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(SOM_IR)
 	echo .Set DestinationDir=include >> $@
 	"$(RHBTOOLS_BIN)\find.exe" $(OUTDIR_TMP)\include -type f >> $@
 	echo .Set DestinationDir=bin >> $@
-	echo ..\..\somenv\win32\somenv.cmd >> $@
-	for %d in ( somdsvr somdd somdchk sc dsom irdump pdl regimpl somipc somossvr somcpp ) do echo $(OUTDIR_BIN)\%d.exe >> $@
-	for %d in ( som somtc somir somd somos somdcomm somem somnmf somabs1 somref ) do echo $(OUTDIR_BIN)\%d.dll >> $@
-	for %d in ( somany somcdr somcorba somcslib somestrm somp soms somst somu somu2 ) do echo $(OUTDIR_BIN)\%d.dll >> $@
+	for %d in ( sc pdl somipc somcpp ) do echo $(OUTDIR_BIN)\%d.exe >> $@
+	for %d in ( som ) do echo $(OUTDIR_BIN)\%d.dll >> $@
 	echo .Set DestinationDir=lib >> $@
-	echo $(OUTDIR_LIB)\somtk.lib >> $@
-	echo .Set DestinationDir=etc >> $@
-	echo $(SOM_IR) >> $@
-	echo $(OUTDIR_ETC)\somenv.ini >> $@
-	echo .Set DestinationDir=etc\dsom >> $@
-	echo ..\..\somdd\rsrc\impl.db >> $@
+	echo $(OUTDIR_TMP)\som.lib >> $@
 
-"$(TARGET_DDF).win32i86": "$(TARGET_DDF)"  
-	copy /Y "$(TARGET_DDF)" $@
-	echo .Set DestinationDir=SystemFolder >> $@
-	echo $(OUTDIR_BIN)\somddmsg.dll >> $@
+$(OUTDIR_TMP)\som.lib: $(OUTDIR_LIB)\somlite.lib
+	COPY /Y $(OUTDIR_LIB)\somlite.lib $@
 
-"$(TARGET_DDF).win64amd": "$(TARGET_DDF)"  
-	copy /Y "$(TARGET_DDF)" $@
-	echo .Set DestinationDir=msg >> $@
-	echo $(OUTDIR_BIN)\somddmsg.dll >> $@
-
-"$(TARGET_DDF).cabinet": "$(TARGET_DDF)" 
-	copy /Y "$(TARGET_DDF)" $@
-	echo .Set DestinationDir=msg >> $@
-	echo $(OUTDIR_BIN)\somddmsg.dll >> $@
-
-"$(TARGET_DDF).win64arm": "$(TARGET_DDF)"  
-	copy /Y "$(TARGET_DDF)" $@
-	echo .Set DestinationDir=msg >> $@
-	echo $(OUTDIR_BIN)\somddmsg.dll >> $@
-
-"$(TARGET_DDF).win32arm": "$(TARGET_DDF)"
-
-$(TARGET_MSI): "$(TARGET_DDF).$(PLATFORM)" ..\pkg\license.rtf "$(DDF2WXS_DLL)" "$(DEPVERS_H)" 
+$(TARGET_MSI): "$(TARGET_DDF)" ..\pkg\license.rtf "$(DDF2WXS_DLL)" "$(DEPVERS_H)" 
 	if exist $@ del $@
-	if exist ..\pkg\$(PLATFORM).wxs dotnet "$(DDF2WXS_DLL)" -i ..\pkg\$(PLATFORM).wxs -o somtk.wxs -d "$(TARGET_DDF).$(PLATFORM)" -h "$(DEPVERS_H)" -p somtkpkg
-	if exist somtk.wxs "$(WIX)\bin\candle.exe" -nologo somtk.wxs -ext WixUtilExtension 
-	if exist somtk.wixobj "$(WIX)\bin\light.exe" -nologo -cultures:null -out $@ somtk.wixobj -ext WixUtilExtension -ext WixUIExtension
+	if exist ..\pkg\$(PLATFORM).wxs dotnet "$(DDF2WXS_DLL)" -i ..\pkg\$(PLATFORM).wxs -o $(APPNAME).wxs -d "$(TARGET_DDF)" -h "$(DEPVERS_H)" -p somtkpkg
+	if exist $(APPNAME).wxs "$(WIX)\bin\candle.exe" -nologo $(APPNAME).wxs -ext WixUtilExtension 
+	if exist $(APPNAME).wixobj "$(WIX)\bin\light.exe" -nologo -cultures:null -out $@ $(APPNAME).wixobj -ext WixUtilExtension
+	signtool sign /a /sha1 601A8B683F791E51F647D34AD102C38DA4DDB65F /fd SHA256 /t http://timestamp.digicert.com $@
 
-$(TARGET_CAB): $(TARGET_DDF).cabinet
+$(TARGET_CAB): $(TARGET_DDF)
 	if exist setup.inf del setup.inf
 	if exist setup.rpt del setup.rpt
-	makecab /F $(TARGET_DDF).cabinet
+	makecab /F $(TARGET_DDF)
 
-$(TARGET_ZIP): $(TARGET_DDF).cabinet "$(MAKEZIP_DLL)"
-	dotnet "$(MAKEZIP_DLL)" -d $(TARGET_DDF).cabinet -o $@
-
-$(SOM_IR): $(OUTDIR_TMP)\include
-	set SOMIR=$(SOM_IR)
-	for %e in ( $(OUTDIR_TMP)\include\*.idl )  do "$(SC)" -sir -u -I $(OUTDIR_TMP)\include %e
-	dir $(SOM_IR)
+$(TARGET_ZIP): $(TARGET_DDF) "$(MAKEZIP_DLL)"
+	dotnet "$(MAKEZIP_DLL)" -d $(TARGET_DDF) -o $@
 
 test:
 

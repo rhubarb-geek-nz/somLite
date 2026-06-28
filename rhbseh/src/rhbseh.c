@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #include <rhbopt.h>
 
 /* the purpose of this module is to provide a common 

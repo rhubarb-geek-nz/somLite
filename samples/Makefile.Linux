@@ -1,0 +1,25 @@
+all:
+	cd clau/book/chap2; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap2; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap2; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test
+	cd clau/book/chap3/datatype; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap3/datatype; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap3/datatype; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test
+	cd clau/book/chap3/except; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap3/except; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap3/except; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test
+	cd clau/book/chap3/metacls; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap3/metacls; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap3/metacls; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test
+	cd clau/book/chap3/methres; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap3/methres; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap3/methres; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test
+	cd clau/book/chap4/dynaload; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap4/dynaload; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap4/dynaload; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test
+	cd clau/book/chap4/releaseo; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap4/releaseo; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap4/releaseo; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test
+	cd clau/book/chap4/typeiden; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" clean
+	cd clau/book/chap4/typeiden; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)"
+	cd clau/book/chap4/typeiden; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" test

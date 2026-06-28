@@ -17,7 +17,6 @@
  *  You should have received a copy of the GNU Lesser General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
- * $Id$
  */
 
 #define WIN32_DLLIMPORT	  __declspec(dllimport)
@@ -25,29 +24,7 @@
 
 #include <rhbopt.h>
 #include <rhbsomex.h>
-#include <somd.h>
-#include <somir.h>
-#include <repostry.h>
-#include <intfacdf.h>
-#include <moduledf.h>
-#include <constdef.h>
-#include <typedef.h>
-
-#ifdef TEST_SOMEM_DLL
-#	include <emtypes.h>
-#	include <eman.h>
-#	include <emregdat.h>
-#	include <event.h>
-#	include <clientev.h>
-#	include <workprev.h>
-#	include <timerev.h>
-#	include <sinkev.h>
-#endif
-
-#ifdef TEST_SOMS_DLL
-#	include <soms.h>
-#	include <somssock.h>
-#endif
+#include <som.h>
 
 #include <stdlib.h>
 
@@ -124,16 +101,6 @@ static void check_som(void)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultConstAssign)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultVAssign)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultConstVAssign)
-#if ((SOMObject_MajorVersion > 1) || (SOMObject_MinorVersion >= 7))
-	CHECK_MTOKEN_PRIVATE(SOMObject,release)
-	CHECK_MTOKEN_PRIVATE(SOMObject,duplicate)
-	CHECK_MTOKEN_PRIVATE(SOMObject,get_interface)
-	CHECK_MTOKEN_PRIVATE(SOMObject,get_implementation)
-	CHECK_MTOKEN_PRIVATE(SOMObject,is_proxy)
-	CHECK_MTOKEN_PRIVATE(SOMObject,create_request)
-	CHECK_MTOKEN_PRIVATE(SOMObject,create_request_args)
-#endif
-
 	END_CLASS(SOMObject)
 
 	CHECK_CLASS(SOMClass)				/* somcls.idl */
@@ -255,323 +222,6 @@ static void check_som(void)
 	END_CLASS(SOMClassMgr)
 }
 
-#ifdef TEST_SOMEM_DLL
-static void check_somem(void)
-{
-	/* SOMEM.DLL */
-
-	CHECK_CLASS(SOMEEMRegisterData)
-	CHECK_MTOKEN(SOMEEMRegisterData,someClearRegData)
-	CHECK_MTOKEN(SOMEEMRegisterData,someSetRegDataClientType)
-	CHECK_MTOKEN(SOMEEMRegisterData,someSetRegDataEventMask)
-	CHECK_MTOKEN(SOMEEMRegisterData,someSetRegDataSink)
-	CHECK_MTOKEN(SOMEEMRegisterData,someSetRegDataSinkMask)
-	CHECK_MTOKEN(SOMEEMRegisterData,someSetRegDataTimerCount)
-	CHECK_MTOKEN(SOMEEMRegisterData,someSetRegDataTimerInterval)
-/*	CHECK_MTOKEN_PRIVATE(SOMEEMRegisterData,someGetRegisterData)*/
-	END_CLASS(SOMEEMRegisterData)
-
-	CHECK_CLASS(SOMEEvent)
-	CHECK_MTOKEN(SOMEEvent,somevGetEventTime)
-	CHECK_MTOKEN(SOMEEvent,somevGetEventType)
-	CHECK_MTOKEN(SOMEEvent,somevSetEventTime)
-	CHECK_MTOKEN(SOMEEvent,somevSetEventType)
-	END_CLASS(SOMEEvent)
-
-	CHECK_CLASS(SOMETimerEvent)
-	CHECK_MTOKEN(SOMETimerEvent,somevGetEventInterval)
-	CHECK_MTOKEN(SOMETimerEvent,somevSetEventInterval)
-	END_CLASS(SOMETimerEvent)
-
-	CHECK_CLASS(SOMESinkEvent)
-	CHECK_MTOKEN(SOMESinkEvent,somevGetEventSink)
-	CHECK_MTOKEN(SOMESinkEvent,somevSetEventSink)
-	END_CLASS(SOMESinkEvent)
-
-	CHECK_CLASS(SOMEClientEvent)
-	CHECK_MTOKEN(SOMEClientEvent,somevGetEventClientData)
-	CHECK_MTOKEN(SOMEClientEvent,somevGetEventClientType)
-	CHECK_MTOKEN(SOMEClientEvent,somevSetEventClientData)
-	CHECK_MTOKEN(SOMEClientEvent,somevSetEventClientType)
-	END_CLASS(SOMEClientEvent)
-
-	CHECK_CLASS(SOMEWorkProcEvent)
-	END_CLASS(SOMEWorkProcEvent)
-
-	CHECK_CLASS(SOMEEMan)
-	CHECK_MTOKEN(SOMEEMan,someGetEManSem)
-	CHECK_MTOKEN(SOMEEMan,someReleaseEManSem)
-	CHECK_MTOKEN(SOMEEMan,someChangeRegData)
-	CHECK_MTOKEN(SOMEEMan,someProcessEvent)
-	CHECK_MTOKEN(SOMEEMan,someProcessEvents)
-	CHECK_MTOKEN(SOMEEMan,someQueueEvent)
-	CHECK_MTOKEN(SOMEEMan,someRegister)
-	CHECK_MTOKEN(SOMEEMan,someRegisterEv)
-	CHECK_MTOKEN(SOMEEMan,someRegisterProc)
-	CHECK_MTOKEN(SOMEEMan,someShutdown)
-	CHECK_MTOKEN(SOMEEMan,someUnRegister)
-#ifdef _WIN16
-	CHECK_MTOKEN(SOMEEMan,someProcessEventInterval)
-#endif
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someExecute)
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someAddClientEventRegistration)
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someDeQueueEvent)
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someGetClientDataFor)
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someGetNumRegisteredClients)
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someRemoveClientEventRegistration)
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someSearchForClientEvent)
-#ifdef SOMEEMan_someProcessEventInterval
-	CHECK_MTOKEN_IGNORE(SOMEEMan,someProcessEventInterval)
-#endif
-/*	CHECK_MTOKEN(SOMEEMan,someWait)*/
-	END_CLASS(SOMEEMan)
-}
-#endif
-
-#ifdef TEST_SOMS_DLL
-static void check_soms(void)
-{
-	/* SOMS.DLL */
-
-	CHECK_CLASS(Sockets)
-	CHECK_MTOKEN(Sockets,somsAccept) 
-	CHECK_MTOKEN(Sockets,somsBind) 
-	CHECK_MTOKEN(Sockets,somsConnect) 
-	CHECK_MTOKEN(Sockets,somsGethostbyaddr)
-	CHECK_MTOKEN(Sockets,somsGethostbyname) 
-	CHECK_MTOKEN(Sockets,somsGethostent) 
-	CHECK_MTOKEN(Sockets,somsGethostid)
-	CHECK_MTOKEN(Sockets,somsGethostname) 
-	CHECK_MTOKEN(Sockets,somsGetpeername) 
-	CHECK_MTOKEN(Sockets,somsGetsockname)
-	CHECK_MTOKEN(Sockets,somsGetsockopt) 
-	CHECK_MTOKEN(Sockets,somsHtonl) 
-	CHECK_MTOKEN(Sockets,somsHtons) 
-	CHECK_MTOKEN(Sockets,somsIoctl)
-	CHECK_MTOKEN(Sockets,somsInet_addr) 
-	CHECK_MTOKEN(Sockets,somsInet_lnaof) 
-	CHECK_MTOKEN(Sockets,somsInet_makeaddr)
-	CHECK_MTOKEN(Sockets,somsInet_netof) 
-	CHECK_MTOKEN(Sockets,somsInet_network) 
-	CHECK_MTOKEN(Sockets,somsInet_ntoa)
-	CHECK_MTOKEN(Sockets,somsListen) 
-	CHECK_MTOKEN(Sockets,somsNtohl) 
-	CHECK_MTOKEN(Sockets,somsNtohs) 
-	CHECK_MTOKEN(Sockets,somsReadv)
-	CHECK_MTOKEN(Sockets,somsRecv) 
-	CHECK_MTOKEN(Sockets,somsRecvfrom) 
-	CHECK_MTOKEN(Sockets,somsRecvmsg) 
-	CHECK_MTOKEN(Sockets,somsSelect)
-	CHECK_MTOKEN(Sockets,somsSend) 
-	CHECK_MTOKEN(Sockets,somsSendmsg) 
-	CHECK_MTOKEN(Sockets,somsSendto) 
-	CHECK_MTOKEN(Sockets,somsSetsockopt)
-	CHECK_MTOKEN(Sockets,somsShutdown) 
-	CHECK_MTOKEN(Sockets,somsSocket) 
-	CHECK_MTOKEN(Sockets,somsSoclose) 
-	CHECK_MTOKEN(Sockets,somsWritev)
-	CHECK_MTOKEN(Sockets,_set_serrno) 
-	CHECK_MTOKEN(Sockets,_get_serrno)
-	CHECK_MTOKEN(Sockets,somsGetservbyname)
-	END_CLASS(Sockets)
-}
-#endif
-
-static void check_somd(void)
-{
-	/* SOMD.DLL */
-
-	CHECK_CLASS(SOMDObject)				/* somdobj.idl */
-	CHECK_MTOKEN_IGNORE(SOMDObject,get_implementation)
-	CHECK_MTOKEN_IGNORE(SOMDObject,get_interface)
-	CHECK_MTOKEN_IGNORE(SOMDObject,get_c_proxy)
-	CHECK_MTOKEN_IGNORE(SOMDObject,is_nil)
-	CHECK_MTOKEN(SOMDObject,is_SOM_ref)
-	CHECK_MTOKEN(SOMDObject,is_constant)
-	CHECK_MTOKEN_IGNORE(SOMDObject,is_proxy)
-	CHECK_MTOKEN_IGNORE(SOMDObject,duplicate)
-	CHECK_MTOKEN_IGNORE(SOMDObject,release)
-	CHECK_MTOKEN_IGNORE(SOMDObject,create_request)
-	CHECK_MTOKEN_IGNORE(SOMDObject,create_request_args)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_get_somd_tag)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_get_somd_flags)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_set_somd_flags)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_get_somd_impl)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_set_somd_impl)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_get_somd_rid)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_set_somd_rid)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_get_somd_id)
-	CHECK_MTOKEN_PRIVATE(SOMDObject,_set_somd_id)
-	CHECK_MTOKEN_IGNORE(SOMDObject,somdMarshal)
-	CHECK_MTOKEN_IGNORE(SOMDObject,set_to_nil)
-	CHECK_MTOKEN(SOMDObject,_get_type_id)
-	CHECK_MTOKEN(SOMDObject,_set_type_id)
-	CHECK_MTOKEN_IGNORE(SOMDObject,_get_tagged_profiles)
-	CHECK_MTOKEN_IGNORE(SOMDObject,_set_tagged_profiles)
-	END_CLASS(SOMDObject)
-
-	CHECK_CLASS(ORB)					/* request.idl */
-	CHECK_MTOKEN(ORB,object_to_string)
-	CHECK_MTOKEN(ORB,string_to_object)
-	CHECK_MTOKEN(ORB,create_list)
-	CHECK_MTOKEN(ORB,create_operation_list)
-	CHECK_MTOKEN(ORB,get_default_context)
-	CHECK_MTOKEN_IGNORE(ORB,private5)
-	CHECK_MTOKEN_IGNORE(ORB,private6)
-	CHECK_MTOKEN_IGNORE(ORB,private7)
-	CHECK_MTOKEN_IGNORE(ORB,private8)
-	CHECK_MTOKEN(ORB,list_initial_services)
-	CHECK_MTOKEN(ORB,resolve_initial_references)
-	CHECK_MTOKEN(ORB,_get_stringToObject30)
-	CHECK_MTOKEN(ORB,_set_stringToObject30)
-	CHECK_MTOKEN_PRIVATE(ORB,somdCreateRequestArgs)
-	CHECK_MTOKEN_PRIVATE(ORB,get_server_impldef)
-	CHECK_MTOKEN_PRIVATE(ORB,_get_callstream_mgr)
-	CHECK_MTOKEN_PRIVATE(ORB,_set_callstream_mgr)
-	END_CLASS(ORB)
-
-	CHECK_CLASS(NVList)
-	CHECK_MTOKEN(NVList,add_item)
-	CHECK_MTOKEN_PRIVATE(NVList,remove_item)
-	CHECK_MTOKEN(NVList,free)
-	CHECK_MTOKEN(NVList,free_memory)
-	CHECK_MTOKEN(NVList,get_count)
-	CHECK_MTOKEN(NVList,set_item)
-	CHECK_MTOKEN(NVList,get_item)
-	CHECK_MTOKEN_PRIVATE(NVList,get_item_by_name)
-	END_CLASS(NVList)
-
-	{
-		char *p=SOMClass_somGetClassName(_NVList);
-		somPrintf("_NVList=%s\n",p);
-	}
-}
-
-static void check_somir(void)
-{
-	/* SOMIR.DLL */
-
-	CHECK_CLASS(Contained)			   /* containd.idl */
-	CHECK_MTOKEN(Contained,within)
-	CHECK_MTOKEN(Contained,describe)
-	CHECK_MTOKEN(Contained,_get_name)
-	CHECK_MTOKEN(Contained,_set_name)
-	CHECK_MTOKEN(Contained,_get_id)
-	CHECK_MTOKEN(Contained,_set_id)
-	CHECK_MTOKEN(Contained,_get_defined_in)
-	CHECK_MTOKEN(Contained,_set_defined_in)
-	CHECK_MTOKEN(Contained,_get_somModifiers)
-	CHECK_MTOKEN(Contained,_set_somModifiers)
-	CHECK_MTOKEN_PRIVATE(Contained,_get_repository)
-	CHECK_MTOKEN_PRIVATE(Contained,_set_repository)
-	CHECK_MTOKEN_PRIVATE(Contained,_get_reference_list)
-	CHECK_MTOKEN_PRIVATE(Contained,_set_reference_list)
-	CHECK_MTOKEN_PRIVATE(Contained,_get_iid)
-	CHECK_MTOKEN_PRIVATE(Contained,_get_defined_in_obj)
-	CHECK_MTOKEN_PRIVATE(Contained,getFixedPersistentSize)
-	CHECK_MTOKEN_PRIVATE(Contained,getVariablePersistentSize)
-	CHECK_MTOKEN_PRIVATE(Contained,putDataInFixedBuf)
-	CHECK_MTOKEN_PRIVATE(Contained,putDataInVariableBuf)
-	CHECK_MTOKEN_PRIVATE(Contained,getDataFromFixedBuf)
-	CHECK_MTOKEN_PRIVATE(Contained,getDataFromVariableBuf)
-	CHECK_MTOKEN_PRIVATE(Contained,saveToIR)
-	CHECK_MTOKEN_PRIVATE(Contained,fixedDirty)
-	CHECK_MTOKEN_PRIVATE(Contained,variableDirty)
-	CHECK_MTOKEN_PRIVATE(Contained,addToReferenceList)
-	CHECK_MTOKEN_PRIVATE(Contained,allocDef)
-	CHECK_MTOKEN_PRIVATE(Contained,removeFromReferenceList)
-	CHECK_MTOKEN_PRIVATE(Contained,incrementUseCount)
-	CHECK_MTOKEN_PRIVATE(Contained,deleteFromIR)
-	CHECK_MTOKEN_PRIVATE(Contained,forceFree)
-	CHECK_MTOKEN_PRIVATE(Contained,freeUnreferenced)
-	CHECK_MTOKEN_PRIVATE(Contained,decrementUseCount)
-	END_CLASS(Contained)
-
-	CHECK_CLASS(Container)				/* containr.idl */
-	CHECK_MTOKEN(Container,contents)
-	CHECK_MTOKEN(Container,lookup_name)
-	CHECK_MTOKEN(Container,describe_contents)
-	CHECK_MTOKEN_PRIVATE(Container,internalNameLookup)
-	CHECK_MTOKEN_IGNORE(Container,private1)
-	CHECK_MTOKEN_IGNORE(Container,private2)
-	CHECK_MTOKEN_PRIVATE(Container,addToContents)
-	CHECK_MTOKEN_PRIVATE(Container,removeFromContents)
-	CHECK_MTOKEN_PRIVATE(Container,getContainerFixedPersistentSize)
-	CHECK_MTOKEN_PRIVATE(Container,putContainerDataInFixedBuf)
-	CHECK_MTOKEN_PRIVATE(Container,getContainerDataFromFixedBuf)
-	CHECK_MTOKEN_PRIVATE(Container,_set_iidDirectory)
-	CHECK_MTOKEN_PRIVATE(Container,_get_iidDirectory)
-	CHECK_MTOKEN_PRIVATE(Container,saveContents)
-	CHECK_MTOKEN_PRIVATE(Container,restoreContents)
-	CHECK_MTOKEN_PRIVATE(Container,getContentsSize)
-	CHECK_MTOKEN_PRIVATE(Container,deleteContainerFromIR)
-	CHECK_MTOKEN_PRIVATE(Container,_get_dirdirtybit)
-	CHECK_MTOKEN_PRIVATE(Container,_set_dirdirtybit)
-	CHECK_MTOKEN_PRIVATE(Container,gatherSubclasses)
-	CHECK_MTOKEN_PRIVATE(Container,_get_mycontents)
-	CHECK_MTOKEN_PRIVATE(Container,_set_mycontents)
-	END_CLASS(Container)
-
-	CHECK_CLASS(Repository)				/* repostry.idl */
-	CHECK_MTOKEN(Repository,lookup_id)
-	CHECK_MTOKEN(Repository,lookup_modifier)
-	CHECK_MTOKEN(Repository,release_cache)
-	CHECK_MTOKEN_PRIVATE(Repository,saveIR)
-	CHECK_MTOKEN_PRIVATE(Repository,_get_subrepositorylist)
-	CHECK_MTOKEN_PRIVATE(Repository,_set_subrepositorylist)
-	CHECK_MTOKEN(Repository,queryException)
-	END_CLASS(Repository)
-
-	CHECK_CLASS(InterfaceDef)			  /* intfacdf.dl */
-	CHECK_MTOKEN(InterfaceDef,describe_interface)
-	CHECK_MTOKEN(InterfaceDef,_get_base_interfaces)
-	CHECK_MTOKEN(InterfaceDef,_set_base_interfaces)
-	CHECK_MTOKEN(InterfaceDef,_get_instanceData)
-	CHECK_MTOKEN(InterfaceDef,_set_instanceData)
-	CHECK_MTOKEN_PRIVATE(InterfaceDef,subclasses)
-	END_CLASS(InterfaceDef)
-
-	CHECK_CLASS(ParameterDef)			  /* paramdef.dl */
-	CHECK_MTOKEN(ParameterDef,_get_type)
-	CHECK_MTOKEN(ParameterDef,_set_type)
-	CHECK_MTOKEN(ParameterDef,_get_mode)
-	CHECK_MTOKEN(ParameterDef,_set_mode)
-	END_CLASS(ParameterDef)
-
-	CHECK_CLASS(AttributeDef)			  /* attribdf.dl */
-	CHECK_MTOKEN(AttributeDef,_get_type)
-	CHECK_MTOKEN(AttributeDef,_set_type)
-	CHECK_MTOKEN(AttributeDef,_get_mode)
-	CHECK_MTOKEN(AttributeDef,_set_mode)
-	END_CLASS(AttributeDef)
-
-	CHECK_CLASS(ModuleDef)			  /* moduledf.dl */
-	END_CLASS(ModuleDef)
-
-	CHECK_CLASS(ConstantDef)			  /* constdef.dl */
-	CHECK_MTOKEN(ConstantDef,_get_type)
-	CHECK_MTOKEN(ConstantDef,_set_type)
-	CHECK_MTOKEN(ConstantDef,_get_value)
-	CHECK_MTOKEN(ConstantDef,_set_value)
-	END_CLASS(ConstantDef)
-
-	CHECK_CLASS(TypeDef)			  /* typedef.dl */
-	CHECK_MTOKEN(TypeDef,_get_type)
-	CHECK_MTOKEN(TypeDef,_set_type)
-	END_CLASS(TypeDef)
-
-	CHECK_CLASS(OperationDef)			  /* operatdf.dl */
-	CHECK_MTOKEN(OperationDef,_get_result)
-	CHECK_MTOKEN(OperationDef,_set_result)
-	CHECK_MTOKEN(OperationDef,_get_mode)
-	CHECK_MTOKEN(OperationDef,_set_mode)
-	CHECK_MTOKEN(OperationDef,_get_contexts)
-	CHECK_MTOKEN(OperationDef,_set_contexts)
-	CHECK_MTOKEN_PRIVATE(OperationDef,_get_raiseSeq)
-	CHECK_MTOKEN_PRIVATE(OperationDef,_set_raiseSeq)
-	END_CLASS(OperationDef)
-}
-
 int main(int argc,char **argv)
 {
 	SOMClassMgr SOMSTAR mgr=somEnvironmentNew();
@@ -585,24 +235,11 @@ int main(int argc,char **argv)
 	somPrintf("SOM_MinorVersion=%ld\n",SOM_MinorVersion);
 
 	SOM_InitEnvironment(&ev);
-	SOMD_Init(&ev);
 
 	check_som();
 
-#ifdef MORE_THAN_SOM
-#ifdef TEST_SOMEM_DLL
-	check_somem();
-#endif
-#ifdef TEST_SOMS_DLL
-	check_soms();
-#endif
-	check_somd();
-	check_somir();
-#endif /* MORE_THAN_SOM */
-
 	somPrintf("completed\n");
 
-	SOMD_Uninit(&ev);
 	somEnvironmentEnd();
 
 	return 0;

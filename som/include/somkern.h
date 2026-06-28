@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef SOMKERN_H
 #define SOMKERN_H
 /* internals for the data structures used by the APIs */

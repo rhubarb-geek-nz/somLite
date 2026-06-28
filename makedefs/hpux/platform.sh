@@ -17,8 +17,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
 # gcc cannot use -Werror due to pthread initializations
 # gcc also does not define -D_BIG_ENDIAN by default

@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifdef _PLATFORM_WIN32_
 #	include <windows.h>
 #endif

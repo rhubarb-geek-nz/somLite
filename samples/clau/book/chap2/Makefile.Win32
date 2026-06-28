@@ -1,4 +1,4 @@
-LINK_SOMTK="$(SOMBASE)\lib\somtk.lib"
+LINK_SOMTK="$(SOMBASE)\lib\som.lib"
 INCL_SOMTK="-I$(SOMBASE)\include"
 SC="$(SOMBASE)\bin\sc.exe"
 CL=cl.exe

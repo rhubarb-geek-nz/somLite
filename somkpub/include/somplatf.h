@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
  /**********************************************
  * get the linkages correct based on the platform 
  */

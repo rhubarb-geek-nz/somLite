@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #include <rhbopt.h>
 
 #ifdef _WIN32
@@ -434,11 +430,7 @@ SOMEXTERN unsigned long SOMLINK RHBCDR_free_data(
 				*sp=NULL;
 				if (obj)
 				{
-#ifdef USE_APPLE_SOM
-					if (obj) somReleaseObjectReference(obj);
-#else
 					if (obj) SOMObject_somFree(obj);
-#endif
 				}
 			}
 			break;

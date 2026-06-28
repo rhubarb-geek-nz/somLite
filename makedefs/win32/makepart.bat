@@ -17,7 +17,6 @@ rem
 rem  You should have received a copy of the GNU Lesser General Public License
 rem  along with this program.  If not, see <http://www.gnu.org/licenses/>
 rem
-rem  $Id$
 
 set ACTION=%1
 set PART=%2

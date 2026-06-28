@@ -17,8 +17,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
 FLAG=
 
@@ -58,6 +56,11 @@ do
 		FLAG=
 	fi
 done
+
+if test -z "$OBJDUMP"
+then
+	OBJDUMP=objdump
+fi
 
 case "$INTDIR" in
 /* )
@@ -233,7 +236,7 @@ rmdirs()
     )
 }
 
-for PKGNAME in somtk.comp somtk.dsom somtk.ir somtk.rte somtk.somp somtk.somr somtk.somuc somtk.somx somtk.util somtk.dev
+for PKGNAME in somtk.rte somtk.comp somtk.dev
 do
 	find "$INTDIR/$PKGNAME" | while read N
 	do
@@ -246,33 +249,15 @@ do
 	done
 	rm -rf "$INTDIR/$PKGNAME/$PKGROOT"
 	mkdir -p "$INTDIR/$PKGNAME/$PKGROOT"
+	mkdir "$INTDIR/$PKGNAME/$PKGROOT/include"
 	mkdir "$INTDIR/$PKGNAME/$PKGROOT/bin"
 	mkdir "$INTDIR/$PKGNAME/$PKGROOT/etc"
 	mkdir "$INTDIR/$PKGNAME/$PKGROOT/$LIBDIRNAME"
 	mkdir "$INTDIR/$PKGNAME/$PKGROOT/man"
 	mkdir "$INTDIR/$PKGNAME/$PKGROOT/man/man1"
 	mkdir "$INTDIR/$PKGNAME/$PKGROOT/man/man8"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/include"
 
 	case $PKGNAME in
-	somtk.dsom )
-		mkdir "$INTDIR/$PKGNAME/$PKGROOT/etc/dsom"
-		copyLib somd somdcomm somos somnmf somestrm 
-		copyIdl somdobj somdcprx orb somoa boa nvlist om cntxt impldef implrep \
-				principl request servmgr somdom somdtype stexcep unotypes somproxy \
-				omgestio xmscssae somdserv \
-				naming lname xnaming xnamingf lnamec biter \
-				somos somddsrv somestio
-		copyBin somdd regimpl
-		cp "$OUTDIR/etc/somenv.ini" "$INTDIR/$PKGNAME/$PKGROOT/etc/somenv.ini"
-		cp "$OUTDIR/bin/somdsvr" "$INTDIR/$PKGNAME/$PKGROOT/bin/somdsvr"
-		cp "$OUTDIR/bin/somdchk" "$INTDIR/$PKGNAME/$PKGROOT/bin/somdchk"
-		cp "$OUTDIR/bin/somossvr" "$INTDIR/$PKGNAME/$PKGROOT/bin/somossvr"
-		copyIncFile ../../somtk/include/somd*.h ../../somtk/include/somd*.xh
-		copyIncFile ../../somtk/include/somnm*.h ../../somtk/include/somnm*.xh
-		copyIncFile ../../somtk/include/somos*.h ../../somtk/include/somos*.xh
-		copyMan somdd regimpl
-		;;
 	somtk.comp )
 		case `uname -s` in
 		IRIX* )
@@ -295,39 +280,71 @@ do
 			ln -s somcorba somstars
 			ln -s somcorba somxh
 		)
+		RTEROOT=$(cd "$INTDIR/somtk.rte"; find * -name libsom.so.* -type f | while read N; do dirname $N; done )
+		ln -s "/$RTEROOT/libsom.so.1" "$INTDIR/$PKGNAME/$PKGROOT/lib/libsom.so"
 		;;
 	somtk.dev )
 		if test -n "$HEADERSRC"
 		then
-			cp  "$HEADERSRC"/*.* "$INTDIR/$PKGNAME/$PKGROOT/include/"
+			for F in somobj somcls somcm
+			do
+				cp  "$HEADERSRC"/$F.* "$INTDIR/$PKGNAME/$PKGROOT/include/"
+			done
 		fi
-		if test -f "$OUTDIR/lib/libsomtk.a" 
-		then
-			cp "$OUTDIR/lib/libsomtk.a" "$INTDIR/$PKGNAME/$PKGROOT/lib/libsomtk.a"
-		fi
+		copyIncFile ../../somkpub/include/*.h ../../somkpub/include/*.xh
+		copyIdl somcls somobj somcm
 		;;
 	somtk.rte )
 		copyLib som
-		copyIdl somcls somobj somcm
-		copyIncFile ../../somkpub/include/*.h ../../somkpub/include/*.xh
-		;;
-	somtk.ir )
-		copyMan irdump
-		copyLib somtc somir somref
-		copyIdl repostry containd containr intfacdf operatdf moduledf paramdef somref typedef excptdef constdef attribdf
-		copyBin irdump
-		cp "$OUTDIR/etc/somnew.ir" "$INTDIR/$PKGNAME/$PKGROOT/etc/somnew.ir"
-		copyIncFile ../../somtk/include/somir*.h ../../somtk/include/somir*.xh
-		;;
-	somtk.util )
-		copyLib soms somst somu somu2 somcdr somany somabs1 somcorba somem
-		copyIdl \
-			somssock tcpsock \
-			workprev timerev somsid eman sinkev clientev emregdat event \
-			snglicls somida	\
-			omgidobj
-		copyIncFile ../../somtk/include/eventmsk.h ../../somtk/include/emtypes.h
-		copyIncFile ../../somtk/include/eventmsk.xh ../../somtk/include/emtypes.xh
+		RTELIBDIR=usr/lib
+		LIBCSO=
+
+		for M in $( $OBJDUMP -p "$OUTDIR/bin/pdl" | while read A B
+		do
+			if test -z "$LIBCSO"
+			then
+				case "$A/$B" in
+					NEEDED/libc.so.* )
+						LIBCSO="$B"
+						ldd "$OUTDIR/bin/pdl" | while read C D E F
+						do
+							if test "$B" = "$C"
+							then
+								if test -f "$E"
+								then
+									echo "$E"
+								fi
+							fi
+						done
+						;;
+					* )
+						;;
+				esac
+			fi
+		done )
+		do
+			ls -ld "$M"
+			N=
+			while test "$N" != "$M"
+			do
+				N="$M"
+				M=$(echo "$M" | ../../toolbox/realpath.sh)
+			done
+			ls -ld "$M"
+			if test ! -d "$M"
+			then
+				M=$(dirname "$M")
+			fi
+			RTELIBDIR=$( echo $M | sed 's!^/!!' )
+		done
+
+		if test ! -d "/$RTELIBDIR"
+		then
+			RTELIBDIR=usr/lib
+		fi
+
+		mkdir -p "$INTDIR/$PKGNAME/$RTELIBDIR"
+		mv "$INTDIR/$PKGNAME/$PKGROOT/lib/"* "$INTDIR/$PKGNAME/$RTELIBDIR"
 		;;
 	* )
 		;;

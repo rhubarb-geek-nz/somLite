@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #define BUILD_RHBSOMUE
 
 #include <rhbopt.h>

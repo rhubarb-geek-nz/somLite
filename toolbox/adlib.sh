@@ -17,8 +17,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
 # needed for GNU ld 2.11 when using shared libraries and -Wl,-z,defs as it 
 # complains about unresolved externals from dependent libraries

@@ -21,7 +21,7 @@
 
 #include "hello.h"
 
-main(int argc, char *argv[], char *envp[])
+int main(int argc, char *argv[], char *envp[])
 {
    Hello       myhello;
    Environment *ev;

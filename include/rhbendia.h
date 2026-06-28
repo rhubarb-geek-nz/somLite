@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #if (!defined(_PLATFORM_BIG_ENDIAN_)) && \
 	(!defined(_PLATFORM_LITTLE_ENDIAN_)) && \
 	defined(HAVE_SYS_PARAM_H) 

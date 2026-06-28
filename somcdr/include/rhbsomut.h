@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef RHBSOMUT_H
 #define RHBSOMUT_H
 

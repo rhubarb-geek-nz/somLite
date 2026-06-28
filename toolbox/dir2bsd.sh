@@ -79,10 +79,28 @@ EOF
 	FreeBSD )
 		if test -z "$MAINTAINER"
 		then
-			echo MAINTAINER must be provided >&2
-			false
+			MAINTAINER="$(git config user.email)"
+			if test -z "$MAINTAINER"
+			then
+				echo MAINTAINER must be provided >&2
+				false
+			fi
 		fi
+		case "$VERSION" in
+			*.*.* )
+				;;
+			*.* )
+				VERSION="$VERSION.0"
+				;;
+			* )
+				VERSION="$VERSION.0.0"
+				;;
+		esac
 		PKGROOT=$(dirname $PKGROOT)
+		if test ! -d "$SRCDIR/$PKGROOT"
+		then
+			PKGROOT=
+		fi
 		(
 			cat <<EOF
 name $PKGNAME

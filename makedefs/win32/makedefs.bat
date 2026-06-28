@@ -20,10 +20,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #ifdef _MSC_VER
 #	if defined(_M_IX86)
 #		define VAR_PLATFORM win32i86

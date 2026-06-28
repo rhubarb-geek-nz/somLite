@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #include <rhbopt.h>
 
 #ifdef _WIN32

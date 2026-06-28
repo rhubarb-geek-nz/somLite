@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 /**************************************************************************
  *
  * the purpose is to provide a common exception handling mechanism using

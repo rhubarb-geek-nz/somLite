@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef somcdev_h
 #define somcdev_h
 

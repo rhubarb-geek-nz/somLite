@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id$
 
 include $(MAKEDEFS)
 
@@ -42,7 +41,7 @@ all:
 	fi
 	if test "$(SOMTKLIBS)" = ""; \
 	then \
-		echo SOMTKLIBS=`$(SHLB_REF) somem somem` `$(SHLB_REF) somu somu` `$(SHLB_REF) som som` >>"$(MAKEDEFS)"; \
+		echo SOMTKLIBS=`$(SHLB_REF) som som` >>"$(MAKEDEFS)"; \
 	fi
 
 clean:

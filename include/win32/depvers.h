@@ -1,0 +1,21 @@
+#define DEPVERS_config_INT4 1,0,0,0
+#define DEPVERS_config_STR4 "1.0.0.0\000\000"
+#define DEPVERS_cpp_INT4 1,0,0,0
+#define DEPVERS_cpp_STR4 "1.0.0.0\000\000"
+#define DEPVERS_rhbseh_INT4 1,0,0,0
+#define DEPVERS_rhbseh_STR4 "1.0.0.0\000\000"
+#define DEPVERS_pdl_INT4 1,0,0,0
+#define DEPVERS_pdl_STR4 "1.0.0.0\000\000"
+#define DEPVERS_somcpp_INT4 1,0,0,0
+#define DEPVERS_somcpp_STR4 "1.0.0.0\000\000"
+#define DEPVERS_somipc_INT4 1,0,0,0
+#define DEPVERS_somipc_STR4 "1.0.0.0\000\000"
+#define DEPVERS_sc_INT4 1,0,0,0
+#define DEPVERS_sc_STR4 "1.0.0.0\000\000"
+#define DEPVERS_som_INT4 1,0,0,0
+#define DEPVERS_som_STR4 "1.0.0.0\000\000"
+#define DEPVERS_somtkpkg_INT4 1,0,0,0
+#define DEPVERS_somtkpkg_STR4 "1.0.0.0\000\000"
+#define DEPVERS_somtkpkg_PRODUCTNAME "somFree Toolkit\000\000"
+#define DEPVERS_somtest0_INT4 1,0,0,0
+#define DEPVERS_somtest0_STR4 "1.0.0.0\000\000"

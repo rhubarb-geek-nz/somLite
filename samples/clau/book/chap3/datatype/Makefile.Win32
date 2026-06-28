@@ -1,9 +1,9 @@
-LINK_SOMTK="$(SOMBASE)\lib\somtk.lib"
+LINK_SOMTK="$(SOMBASE)\lib\som.lib"
 INCL_SOMTK="-I$(SOMBASE)\include"
 SC="$(SOMBASE)\bin\sc.exe"
 CL=cl.exe
 
-all: any.exe seq.exe 
+all: seq.exe 
 
 company.xh: company.idl
 	$(SC) -sxh $(INCL_SOMTK) company.idl
@@ -35,16 +35,9 @@ seq.obj: seq.cpp company.xh employee.xh
 seq.exe: company.obj seq.obj employee.obj
 	$(CL) company.obj seq.obj employee.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
 
-any.obj: any.cpp 
-	$(CL) -c any.cpp /Fo$@ -I. $(INCL_SOMTK) 
-
-any.exe: any.obj
-	$(CL) any.obj /Fe$@ $(LINK_SOMTK) /link /NXCOMPAT:NO
-
 clean:
-	del /Q seq.exe any.exe *.obj *.xh *.xih *.h
+	del /Q seq.exe *.obj *.xh *.xih *.h
 
 test:
 	set PATH=%PATH%;%SOMBASE%\bin
-	any
 	seq

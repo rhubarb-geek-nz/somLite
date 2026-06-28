@@ -1,3 +1,0 @@
-NAME ipv6test
-DEPENDS config
-PROVIDES ipv6test

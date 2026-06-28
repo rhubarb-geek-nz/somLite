@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id$
 
 !include $(MAKEDEFS)
 
@@ -25,36 +24,16 @@ INTDIR=$(BUILDTYPE)
 
 APPNAME=somcpp
 
-OBJS=$(INTDIR)\$(APPNAME).obj
-
 TARGET_EXE=$(OUTDIR)\$(APPNAME).exe
-TARGET_PDB=$(OUTDIR)\$(APPNAME).pdb
-
-PARTOPTS=	$(STDOPT)						\
-			/DHAVE_CONFIG_H					\
-			/D_CONSOLE						\
-			/DWIN32_LEAN_AND_MEAN			\
-			/I..\..\include\$(PLATFORM)		\
-			/I..\..\include					\
-			$(CC_OUT_PDB)$(TARGET_PDB)		
+SOURCE_EXE=..\..\toolbox2\$(APPNAME)\bin\$(BUILDTYPE)\net48\$(APPNAME).exe
 
 all: $(TARGET_EXE)
 
 clean:
-	$(CLEAN) $(TARGET_EXE) $(TARGET_PDB) $(OBJS) $(OUTDIR)\$(APPNAME).exp $(OUTDIR)\$(APPNAME).lib $(INTDIR)\$(APPNAME).res
+	$(CLEAN) $(TARGET_EXE)
 	
-$(TARGET_EXE): $(OBJS) $(OUTDIR) $(INTDIR)\$(APPNAME).res
-	$(CC) $(CC_OUT_EXE)$@ $(OBJS) $(CC_OUT_PDB)$(TARGET_PDB) $(CC_LINK) $(LD_SUBSYSTEM_CONSOLE) $(LDFLAGS) $(INTDIR)\$(APPNAME).res
-	$(POSTLINK_EXE) $@
-
-$(INTDIR)\$(APPNAME).obj: ..\..\cpp\src\cpp.c $(INTDIR)
-	$(CC) /c $(PARTOPTS) $(CC_OUT_OBJ)$@ ..\..\cpp\src\cpp.c
-
-$(INTDIR):
-	mkdir $@
-
-$(INTDIR)\$(APPNAME).res: ..\win32\$(APPNAME).rc
-	rc /nologo $(RCFLAGS) /r /I.. /I..\..\include\$(PLATFORM) /fo$@ ..\win32\$(APPNAME).rc
+$(TARGET_EXE): $(SOURCE_EXE)
+	COPY /Y $(SOURCE_EXE) $@
 
 dist:
 

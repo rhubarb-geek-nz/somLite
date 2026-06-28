@@ -55,10 +55,13 @@ PACKAGE_NAME="$APPNAME"_"$VERSION"_"$ARCH".deb
 
 if dpkg --print-architecture
 then
-	if test "$ARCH" != "$(dpkg --print-architecture)"
+	if test "$ARCH" != "all"
 	then
-		echo Wrong architecture, $ARCH is not "$(dpkg --print-architecture)"
-		exit 0
+		if test "$ARCH" != "$(dpkg --print-architecture)"
+		then
+			echo Wrong architecture, $ARCH is not "$(dpkg --print-architecture)"
+			exit 1
+		fi
 	fi
 else
 	exit 0

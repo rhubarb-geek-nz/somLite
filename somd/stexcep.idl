@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef stexcep_idl
 #define stexcep_idl
 #include <somdtype.idl>

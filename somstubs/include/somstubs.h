@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifndef SOMSTUBS_H
 #define SOMSTUBS_H
 

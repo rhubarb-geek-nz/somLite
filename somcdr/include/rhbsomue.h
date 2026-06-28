@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #include <somcdr.h>
 
 typedef struct RHBCDR_encapsulation_write

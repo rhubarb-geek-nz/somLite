@@ -19,11 +19,6 @@
  *
  */
 
-/* $Id$ */
-
 #define LINK386_SOM
-#define LINK386_SOMREF
-#define LINK386_SOMTC
-#define LINK386_WSOCK32
 
 #include <link386.h>

@@ -17,8 +17,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
 PLATFORM_TMP=$INTDIR/platform-$$.d
 CC_FLAG_FPIC=-fPIC
@@ -163,7 +161,7 @@ void func_one() { func_two(); }
 EOF
 
 	cat <<EOF >$PLATFORM_TMP/four.c
-int main(int argc,char **argv) { if (!argc) func_one(); return 0; }
+int main(argc,argv) int argc; char **argv; { if (!argc) func_one(); return 0; }
 EOF
 
 #	ls -l
@@ -398,45 +396,13 @@ if test -z "$PKGROOT"
 then
 	case "$PLATFORM" in
 		*-*-netbsd* )
-			PKGROOT=usr/pkg/somtk
+			PKGROOT=usr/pkg/somlite
 			;;
 		*-*-freebsd* | *-*-openbsd* )
-			PKGROOT=usr/local/somtk
+			PKGROOT=usr/local/somlite
 			;;
 		* )
-			for d in $( . /etc/os-release ; echo $ID $ID_LIKE )
-			do
-				case "$d" in
-					centos | rhel | suse | opensuse | fedora | gentoo | slackware | solus | almalinux | rocky | amzn | ol )
-						if ( platform_compile $SHARED_FPIC <<EOF
-#ifdef __LP64__
-long bogus;
-#else
-#	error is 32 bit
-#endif
-EOF
-						)
-						then
-							PKGROOT=usr/lib64/somtk
-						else
-							PKGROOT=usr/lib/somtk
-						fi
-						;;
-					debian | arch | alpine )
-						PKGROOT=usr/lib/somtk
-						;;
-					* )
-						;;
-				esac
-				if test -n "$PKGROOT"
-				then
-					break
-				fi
-			done
-			if test -z "$PKGROOT"
-			then
-				PKGROOT=usr/lib/somtk
-			fi
+			PKGROOT=usr/lib/somlite
 			;;
 	esac
 fi

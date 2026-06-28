@@ -17,14 +17,23 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
 . ../version.sh
 
 if test "$VERSION" = ""
 then
 	VERSION=0.0.0.1
+fi
+
+if test -z "$MAINTAINER"
+then
+	if git config user.email > /dev/null
+	then
+		MAINTAINER="$(git config user.email)"
+	else
+		echo MAINTAINER not set 1>&2
+		false
+	fi
 fi
 
 test -n "$PKGROOT"
@@ -61,65 +70,25 @@ done
 
 find "$INTDIR" -print | xargs ls -ld
 
-../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.ir" "$OUTDIR_DIST" <<EOF
-Summary: SOMTK Interface Repository
-Name: somtk-ir
+RTEROOT=$(cd $INTDIR/somtk.rte; find * -name "libsom.so.*" | while read N; do dirname $N; break; done)
+
+PKGROOT="$RTEROOT" ../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
+Summary: somLite RTE
+Name: somlite-rte
 Version: $VERSION
 Release: 1
 Group: Applications/System
 License: GPL
-Prefix: /$PKGROOT
+Prefix: /$RTEROOT
 
 %description
-Interface Repository for SOMTK
-
-EOF
-
-../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
-Summary: SOMTK RTE
-Name: somtk-rte
-Version: $VERSION
-Release: 1
-Group: Applications/System
-License: GPL
-Prefix: /$PKGROOT
-
-%description
-Runtime Environment for SOMTK
-
-EOF
-
-../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.dsom" "$OUTDIR_DIST" <<EOF
-Summary: SOMTK DSOM
-Name: somtk-dsom
-Version: $VERSION
-Release: 1
-Group: Applications/System
-License: GPL
-Prefix: /$PKGROOT
-
-%description
-CORBA ORB for SOMTK
-
-EOF
-
-../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.util" "$OUTDIR_DIST" <<EOF
-Summary: SOMTK Utils
-Name: somtk-util
-Version: $VERSION
-Release: 1
-Group: Applications/System
-License: GPL
-Prefix: /$PKGROOT
-
-%description
-Utilities for SOMTK
+Runtime Environment for somLite
 
 EOF
 
 ../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.comp" "$OUTDIR_DIST" <<EOF
-Summary: SOMTK Compiler
-Name: somtk-comp
+Summary: somLite Compiler
+Name: somlite-comp
 Version: $VERSION
 Release: 1
 Group: Applications/System
@@ -127,162 +96,89 @@ License: GPL
 Prefix: /$PKGROOT
 
 %description
-IDL Compiler for SOMTK
+IDL Compiler for somLite
 
 EOF
 
 ../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
-Summary: SOMTK Development Library
-Name: somtk-dev
+Summary: somLite Development Library
+Name: somlite-dev
 Version: $VERSION
 Release: 1
 Group: Applications/System
+BuildArch: noarch
 License: GPL
 Prefix: /$PKGROOT
 
 %description
-Developer library for SOMTK
+Developer library for somLite
 
 EOF
 
 DPKGARCH=`../../toolbox/pkgtool.sh dpkg-arch "$OUTDIR/bin/somipc"`
 
 ../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.comp" "$OUTDIR_DIST" <<EOF
-Package: somtk-comp
+Package: somlite-comp
 Version: $VERSION
 Architecture: $DPKGARCH
 Maintainer: $MAINTAINER
-Provides: somtk-comp
 Section: misc
 Priority: extra
-Description: SOMTK compiler
- IDL compiler for SOMTK
+Description: somLite compiler
+ IDL compiler for somLite
  .
 EOF
 
-../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
-Package: somtk-rte
+PKGROOT="$RTEROOT" ../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
+Package: somlite-rte
 Version: $VERSION
 Architecture: $DPKGARCH
 Maintainer: $MAINTAINER
-Provides: somtk-rte
 Section: misc
 Priority: extra
-Description: SOMTK RTE
- Run Time Environment for SOMTK
- .
-EOF
-
-../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.ir" "$OUTDIR_DIST" <<EOF
-Package: somtk-ir
-Version: $VERSION
-Architecture: $DPKGARCH
-Maintainer: $MAINTAINER
-Depends: somtk-rte
-Provides: somtk-ir
-Section: misc
-Priority: extra
-Description: SOMTK Utilities
- Utility classes for SOMTK
- .
-EOF
-
-../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.util" "$OUTDIR_DIST" <<EOF
-Package: somtk-util
-Version: $VERSION
-Architecture: $DPKGARCH
-Maintainer: $MAINTAINER
-Depends: somtk-ir
-Provides: somtk-util
-Section: misc
-Priority: extra
-Description: SOMTK Utilities
- Utility classes for SOMTK
- .
-EOF
-
-../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.dsom" "$OUTDIR_DIST" <<EOF
-Package: somtk-dsom
-Version: $VERSION
-Architecture: $DPKGARCH
-Maintainer: $MAINTAINER
-Depends: somtk-util
-Provides: somtk-dsom
-Section: misc
-Priority: extra
-Description: SOMTK DSOM
- CORBA ORB for SOMTK
+Description: somLite RTE
+ Run Time Environment for somLite
  .
 EOF
 
 ../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
-Package: somtk-dev
+Package: somlite-dev
 Version: $VERSION
-Architecture: $DPKGARCH
+Architecture: all
 Maintainer: $MAINTAINER
-Depends: somtk-comp
-Provides: somtk-dev
 Section: misc
 Priority: extra
-Description: SOMTK Development Library
- Library and headers for SOMTK
+Description: somLite Development Library
+ Library and headers for somLite
  .
 EOF
 
 ../../toolbox/dir2bsd.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
-somtk-rte
+somlite-rte
 $VERSION
 
 $PKGROOT
-SOMTK Runtime Environment
-Runtime Environment for SOMTK
+somLite Runtime Environment
+Runtime Environment for somLite
 EOF
 
 ../../toolbox/dir2bsd.sh "$INTDIR" "$INTDIR/somtk.comp" "$OUTDIR_DIST" <<EOF
-somtk-comp
+somlite-comp
 $VERSION
 
 $PKGROOT
-SOMTK IDL Compiler
-IDL Compiler for SOMTK
-EOF
-
-../../toolbox/dir2bsd.sh "$INTDIR" "$INTDIR/somtk.ir" "$OUTDIR_DIST" <<EOF
-somtk-ir
-$VERSION
-somtk-rte
-$PKGROOT
-SOMTK Interface Repository
-Interface Repository for SOMTK
-EOF
-
-../../toolbox/dir2bsd.sh "$INTDIR" "$INTDIR/somtk.util" "$OUTDIR_DIST" <<EOF
-somtk-util
-$VERSION
-somtk-ir somtk-rte
-$PKGROOT
-SOMTK Utilities
-Utilities for SOMTK
-EOF
-
-../../toolbox/dir2bsd.sh "$INTDIR" "$INTDIR/somtk.dsom" "$OUTDIR_DIST" <<EOF
-somtk-dsom
-$VERSION
-somtk-util somtk-ir somtk-rte
-$PKGROOT
-SOMTK DSOM
-CORBA ORB for SOMTK
+somLite IDL Compiler
+IDL Compiler for somLite
 EOF
 
 ../../toolbox/dir2bsd.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
-somtk-dev
+somlite-dev
 $VERSION
-somtk-comp
+somlite-comp
 $PKGROOT
-SOMTK Development Library
-Library and headers for SOMTK
+somLite Development Library
+Library and headers for somLite
 EOF
-
 
 while read BASEDIR PKGNAME
 do
@@ -290,10 +186,10 @@ do
 $PKGNAME
 $VERSION
 $PKGROOT
-$PKGNAME: somFree - Portable implementation of SOM
+$PKGNAME: somLite - Portable implementation of SOM
 $PKGNAME:
-$PKGNAME: A portable clean-room implementation of IBM's SOM. Includes DSOM
-$PKGNAME: capabilities with CORBA IDL and IIOP.
+$PKGNAME: A portable clean-room implementation of IBM's SOM.
+$PKGNAME: 
 $PKGNAME: 
 $PKGNAME: 
 $PKGNAME: 
@@ -303,10 +199,16 @@ $PKGNAME:
 $PKGNAME: 
 EOF
 done << EOF2
-$INTDIR/somtk.dev	somtk-dev
-$INTDIR/somtk.comp	somtk-comp
-$INTDIR/somtk.rte	somtk-rte
-$INTDIR/somtk.dsom	somtk-dsom
-$INTDIR/somtk.ir	somtk-ir
-$INTDIR/somtk.util	somtk-util
+$INTDIR/somtk.dev	somlite-dev
+$INTDIR/somtk.comp	somlite-comp
+$INTDIR/somtk.rte	somlite-rte
 EOF2
+
+for d in somtk.rte somtk.comp somtk.dev
+do
+	if test -d "$INTDIR/$d"
+	then
+		chmod -R +w "$INTDIR/$d"
+		rm -rf "$INTDIR/$d"
+	fi
+done

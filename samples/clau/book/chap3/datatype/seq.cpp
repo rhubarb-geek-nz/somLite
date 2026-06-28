@@ -33,10 +33,10 @@ void testSequence()
   short i;
 
   emp1 = new Employee;
-  emp1->_set_name(ev, "Mary");
+  emp1->_set_name(ev, (char *)"Mary");
 
   emp2 = new Employee;
-  emp2->_set_name(ev, "John");
+  emp2->_set_name(ev, (char  *)"John");
 
   comp = new Company;
   comp->addEmployee(ev, emp1);

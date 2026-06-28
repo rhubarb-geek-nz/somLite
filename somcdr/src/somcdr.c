@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #include <rhbopt.h>
 
 #define SOMCDR_CDROutputStream_Class_Source

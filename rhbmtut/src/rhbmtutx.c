@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #include <rhbopt.h>
 
 #if defined(_WIN32) && (!defined(USE_PTHREADS))

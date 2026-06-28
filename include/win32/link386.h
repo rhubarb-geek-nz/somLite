@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 /* generalised pragmas for linking */
 
 /* _MSC_VER
@@ -40,103 +36,15 @@
 #endif
 
 #ifdef LINK386_SOMTK
-#	pragma comment(lib,"somtk.lib")
-#endif
-
-#ifdef LINK386_OPENDOC
-#	pragma comment(lib,"opendoc.lib")
+#	pragma comment(lib,"somlite.lib")
 #endif
 
 #ifdef LINK386_SOMOBJVA
 #	pragma comment(lib,"somobjva.lib")
 #endif
 
-#ifdef LINK386_SOMOS
-#	pragma comment(lib,"somos.lib")
-#endif
-
 #ifdef LINK386_SOM
 #	pragma comment(lib,"som.lib")
-#endif
-
-#ifdef LINK386_SOMREF
-#	pragma comment(lib,"somref.lib")
-#endif
-
-#ifdef LINK386_SOMABS1
-#	pragma comment(lib,"somabs1.lib")
-#endif
-
-#ifdef LINK386_SOMCORBA
-#	pragma comment(lib,"somcorba.lib")
-#endif
-
-#ifdef LINK386_SOMANY
-#	pragma comment(lib,"somany.lib")
-#endif
-
-#ifdef LINK386_SOMTC
-#	pragma comment(lib,"somtc.lib")
-#endif
-
-#ifdef LINK386_SOMDCOMM
-#	pragma comment(lib,"somdcomm.lib")
-#endif
-
-#ifdef LINK386_SOMD
-#	pragma comment(lib,"somd.lib")
-#endif
-
-#ifdef LINK386_SOMIR
-#	pragma comment(lib,"somir.lib")
-#endif
-
-#ifdef LINK386_SOMP
-#	pragma comment(lib,"somp.lib")
-#endif
-
-#ifdef LINK386_SOMS
-#	pragma comment(lib,"soms.lib")
-#endif
-
-#ifdef LINK386_SOMU
-#	pragma comment(lib,"somu.lib")
-#endif
-
-#if defined(LINK386_SOMULINK) && !defined(_WIN64)
-#	pragma comment(lib,"somulink.lib")
-#endif
-
-#ifdef LINK386_SOMU2
-#	pragma comment(lib,"somu2.lib")
-#endif
-
-#ifdef LINK386_SOMNMF
-#	pragma comment(lib,"somnmf.lib")
-#endif
-
-#ifdef LINK386_SOMESTRM
-#	pragma comment(lib,"somestrm.lib")
-#endif
-
-#ifdef LINK386_SOMEM
-#	pragma comment(lib,"somem.lib")
-#endif
-
-#ifdef LINK386_SOMCDR
-#	pragma comment(lib,"somcdr.lib")
-#endif
-
-#ifdef LINK386_SOMCORBA
-#	pragma comment(lib,"somcorba.lib")
-#endif
-
-#ifdef LINK386_SOMANY
-#	pragma comment(lib,"somany.lib")
-#endif
-
-#ifdef LINK386_SOMDOM
-#	pragma comment(lib,"somdom.lib")
 #endif
 
 #ifdef LINK386_WSOCK32
@@ -208,8 +116,4 @@
 #	ifndef _WIN32_WCE
 #		pragma comment(lib,"shell32.lib")
 #	endif
-#endif
-
-#ifdef LINK386_RHBCDRIO
-#	pragma comment(lib,"rhbcdrio.lib")
 #endif

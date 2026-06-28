@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #ifdef BUILD_SOM
 #else
 	#ifndef BUILD_SOMCDR

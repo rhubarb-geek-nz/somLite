@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
  /*********************************
  * api for som library
  */
@@ -411,18 +407,18 @@ SOMEXTERN SOM_IMPORTEXPORT_som void SOMLINK somPrefixLevel(long level);
 SOMEXTERN SOM_IMPORTEXPORT_som int SOMLINK somLPrintf(int level, char * fmt, ...);
 SOMEXTERN SOM_IMPORTEXPORT_som somMethodProc * SOMLINK somClassResolve(SOMClass SOMSTAR obj, somMToken mdata);
 SOMEXTERN SOM_IMPORTEXPORT_som somMethodProc * SOMLINK somResolve(SOMObject SOMSTAR obj,somMToken mdata);
-SOMEXTERN SOM_IMPORTEXPORT_som somMethodProc * SOMLINK somResolveByName(SOMObject SOMSTAR obj,char *methodName);
+SOMEXTERN SOM_IMPORTEXPORT_som somMethodProc * SOMLINK somResolveByName(SOMObject SOMSTAR obj,const char *methodName);
 SOMEXTERN SOM_IMPORTEXPORT_som somMethodProc * SOMLINK somParentNumResolve(somMethodTabs parentMtabs,int parentNum,somMToken mToken);
 SOMEXTERN SOM_IMPORTEXPORT_som somToken SOMLINK somDataResolve(SOMObject SOMSTAR obj, somDToken dataId);
 SOMEXTERN SOM_IMPORTEXPORT_som boolean SOMLINK somApply(SOMObject SOMSTAR somSelf,somToken *retVal,somMethodDataPtr mdPtr,va_list ap);
 SOMEXTERN SOM_IMPORTEXPORT_som int SOMLINK somCompareIds(somId id1, somId id2);
 SOMEXTERN SOM_IMPORTEXPORT_som char * SOMLINK somStringFromId (somId id);
-SOMEXTERN SOM_IMPORTEXPORT_som somId SOMLINK somIdFromString(char *);
+SOMEXTERN SOM_IMPORTEXPORT_som somId SOMLINK somIdFromString(const char *);
 SOMEXTERN SOM_IMPORTEXPORT_som void SOMLINK somCheckArgs(int argc, char **argv);
 SOMEXTERN SOM_IMPORTEXPORT_som SOMClass SOMSTAR SOMLINK somBuildClass(long inherit_vars,somStaticClassInfo *sci,long majorVersion,long minorVersion);
 SOMEXTERN SOM_IMPORTEXPORT_som SOMObject SOMSTAR SOMLINK somTestCls(SOMObject SOMSTAR obj,SOMClass SOMSTAR classObj,const char * fileName,int lineNumber);
 SOMEXTERN SOM_IMPORTEXPORT_som void SOMLINK somAssert(int condition, int ecode,const char * fileName, int lineNum,const char * msg);
-SOMEXTERN SOM_IMPORTEXPORT_som void SOMLINK somTest(int condition, int severity,const char * fileName,int lineNum, char * msg);
+SOMEXTERN SOM_IMPORTEXPORT_som void SOMLINK somTest(int condition, int severity,const char * fileName,int lineNum,const char * msg);
 SOMEXTERN SOM_IMPORTEXPORT_som void SOMLINK somExceptionFree(Environment *ev);
 SOMEXTERN SOM_IMPORTEXPORT_som void SOMLINK somSetException(Environment *ev,exception_type major,const char *exception_name,void *params);
 SOMEXTERN SOM_IMPORTEXPORT_som char * SOMLINK somExceptionId(Environment *ev);

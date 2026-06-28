@@ -1,5 +1,4 @@
-SOMBASE=/opt/somtk
-LINK_SOMTK=-L$(SOMBASE)/lib -lsomtc -lsom
+LINK_SOMTK=-L$(SOMBASE)/lib -lsom
 INCL_SOMTK=-I$(SOMBASE)/include
 SC=$(SOMBASE)/bin/sc
 

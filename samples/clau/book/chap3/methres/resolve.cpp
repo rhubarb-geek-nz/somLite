@@ -23,7 +23,6 @@
 #include "leftcar.xh"
 #include "rightcar.xh"
 #include <stdio.h>
-#include <somtc.xh>
 
 Environment *ev = somGetGlobalEnvironment();
 
@@ -38,7 +37,7 @@ void offset_res()
   printf("Use offset resolution\n");
 
   mcar = CarNewClass(0,0);
-  car = mcar->createCar(ev, "Honda", "Prelude", 20000);
+  car = mcar->createCar(ev, (char*)"Honda", (char*)"Prelude", 20000);
   car->printCarSpec(ev);
 
 }
@@ -56,7 +55,7 @@ void generic(Car *target)
    //  modifier is not set.
    //*******************************************************
    carMethodPtr = (somTD_Car_printCarSpec)
-         somResolveByName( target, "printCarSpec");
+         somResolveByName( target, (char*)"printCarSpec");
 
    carMethodPtr(target,ev);
 
@@ -82,8 +81,8 @@ void callgeneric()
    lmcar = (MetaCar *) LeftSteeringCarNewClass(0,0);
    rmcar = (MetaCar *) RightSteeringCarNewClass(0,0);
 
-   lscar = (LeftSteeringCar *) lmcar->createCar(ev, "Honda", "Prelude1", 20000);
-   rscar = (RightSteeringCar *) rmcar->createCar(ev,"Honda", "Prelude2", 25000);
+   lscar = (LeftSteeringCar *) lmcar->createCar(ev, (char*)"Honda", (char*)"Prelude1", 20000);
+   rscar = (RightSteeringCar *) rmcar->createCar(ev,(char*)"Honda", (char*)"Prelude2", 25000);
 
    generic(lscar);
    generic(rscar);
@@ -106,64 +105,22 @@ void namelookup_res()
    // Invoke class method
    //
    metaCarMethodPtr = (somTD_MetaCar_createCar)
-        _MetaCar->somLookupMethod( somIdFromString("createCar"));
+        _MetaCar->somLookupMethod( somIdFromString((char *)"createCar"));
 
-   car = metaCarMethodPtr(mcar, ev, "Honda", "Prelude", 20000);
+   car = metaCarMethodPtr(mcar, ev, (char*)"Honda", (char*)"Prelude", 20000);
 
    //
    // Invoke instance method
    //
    carMethodPtr = (somTD_Car_printCarSpec)
-        _Car->somLookupMethod( somIdFromString("printCarSpec"));
+        _Car->somLookupMethod( somIdFromString((char*)"printCarSpec"));
    carMethodPtr(car,ev);
-}
-
-//************************************************
-// Using Dispatch function resolution
-//************************************************
-void dispatch_res()
-{
-  MetaCar *mcar;
-  Car     *car;
-  va_list startArg;
-  somVaBuf arg, arg2;
-  long    total;
-
-  printf("Use dispatch-function resolution\n");
-
-  mcar = CarNewClass(0,0);
-  total = strlen("Honda")+1 + strlen("Prelude")+1 +
-          sizeof(long) + sizeof(MetaCar*) + sizeof(Environment*);
-
-  const char *honda="Honda",*prelude="Prelude";
-  long price=2000;
-  arg=somVaBuf_create(0,0);
-  somVaBuf_add(arg,&mcar,tk_pointer);
-  somVaBuf_add(arg,&ev,tk_pointer);
-  somVaBuf_add(arg,&honda,tk_pointer);
-  somVaBuf_add(arg,&prelude,tk_pointer);
-  somVaBuf_add(arg,&price,tk_long);
-  somVaBuf_get_valist(arg,&startArg);
-
-  mcar->SOMObject_somDispatch((somToken*)&car,
-                               somIdFromString("createCar"),
-                               startArg);
-
-  arg=somVaBuf_create(0,0);
-  somVaBuf_add(arg,&car,tk_pointer);
-  somVaBuf_add(arg,&ev,tk_pointer);
-  somVaBuf_get_valist(arg,&startArg);
-
-  car->SOMObject_somDispatch((somToken*)0,
-                             somIdFromString("printCarSpec"),
-                             startArg);
 }
 
 int main(int argc, char *argv[], char *envp[])
 {
    offset_res();        // offset resolution
    namelookup_res();    // name lookup resolution
-   dispatch_res();      // dispatch function resolution
 
    callgeneric();       // shows generic procedure
 }

@@ -19,10 +19,6 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #ifdef __cplusplus
 #	ifdef HAVE_CONFIG_HPP
 #		include <config.hpp>

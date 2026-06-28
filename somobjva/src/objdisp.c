@@ -19,10 +19,6 @@
  *
  */
 
-/*
- * $Id$
- */
-
 #define SOMObject_VA_EXTERN
 #define SOM_Module_somobj_Source
 #define SOMDLLEXPORT

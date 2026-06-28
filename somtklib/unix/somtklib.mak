@@ -16,7 +16,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-#  $Id$
 
 include $(MAKEDEFS)
 
@@ -39,7 +38,7 @@ $(TARGET): $(TMPLIB)
 	if test -f "$(TMPLIB)"; then mv "$(TMPLIB)" $@;	fi
 
 $(TMPLIB):
-	for d in som somref somtc somd somir somut somu somu2 somabs1 somnmf somos somdcomm somany somcorba somabs1 somcslib somem somuc somst soms somp; \
+	for d in som; \
 	do \
 		for e in so dylib; \
 		do \

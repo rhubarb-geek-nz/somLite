@@ -17,7 +17,6 @@ rem
 rem  You should have received a copy of the GNU Lesser General Public License
 rem  along with this program.  If not, see <http://www.gnu.org/licenses/>
 rem
-rem  $Id$
 
 CL.EXE /EP /nologo /DNDEBUG /DPROCESSOR_ARCHITECTURE_%PROCESSOR_ARCHITECTURE% makedefs\win32\makedefs.bat >"%TEMP%\makedefs%PLATFORM%.bat"
 IF %ERRORLEVEL% NEQ 0 EXIT /b %ERRORLEVEL%

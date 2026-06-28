@@ -29,7 +29,7 @@ int main(int argc, char *argv[], char *envp[])
    ev = somGetGlobalEnvironment();
    myhello = new Hello();
  
-   myhello->_set_msg(ev, "Hello World from SOM");
+   myhello->_set_msg(ev, (char *)"Hello World from SOM");
    myhello->printHello(ev);
 
    delete myhello;

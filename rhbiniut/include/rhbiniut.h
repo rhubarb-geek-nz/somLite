@@ -18,10 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>
  *
  */
- 
-/* 
- * $Id$
- */
 
 #ifndef __rhbiniut_h__
 #define __rhbiniut_h__

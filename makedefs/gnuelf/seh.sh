@@ -17,8 +17,6 @@
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
-# $Id$
-#
 
 CONFIG_OPTS="$CONFIG_OPTS -I ../../rhbseh/include"
 CONFIG_LIBS="\`if test -f $OUTDIR/lib/librhbseh.so; then echo -L$OUTDIR/lib -lrhbseh; fi\` $CONFIG_LIBS"

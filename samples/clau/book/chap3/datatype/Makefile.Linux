@@ -1,11 +1,10 @@
-SOMBASE=/opt/somtk
-LINK_SOMTK=-L$(SOMBASE)/lib -lsomtc -lsom
+LINK_SOMTK=-L$(SOMBASE)/lib -lsom
 INCL_SOMTK=-I$(SOMBASE)/include
 SC=$(SOMBASE)/bin/sc
 
 OBJS=company.o employee.o seq.o
 
-all: seq any
+all: seq
 
 company.xh: company.idl
 	$(SC) -sxh $(INCL_SOMTK) company.idl
@@ -31,16 +30,9 @@ seq.o: seq.cpp
 seq: $(OBJS)
 	$(CXX) $(OBJS) -o $@ $(LINK_SOMTK)
 
-any.o: any.cpp 
-	$(CXX) -c any.cpp -o $@ -I. $(INCL_SOMTK) 
-
-any: any.o
-	$(CXX) any.o -o $@ $(LINK_SOMTK)
-
 clean:
 	rm -rf any seq *.o *.xh *.xih *.h
 
 test:
 	LD_LIBRARY_PATH=$(SOMBASE)/lib ./seq
-	LD_LIBRARY_PATH=$(SOMBASE)/lib ./any
 

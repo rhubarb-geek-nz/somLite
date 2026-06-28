@@ -19,8 +19,6 @@
  *
  */
 
-/* $Id$ */
-
 #include <rhbopt.h>
 
 #define SOMTHUNK_FASTCALL

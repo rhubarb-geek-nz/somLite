@@ -19,8 +19,4 @@
  *
  */
 
-/* 
- * $Id$
- */
-
 #include <config2.c>
