@@ -32,7 +32,7 @@
       <Component Id="som.dll" Guid="*" Directory="INSTALLDIR1" Win64="yes" >
         <File Id="som.dll" KeyPath="yes" />
       </Component>
-      <Component Id="somlite.lib" Guid="*" Directory="INSTALLDIR2" Win64="yes" >
+      <Component Id="som.lib" Guid="*" Directory="INSTALLDIR2" Win64="yes" >
         <File Id="som.lib" KeyPath="yes" />
       </Component>
       <Component Id="somobj.idl" Guid="*" Directory="INSTALLDIR3" Win64="yes" >
