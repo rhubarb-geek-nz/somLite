@@ -40,34 +40,24 @@ cat >"$SPECFILE"
 	echo "%defattr(-,root,root)"
 	cd $BASEDIR
 
-	if test -z "$PKGROOT"
-	then
-		FIND_ROOT="."
-	else
-		FIND_ROOT="./$PKGROOT"
-	fi
-
-	find "$FIND_ROOT" | while read N
+	find "$PKGPREFIX/"* | while read N
 	do
-		M=`echo $N | sed s/\.//`
-		if test "$M" != ""
+		M="/$N"
+		if test -d "$N"
 		then
-			if test -d "$N"
+			echo "%dir %attr(555,root,root) $M"
+		else
+			if test -L "$N"
 			then
-				echo "%dir %attr(555,root,root) $M"
+				echo "$M"
 			else
-				if test -L "$N"
+				if test -f "$N"
 				then
-					echo "$M"
-				else
-					if test -f "$N"
+					if test -x "$N"
 					then
-						if test -x "$N"
-						then
-							echo "%attr(555,root,root) $M"
-						else
-							echo "%attr(444,root,root) $M"	
-						fi
+						echo "%attr(555,root,root) $M"
+					else
+						echo "%attr(444,root,root) $M"
 					fi
 				fi
 			fi

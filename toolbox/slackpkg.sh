@@ -84,5 +84,5 @@ tar --create --gzip \
 	-C "$INTDIR/data/root" \
 		. \
 	-C .. \
-		$PKGROOT \
+		$(cd "$INTDIR/data" ; echo $PKGROOT/* ) \
 		$(cd "$INTDIR/data" ; echo install/* )

@@ -20,12 +20,11 @@
 include $(MAKEDEFS)
 
 TARGET=$(OUTDIR_BIN)/sc 
-ETC_SOMIR=$(OUTDIR_ETC)/som.ir
 
 all: $(TARGET) $(OUTDIR_MAN)/sc.1 config
 
 clean:
-	$(CLEAN) $(TARGET) $(OUTDIR_MAN)/sc.1 $(OUTDIR_MAN)/sc.1.* $(ETC_SOMIR)
+	$(CLEAN) $(TARGET) $(OUTDIR_MAN)/sc.1 $(OUTDIR_MAN)/sc.1.*
 
 $(TARGET): ../sc.sh
 	cp ../sc.sh $@
@@ -41,8 +40,4 @@ config:
 	if test "$(SC)" = ""; \
 	then \
 		echo "SC=$(HOSTDIR_BIN)/sc" >>"$(MAKEDEFS)"; \
-	fi
-	if test "$(SOMIR)" = ""; \
-	then \
-		echo "SOMIR=$(ETC_SOMIR)" >>"$(MAKEDEFS)"; \
 	fi

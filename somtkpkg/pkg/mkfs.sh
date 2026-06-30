@@ -70,14 +70,14 @@ case "$INTDIR" in
 	;;
 esac
 
-if test -z "$PKGROOT"
+if test -z "$PKGBASE"
 then
 	case `uname` in
 	Aix | aix )
-		PKGROOT=usr/lpp/somtk
+		PKGBASE=usr/lpp/somtk
 		;;
 	* )
-		PKGROOT=opt/somtk
+		PKGBASE=opt/somtk
 		;;
 	esac
 fi
@@ -105,7 +105,7 @@ copyBinFile()
 			cd `dirname "$y"`
 			tar cf - `basename "$y"`
 		) | (
-			cd "$INTDIR/$PKGNAME/$PKGROOT/bin"
+			cd "$INTDIR/$PKGNAME/$PKGBASE/bin"
 			tar xvf -
 		)
 	done
@@ -114,7 +114,7 @@ copyBinFile()
 makeBinLink()
 {
 	(
-		cd "$INTDIR/$PKGNAME/$PKGROOT/bin"
+		cd "$INTDIR/$PKGNAME/$PKGBASE/bin"
 		ln -s "$1" "$2"
 		ls -ld "$2"
 	)
@@ -128,7 +128,7 @@ copyLibFile()
 			cd `dirname "$y"`
 			tar cf - `basename "$y"`
 		) | (
-			cd "$INTDIR/$PKGNAME/$PKGROOT/$LIBDIRNAME"
+			cd "$INTDIR/$PKGNAME/$PKGBASE/$LIBDIRNAME"
 			tar xvf -
 		)
 	done
@@ -142,7 +142,7 @@ copyIncFile()
 			cd `dirname "$y"`
 			tar cf - `basename "$y"`
 		) | (
-			cd "$INTDIR/$PKGNAME/$PKGROOT/include"
+			cd "$INTDIR/$PKGNAME/$PKGBASE/include"
 			tar xvf -
 		)
 	done
@@ -193,7 +193,7 @@ copyMan()
 					cd "$OUTDIR/man"
 					tar cf - `basename "$N"`
 				) | (
-					cd "$INTDIR/$PKGNAME/$PKGROOT/man/man$s"
+					cd "$INTDIR/$PKGNAME/$PKGBASE/man/man$s"
 					tar xvf -
 				)
 			done
@@ -216,7 +216,7 @@ copyIdl()
 {
 	for x in $@
 	do
-		cp ../../somidl/$x.idl "$INTDIR/$PKGNAME/$PKGROOT/include/$x.idl"
+		cp ../../somidl/$x.idl "$INTDIR/$PKGNAME/$PKGBASE/include/$x.idl"
 	done
 }
 
@@ -247,15 +247,15 @@ do
 			chmod +w "$N"
 		fi
 	done
-	rm -rf "$INTDIR/$PKGNAME/$PKGROOT"
-	mkdir -p "$INTDIR/$PKGNAME/$PKGROOT"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/include"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/bin"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/etc"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/$LIBDIRNAME"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/man"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/man/man1"
-	mkdir "$INTDIR/$PKGNAME/$PKGROOT/man/man8"
+	rm -rf "$INTDIR/$PKGNAME/$PKGBASE"
+	mkdir -p "$INTDIR/$PKGNAME/$PKGBASE"
+	mkdir "$INTDIR/$PKGNAME/$PKGBASE/include"
+	mkdir "$INTDIR/$PKGNAME/$PKGBASE/bin"
+	mkdir "$INTDIR/$PKGNAME/$PKGBASE/etc"
+	mkdir "$INTDIR/$PKGNAME/$PKGBASE/$LIBDIRNAME"
+	mkdir "$INTDIR/$PKGNAME/$PKGBASE/man"
+	mkdir "$INTDIR/$PKGNAME/$PKGBASE/man/man1"
+	mkdir "$INTDIR/$PKGNAME/$PKGBASE/man/man8"
 
 	case $PKGNAME in
 	somtk.comp )
@@ -272,23 +272,22 @@ do
 		esac
 		copyMan sc somipc
 		copyBin sc somipc pdl
-		copyIncFile ../../somtk/include/somtc*.h ../../somtk/include/somtc*.xh
-		cp ../../somtk/unix/somcorba.sh "$INTDIR/$PKGNAME/$PKGROOT/bin/somcorba"
+		cp ../../somtk/unix/somcorba.sh "$INTDIR/$PKGNAME/$PKGBASE/bin/somcorba"
 		(
-			cd "$INTDIR/$PKGNAME/$PKGROOT/bin"
+			cd "$INTDIR/$PKGNAME/$PKGBASE/bin"
 			chmod +x somcorba
 			ln -s somcorba somstars
 			ln -s somcorba somxh
 		)
 		RTEROOT=$(cd "$INTDIR/somtk.rte"; find * -name libsom.so.* -type f | while read N; do dirname $N; done )
-		ln -s "/$RTEROOT/libsom.so.1" "$INTDIR/$PKGNAME/$PKGROOT/lib/libsom.so"
+		ln -s "/$RTEROOT/libsom.so.1" "$INTDIR/$PKGNAME/$PKGBASE/lib/libsom.so"
 		;;
 	somtk.dev )
 		if test -n "$HEADERSRC"
 		then
 			for F in somobj somcls somcm
 			do
-				cp  "$HEADERSRC"/$F.* "$INTDIR/$PKGNAME/$PKGROOT/include/"
+				cp  "$HEADERSRC"/$F.* "$INTDIR/$PKGNAME/$PKGBASE/include/"
 			done
 		fi
 		copyIncFile ../../somkpub/include/*.h ../../somkpub/include/*.xh
@@ -299,7 +298,7 @@ do
 		RTELIBDIR=usr/lib
 		LIBCSO=
 
-		for M in $( $OBJDUMP -p "$OUTDIR/bin/pdl" | while read A B
+		for M in ` $OBJDUMP -p "$OUTDIR/bin/pdl" | grep NEEDED | while read A B
 		do
 			if test -z "$LIBCSO"
 			then
@@ -321,21 +320,21 @@ do
 						;;
 				esac
 			fi
-		done )
+		done `
 		do
 			ls -ld "$M"
 			N=
 			while test "$N" != "$M"
 			do
 				N="$M"
-				M=$(echo "$M" | ../../toolbox/realpath.sh)
+				M=`echo "$M" | ../../toolbox/realpath.sh`
 			done
 			ls -ld "$M"
 			if test ! -d "$M"
 			then
-				M=$(dirname "$M")
+				M=`dirname "$M"`
 			fi
-			RTELIBDIR=$( echo $M | sed 's!^/!!' )
+			RTELIBDIR=`echo $M | sed 's!^/!!' `
 		done
 
 		if test ! -d "/$RTELIBDIR"
@@ -344,7 +343,7 @@ do
 		fi
 
 		mkdir -p "$INTDIR/$PKGNAME/$RTELIBDIR"
-		mv "$INTDIR/$PKGNAME/$PKGROOT/lib/"* "$INTDIR/$PKGNAME/$RTELIBDIR"
+		mv "$INTDIR/$PKGNAME/$PKGBASE/lib/"* "$INTDIR/$PKGNAME/$RTELIBDIR"
 		;;
 	* )
 		;;
@@ -357,19 +356,19 @@ do
 
 	if test "$STRIP" != ""
 	then
-		find "$INTDIR/$PKGNAME/$PKGROOT" -type f -name "lib*.so*" | while read SN
+		find "$INTDIR/$PKGNAME/$PKGBASE" -type f -name "lib*.so*" | while read SN
 		do
 			$STRIP "$SN"
 		done
-		find "$INTDIR/$PKGNAME/$PKGROOT" -type f -name "*.dll" | while read SN
+		find "$INTDIR/$PKGNAME/$PKGBASE" -type f -name "*.dll" | while read SN
 		do
 			$STRIP "$SN"
 		done
 		for APP in irdump pdl regimpl somdchk somdd somdsvr somipc somossvr
 		do
-			if test -x "$INTDIR/$PKGNAME/$PKGROOT/bin/$APP"
+			if test -x "$INTDIR/$PKGNAME/$PKGBASE/bin/$APP"
 			then
-				$STRIP "$INTDIR/$PKGNAME/$PKGROOT/bin/$APP"
+				$STRIP "$INTDIR/$PKGNAME/$PKGBASE/bin/$APP"
 			fi
 		done
 	fi

@@ -53,7 +53,6 @@ MAKEDEFS_CFL=..\$(PLATFORM)\$(BUILDTYPE)\makedefs.cfl
 STD_DIRS=$(OUTDIR_BASE)			\
 		 $(OUTDIR_BIN)			\
 		 $(OUTDIR_SBIN)			\
-		 $(OUTDIR_ETC)			\
 		 $(OUTDIR_INCLUDE)		\
 		 $(OUTDIR_LIB)			\
 		 $(OUTDIR_TESTS)		\
@@ -80,7 +79,6 @@ clean:
 	$(CLEAN) $(MAKEDEFS_CFL)
 	$(CLEAN) $(OUTDIR_BIN)\*.lib
 	$(CLEAN) $(OUTDIR_BIN)\*.exp
-	if exist $(OUTDIR_ETC) rmdir $(OUTDIR_ETC)
 	if exist $(OUTDIR_BIN) rmdir $(OUTDIR_BIN)
 	if exist $(OUTDIR_SBIN) rmdir $(OUTDIR_SBIN)
 	if exist $(OUTDIR_INCLUDE) rmdir $(OUTDIR_INCLUDE)
@@ -143,7 +141,6 @@ checkenv:
 	if "$(OUTDIR_LIB)" == "" exit 1
 	if "$(OUTDIR_TOOLS)" == "" exit 1
 	if "$(OUTDIR_DLL)" == "" exit 1
-	if "$(OUTDIR_ETC)" == "" exit 1
 	if "$(OUTDIR_TESTS)" == "" exit 1
 	if "$(OUTDIR_INCLUDE)" == "" exit 1
 

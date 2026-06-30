@@ -76,11 +76,11 @@ fi
 (
 	cd "$BASEDIR"
 
-	if test -n "$PKGROOT"
+	if test -n "$PKGPREFIX"
 	then
-		$GTAR --owner=0 --group=0 --create --file - "$PKGROOT"
+		$GTAR --owner=0 --group=0 --create --file - "$PKGPREFIX"/*
 	else
-		$GTAR --owner=0 --group=0 --create --file - ./*
+		$GTAR --owner=0 --group=0 --create --file - *
 	fi
 ) | gzip >"$INTDIR/data.tar.gz"
 

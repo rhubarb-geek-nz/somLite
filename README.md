@@ -70,7 +70,6 @@ The shared library is installed in a platform specific directory, ideally the sa
 
 ```
 $ dpkg-deb -c somlite-rte_1.0_armhf.deb
-dr-xr-xr-x root/root         0 2026-06-28 01:16 usr/lib/arm-linux-gnueabihf/
 lrwxrwxrwx root/root         0 2026-06-28 01:16 usr/lib/arm-linux-gnueabihf/libsom.so.1 -> libsom.so.1.0
 -r-xr-xr-x root/root    146728 2026-06-28 01:16 usr/lib/arm-linux-gnueabihf/libsom.so.1.0
 ```
@@ -79,7 +78,6 @@ Similarly
 
 ```
 $ rpm -qlvp somlite-rte-1.0-1.aarch64.rpm
-dr-xr-xr-x    2 root     root                        0 Jun 28 00:36 /usr/lib64
 lrwxrwxrwx    1 root     root                       13 Jun 28 00:36 /usr/lib64/libsom.so.1 -> libsom.so.1.0
 -r-xr-xr-x    1 root     root                   225152 Jun 28 00:36 /usr/lib64/libsom.so.1.0
 ```

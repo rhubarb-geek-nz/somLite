@@ -44,7 +44,6 @@ all: checkenv $(OUTDIR_TOOLS) $(INTDIR) $(CONFIG_I) $(CONFIG_HPP)
 
 checkenv:
 	if "$(OUTDIR_BIN)" == "" exit 1
-	if "$(OUTDIR_ETC)" == "" exit 1
 	if "$(OUTDIR_LIB)" == "" exit 1
 	if "$(OUTDIR_DLL)" == "" exit 1
 	if "$(OUTDIR_TESTS)" == "" exit 1

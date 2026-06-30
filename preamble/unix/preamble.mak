@@ -32,7 +32,6 @@ DIRS=	$(OUTDIR) \
 		$(OUTDIR_SHLIB) \
 		$(OUTDIR_IMPLIB) \
 		$(OUTDIR_REFLIB) \
-		$(OUTDIR_ETC) \
 		$(OUTDIR)/otherlib \
 		$(OUTDIR)/include	\
 		$(OUTDIR_FRAMEWORKS)

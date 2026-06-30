@@ -392,24 +392,24 @@ SHLB_REF_NAME=$OUTDIR/reflib
 
 STRIP=strip
 
-if test -z "$PKGROOT"
+if test -z "$PKGBASE"
 then
 	case "$PLATFORM" in
 		*-*-netbsd* )
-			PKGROOT=usr/pkg/somlite
+			PKGBASE=usr/pkg/somlite
 			;;
 		*-*-freebsd* | *-*-openbsd* )
-			PKGROOT=usr/local/somlite
+			PKGBASE=usr/local/somlite
 			;;
 		* )
-			PKGROOT=usr/lib/somlite
+			PKGBASE=usr/lib/somlite
 			;;
 	esac
 fi
 
 platform_cleanup
 
-MAKEDEFS_EXPORTS="$MAKEDEFS_EXPORTS SHLB_REF_NAME SHLB_REF_STRONG SHLB_REF_WEAK PKGROOT"
+MAKEDEFS_EXPORTS="$MAKEDEFS_EXPORTS SHLB_REF_NAME SHLB_REF_STRONG SHLB_REF_WEAK PKGBASE"
 MAKEDEFS_DEFS="$MAKEDEFS_DEFS PLATFORM_CFLAGS PLATFORM_CXXFLAGS CONFIG_OPTS"
 MAKEDEFS_DEFS="$MAKEDEFS_DEFS CC_FLAG_FPIC CXX_FLAG_FPIC CONFIG_LIBS"
 MAKEDEFS_DEFS="$MAKEDEFS_DEFS PLATFORM_SCFLAGS STRIP"

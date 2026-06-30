@@ -23,9 +23,8 @@ mkdir "$INTDIR/meta"
 
 case "$OPSYS" in
 	NetBSD )
-		PKGROOT=$(dirname $PKGROOT)
 		cat > "$INTDIR/meta/BUILD_INFO" <<EOF
-HOMEPAGE=https://sourceforge.net/projects/somfree/
+HOMEPAGE=https://github.com/rhubarb-geek-nz/somLite
 MACHINE_ARCH=$(uname -p)
 OPSYS=$(uname -s)
 OS_VERSION=$(uname -r)
@@ -36,6 +35,10 @@ EOF
 			echo "@name $PKGNAME-$VERSION"
 			cd "$SRCDIR/$PKGROOT"
 			DIRLIST=$( for d in *; do if test -d "$d"; then echo "$d"; fi; done )
+			if test -z "$DIRLIST"
+			then
+				DIRLIST=$(echo *)
+			fi
 			find $DIRLIST -type d | while read N
 			do
 				echo "@pkgdir $N"
@@ -79,7 +82,7 @@ EOF
 	FreeBSD )
 		if test -z "$MAINTAINER"
 		then
-			MAINTAINER="$(git config user.email)"
+			MAINTAINER=$(git config user.email)
 			if test -z "$MAINTAINER"
 			then
 				echo MAINTAINER must be provided >&2
@@ -96,7 +99,6 @@ EOF
 				VERSION="$VERSION.0.0"
 				;;
 		esac
-		PKGROOT=$(dirname $PKGROOT)
 		if test ! -d "$SRCDIR/$PKGROOT"
 		then
 			PKGROOT=
@@ -106,7 +108,7 @@ EOF
 name $PKGNAME
 version $VERSION
 comment $TITLE
-www https://sourceforge.net/projects/somfree/
+www https://github.com/rhubarb-geek-nz/somLite
 origin misc/$PKGNAME
 desc: <<EOD
 cat
@@ -140,6 +142,10 @@ EOF
 			set -e
 			cd "$SRCDIR/$PKGROOT"
 			DIRLIST=$( for d in *; do if test -d "$d"; then echo "$d"; fi; done )
+			if test -z "$DIRLIST"
+			then
+				DIRLIST=$(echo *)
+			fi
 			find $DIRLIST -type d | while read N
 			do
 				echo "@dir $N"
@@ -156,10 +162,13 @@ EOF
 	OpenBSD )
 		if test -z "$MAINTAINER"
 		then
-			echo MAINTAINER must be provided >&2
-			false
+			MAINTAINER=$(git config user.email)
+			if test -z "$MAINTAINER"
+			then
+				echo MAINTAINER must be provided >&2
+				false
+			fi
 		fi
-		PKGROOT=$(dirname $PKGROOT)		
 		PKGDEPS=
 		for d in $PKGDEP
 		do
@@ -169,6 +178,10 @@ EOF
 			set -e
 			cd "$SRCDIR/$PKGROOT"
 			DIRLIST=$( for d in *; do if test -d "$d"; then echo "$d"; fi; done )
+			if test -z "$DIRLIST"
+			then
+				DIRLIST=$(echo *)
+			fi
 			find $DIRLIST -type d | while read N
 			do
 				echo "@dir $N"

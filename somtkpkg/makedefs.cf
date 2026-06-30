@@ -1,5 +1,5 @@
 NAME somtkpkg
-DEPENDS somtklib somenv
+DEPENDS somtklib
 PROVIDES somtkpkg
 VERSION 1.1
 PRODUCT somFree Toolkit

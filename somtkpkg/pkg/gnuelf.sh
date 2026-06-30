@@ -29,14 +29,14 @@ if test -z "$MAINTAINER"
 then
 	if git config user.email > /dev/null
 	then
-		MAINTAINER="$(git config user.email)"
+		MAINTAINER=$(git config user.email)
 	else
 		echo MAINTAINER not set 1>&2
 		false
 	fi
 fi
 
-test -n "$PKGROOT"
+test -n "$PKGBASE"
 
 FLAG=
 
@@ -70,37 +70,38 @@ done
 
 find "$INTDIR" -print | xargs ls -ld
 
-RTEROOT=$(cd $INTDIR/somtk.rte; find * -name "libsom.so.*" | while read N; do dirname $N; break; done)
+RTEPREFIX=$(cd $INTDIR/somtk.rte; find * -name "libsom.so.*" | while read N; do dirname $N; break; done)
+PKGPREFIX=$(dirname $PKGBASE)
 
-PKGROOT="$RTEROOT" ../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
+PKGPREFIX="$RTEPREFIX" ../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
 Summary: somLite RTE
 Name: somlite-rte
 Version: $VERSION
 Release: 1
 Group: Applications/System
 License: GPL
-Prefix: /$RTEROOT
+Prefix: /$RTEPREFIX
 
 %description
 Runtime Environment for somLite
 
 EOF
 
-../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.comp" "$OUTDIR_DIST" <<EOF
+PKGPREFIX="$PKGPREFIX" ../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.comp" "$OUTDIR_DIST" <<EOF
 Summary: somLite Compiler
 Name: somlite-comp
 Version: $VERSION
 Release: 1
 Group: Applications/System
 License: GPL
-Prefix: /$PKGROOT
+Prefix: /$PKGPREFIX
 
 %description
 IDL Compiler for somLite
 
 EOF
 
-../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
+PKGPREFIX="$PKGPREFIX" ../../toolbox/dir2rpm.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
 Summary: somLite Development Library
 Name: somlite-dev
 Version: $VERSION
@@ -108,7 +109,7 @@ Release: 1
 Group: Applications/System
 BuildArch: noarch
 License: GPL
-Prefix: /$PKGROOT
+Prefix: /$PKGPREFIX
 
 %description
 Developer library for somLite
@@ -117,7 +118,7 @@ EOF
 
 DPKGARCH=`../../toolbox/pkgtool.sh dpkg-arch "$OUTDIR/bin/somipc"`
 
-../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.comp" "$OUTDIR_DIST" <<EOF
+PKGPREFIX="$PKGPREFIX" ../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.comp" "$OUTDIR_DIST" <<EOF
 Package: somlite-comp
 Version: $VERSION
 Architecture: $DPKGARCH
@@ -129,7 +130,7 @@ Description: somLite compiler
  .
 EOF
 
-PKGROOT="$RTEROOT" ../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
+PKGPREFIX="$RTEPREFIX" ../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.rte" "$OUTDIR_DIST" <<EOF
 Package: somlite-rte
 Version: $VERSION
 Architecture: $DPKGARCH
@@ -141,7 +142,7 @@ Description: somLite RTE
  .
 EOF
 
-../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
+PKGPREFIX="$PKGPREFIX" ../../toolbox/dir2deb.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
 Package: somlite-dev
 Version: $VERSION
 Architecture: all
@@ -157,7 +158,7 @@ EOF
 somlite-rte
 $VERSION
 
-$PKGROOT
+$RTEPREFIX
 somLite Runtime Environment
 Runtime Environment for somLite
 EOF
@@ -166,7 +167,7 @@ EOF
 somlite-comp
 $VERSION
 
-$PKGROOT
+$PKGPREFIX
 somLite IDL Compiler
 IDL Compiler for somLite
 EOF
@@ -175,17 +176,17 @@ EOF
 somlite-dev
 $VERSION
 somlite-comp
-$PKGROOT
+$PKGPREFIX
 somLite Development Library
 Library and headers for somLite
 EOF
 
-while read BASEDIR PKGNAME
+while read BASEDIR PKGNAME PKGBASE
 do
 	../../toolbox/slackpkg.sh "$INTDIR" "$BASEDIR" "$OUTDIR_DIST" << EOF
 $PKGNAME
 $VERSION
-$PKGROOT
+$PKGBASE
 $PKGNAME: somLite - Portable implementation of SOM
 $PKGNAME:
 $PKGNAME: A portable clean-room implementation of IBM's SOM.
@@ -199,9 +200,9 @@ $PKGNAME:
 $PKGNAME: 
 EOF
 done << EOF2
-$INTDIR/somtk.dev	somlite-dev
-$INTDIR/somtk.comp	somlite-comp
-$INTDIR/somtk.rte	somlite-rte
+$INTDIR/somtk.dev	somlite-dev		$PKGPREFIX
+$INTDIR/somtk.comp	somlite-comp	$PKGPREFIX
+$INTDIR/somtk.rte	somlite-rte		$RTEPREFIX
 EOF2
 
 for d in somtk.rte somtk.comp somtk.dev
