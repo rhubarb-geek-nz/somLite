@@ -1,7 +1,7 @@
 #
-#  Copyright 2008, Roger Brown
+#  Copyright 2026, Roger Brown
 #
-#  This file is part of Roger Brown's Toolkit.
+#  This file is part of somLite.
 #
 #  This program is free software: you can redistribute it and/or modify it
 #  under the terms of the GNU Lesser General Public License as published by the
@@ -17,29 +17,10 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
-include $(MAKEDEFS)
+!include $(MAKEDEFS)
 
-OBJS=$(INTDIR)/rhbseh.o
-TARGET=$(OUTDIR_SHLIB)/$(SHLIBPREFIX)rhbseh$(SHLIBSUFFIX) 
+all test clean:
+	cd ..
+	$(MAKE) -f Makefile.Win32 SOMBASE=%CD%\..\products\$(PLATFORM)\$(BUILDTYPE) $@
 
-all: $(TARGET)
-
-clean:
-	$(CLEAN) $(TARGET) $(OBJS)
-
-$(TARGET): $(OBJS)
-	if test -f "$@"; then rm "$@"; fi
-	$(LINKDLL) $(LINKDLL_HEAD) \
-		-o $@\
-		$(OBJS) \
-		`$(SHLB_ENT) rhbseh_init` \
-		`$(SHLB_EXP) rhbseh rhbseh` \
-		`$(SHLB_MAP) rhbseh rhbseh` \
-		$(STDLIB) \
-		$(LINKDLL_TAIL)
-
-$(INTDIR)/rhbseh.o: ../src/rhbseh.c 
-	$(CC_DLL) $(STDOPT) $(STDINCL) -I../include $(RHBSEH_CFLAGS) -DBUILD_RHBSEH -c ../src/rhbseh.c -o $@
-
-dist install test:
-
+dist:

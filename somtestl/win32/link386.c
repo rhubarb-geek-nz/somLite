@@ -19,6 +19,6 @@
  *
  */
 
-#define LINK386_SOMTK
+#define LINK386_SOM
 
 #include <link386.h>

@@ -71,8 +71,8 @@ $(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(OUTDIR_TMP)\som.lib
 	echo .Set DestinationDir=lib >> $@
 	echo $(OUTDIR_TMP)\som.lib >> $@
 
-$(OUTDIR_TMP)\som.lib: $(OUTDIR_LIB)\somlite.lib
-	COPY /Y $(OUTDIR_LIB)\somlite.lib $@
+$(OUTDIR_TMP)\som.lib: $(OUTDIR_LIB)\som.lib
+	COPY /Y $(OUTDIR_LIB)\som.lib $@
 
 $(TARGET_MSI): "$(TARGET_DDF)" ..\pkg\license.rtf "$(DDF2WXS_DLL)" "$(DEPVERS_H)" 
 	if exist $@ del $@

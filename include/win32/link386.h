@@ -35,35 +35,12 @@
 #	endif
 #endif
 
-#ifdef LINK386_SOMTK
-#	pragma comment(lib,"somlite.lib")
-#endif
-
 #ifdef LINK386_SOMOBJVA
 #	pragma comment(lib,"somobjva.lib")
 #endif
 
 #ifdef LINK386_SOM
 #	pragma comment(lib,"som.lib")
-#endif
-
-#ifdef LINK386_WSOCK32
-#	if (_MSC_VER < 1200)
-#		pragma comment(lib,"wsock32.lib")
-#	else
-#		ifdef _WIN32_WCE
-#			pragma comment(lib,"ws2.lib")
-#		else
-#			pragma comment(lib,"ws2_32.lib")
-#		endif
-#	endif
-#endif
-
-#ifdef LINK386_WININET
-#	if (_MSC_VER < 1200)
-#	else
-#		pragma comment(lib,"wininet.lib")
-#	endif
 #endif
 
 #ifdef LINK386_KERNEL32
@@ -73,47 +50,5 @@
 #ifdef LINK386_USER32
 #	ifndef _WIN32_WCE
 #		pragma comment(lib,"user32.lib")
-#	endif
-#endif
-
-#ifdef LINK386_ADVAPI32
-#	ifndef _WIN32_WCE
-#		pragma comment(lib,"advapi32.lib")
-#	endif
-#endif
-
-#ifdef LINK386_GDI32
-#	ifndef _WIN32_WCE
-#		pragma comment(lib,"gdi32.lib")
-#	endif
-#endif
-
-#ifdef LINK386_OLE32
-#	pragma comment(lib,"ole32.lib")
-#endif
-
-#ifdef LINK386_OLEAUT32
-#	pragma comment(lib,"oleaut32.lib")
-#endif
-
-#ifdef LINK386_UUID
-#	pragma comment(lib,"uuid.lib")
-#endif
-
-#ifdef LINK386_RHBMTUT
-#	pragma comment(lib,"rhbmtut.lib")
-#endif
-
-#ifdef LINK386_RPCRT4
-#	pragma comment(lib,"rpcrt4.lib")
-#endif
-
-#if defined(LINK386_WINSCARD) && (_MSC_VER >= 1200)
-#	pragma comment(lib,"winscard.lib")
-#endif
-
-#ifdef LINK386_SHELL32
-#	ifndef _WIN32_WCE
-#		pragma comment(lib,"shell32.lib")
 #	endif
 #endif
