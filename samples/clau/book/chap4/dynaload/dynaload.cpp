@@ -63,5 +63,6 @@ int main(int argc, char *argv[], char *envp[])
    else
    {
       cout << "Can't load class " << argv[1] << "\n";
+      exit(1);
    } 
 }

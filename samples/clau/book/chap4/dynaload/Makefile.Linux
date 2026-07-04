@@ -43,7 +43,5 @@ clean:
 	rm -rf dynaload *.o *.xh *.xih *.h *.exp *.dll
 
 test:
-	LD_LIBRARY_PATH=$(SOMBASE)/lib:. ; \
-	export LD_LIBRARY_PATH; \
-	./dynaload Cat; \
-	./dynaload Dog
+	LD_LIBRARY_PATH=$(SOMBASE)/lib:. ./dynaload Cat
+	LD_LIBRARY_PATH=$(SOMBASE)/lib:. ./dynaload Dog

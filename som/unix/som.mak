@@ -53,7 +53,6 @@ $(TARGET): $(OBJS)
 		$(OBJS) \
 		`$(SHLB_EXP) som som` \
 		`$(SHLB_ENT) somEnvironmentNew` \
-		`$(ARLB_REF) rhbmtuta rhbmtuta` \
 		`$(SHLB_MAP) som som` \
 		$(STDLIB) \
 		$(LINKDLL_TAIL)
