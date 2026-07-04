@@ -229,7 +229,7 @@ fi
 
 	if test -f /etc/os-release
 	then
-		ARCH=`uname -p`
+		ARCH=`uname -m`
 		ID=`.  /etc/os-release ; echo $ID`
 		VERS=`.  /etc/os-release ; echo $VERSION_ID`
 		for d in `.  /etc/os-release ; echo $ID $ID_LIKE`
