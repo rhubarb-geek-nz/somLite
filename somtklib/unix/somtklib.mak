@@ -19,11 +19,40 @@
 
 include $(MAKEDEFS)
 
-TARGET=$(OUTDIR_LIB)/libsomtk.a
-TMPLIB=$(INTDIR)/libsomtk.a
+TARGET=$(OUTDIR_LIB)/libsomlite.a
+TMPLIB=$(INTDIR)/libsomlite.a
 STRIP=
 
-all: $(TARGET)
+SOMKPUB_INCLUDE= \
+	$(OUTDIR)/include/som.h \
+	$(OUTDIR)/include/som.xh \
+	$(OUTDIR)/include/somapi.h \
+	$(OUTDIR)/include/sombtype.h \
+	$(OUTDIR)/include/somcdev.h \
+	$(OUTDIR)/include/somcorba.h \
+	$(OUTDIR)/include/somltype.h \
+	$(OUTDIR)/include/somnames.h \
+	$(OUTDIR)/include/somplatf.h \
+	$(OUTDIR)/include/somtypes.h
+
+SOMIDL_PLATFORM= \
+	$(OUTDIR)/include/somcls.api \
+	$(OUTDIR)/include/somcls.h \
+	$(OUTDIR)/include/somcls.xh \
+	$(OUTDIR)/include/somcm.h \
+	$(OUTDIR)/include/somcm.xh \
+	$(OUTDIR)/include/somobj.h \
+	$(OUTDIR)/include/somobj.xh
+
+SOMIDL_PUBLIC= \
+	$(OUTDIR)/include/somcls.idl \
+	$(OUTDIR)/include/somcm.idl \
+	$(OUTDIR)/include/somobj.idl
+
+HEADERS=$(SOMIDL_PUBLIC) $(SOMKPUB_INCLUDE) $(SOMIDL_PLATFORM)
+
+all: $(TARGET) $(HEADERS)
+	ls $(HEADERS) $(TARGET) >/dev/null
 
 dist:
 	if test -f ../$(PLATFORM_PROTO)/dist.mak; then $(MAKE) -f ../$(PLATFORM_PROTO)/dist.mak BUILDTYPE=$(BUILDTYPE) PLATFORM=$(PLATFORM); fi
@@ -31,7 +60,7 @@ dist:
 install test:
 
 clean:
-	$(CLEAN) $(TARGET) $(TMPLIB) $(INTDIR)/lib*.so
+	$(CLEAN) $(TARGET) $(TMPLIB) $(INTDIR)/lib*.so $(HEADERS)
 	if test -f ../$(PLATFORM_PROTO)/dist.mak; then $(MAKE) -f ../$(PLATFORM_PROTO)/dist.mak clean BUILDTYPE=$(BUILDTYPE) PLATFORM=$(PLATFORM); fi
 
 $(TARGET): $(TMPLIB)
@@ -58,3 +87,11 @@ $(TMPLIB):
 		if test "$(RANLIB)" != ""; then $(RANLIB) `basename $@`; fi; \
 	fi
 
+$(SOMKPUB_INCLUDE):
+	cp ../../somkpub/include/$$(basename $@) $@
+
+$(SOMIDL_PLATFORM):
+	cp ../../somidl/$(PLATFORM)/$$(basename $@) $@
+
+$(SOMIDL_PUBLIC):
+	cp ../../somidl/$$(basename $@) $@

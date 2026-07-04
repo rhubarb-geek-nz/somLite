@@ -175,7 +175,7 @@ EOF
 ../../toolbox/dir2bsd.sh "$INTDIR" "$INTDIR/somtk.dev" "$OUTDIR_DIST" <<EOF
 somlite-dev
 $VERSION
-somlite-comp
+
 $PKGPREFIX
 somLite Development Library
 Library and headers for somLite
@@ -213,3 +213,100 @@ do
 		rm -rf "$INTDIR/$d"
 	fi
 done
+
+if test "$GTAR" = ""
+then
+	if ../../toolbox/pkgtool.sh gtar
+	then
+		GTAR=`../../toolbox/pkgtool.sh gtar`
+	fi
+fi
+
+(
+	set -e
+
+	MACHINE="$PLATFORM"
+
+	if test -f /etc/os-release
+	then
+		ARCH=`uname -p`
+		ID=`.  /etc/os-release ; echo $ID`
+		VERS=`.  /etc/os-release ; echo $VERSION_ID`
+		for d in `.  /etc/os-release ; echo $ID $ID_LIKE`
+		do
+			case "$d" in
+				debian )
+					ARCH=`dpkg --print-architecture`
+					;;
+				* )
+					;;
+			esac
+		done
+		MACHINE="$ID-$VERS-$ARCH"
+	fi
+
+	(
+		cd "$OUTDIR_DIST"
+
+		for d in rpm deb pkg tgz
+		do
+			FILES=`echo *.$d`
+
+			if ls $FILES >/dev/null 2>/dev/null
+			then
+				if test -z "$GTAR"
+				then
+					tar cf - $FILES | gzip > "somlite-$VERSION-$d-$MACHINE.tar.gz"
+				else
+					$GTAR --owner=0 --group=0 --create --gzip --file "somlite-$VERSION-$d-$MACHINE.tar.gz" $FILES
+				fi
+
+				rm $FILES
+			fi
+		done
+	)
+
+	(
+		set -e
+
+		cd "$OUTDIR"
+
+		mkdir tmp tmp/bin tmp/lib tmp/include
+
+		cp include/* tmp/include
+
+		for d in sc somipc cpp somcpp pdl
+		do
+			if test -f "bin/$d"
+			then
+				cp "bin/$d" "tmp/bin/$d"
+			fi
+		done
+
+		(
+			set -e
+
+			cd lib
+
+			tar cf - libsom.*
+		) | (
+			set -e
+
+			cd tmp/lib
+
+			tar xf -
+		)
+
+		if test -z "$GTAR"
+		then
+			(
+				cd tmp
+				tar cf - bin include lib
+			) | gzip > "dist/somlite-$VERSION-$MACHINE.tar.gz"
+		else
+			$GTAR --owner=0 --group=0 --create --gzip --file "dist/somlite-$VERSION-$MACHINE.tar.gz" -C tmp bin lib include
+		fi
+
+		rm -rf tmp
+	)
+)

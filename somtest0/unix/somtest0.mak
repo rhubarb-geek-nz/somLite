@@ -42,7 +42,6 @@ $(INTDIR)/somtest0.o: ../src/somtest0.c
 $(TARGET): $(OBJS)
 	$(LINKAPP) $(LINKAPP_HEAD) $(OBJS) -o $@ \
 		`$(SHLB_REF) som som` \
-		`$(SHLB_REF) somtc somtc` \
 		$(SOCKLIBS) $(STDLIB)  \
 		$(LINKAPP_TAIL)
 

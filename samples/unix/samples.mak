@@ -1,7 +1,7 @@
 #
 #  Copyright 2026, Roger Brown
 #
-#  This file is part of somLite.
+#  This file is part of Roger Brown's Toolkit.
 #
 #  This program is free software: you can redistribute it and/or modify it
 #  under the terms of the GNU Lesser General Public License as published by the
@@ -17,20 +17,10 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
+include $(MAKEDEFS)
+
 all test clean:
-	cd clau\book\chap2
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\chap3\datatype
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\except
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\metacls
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\methres
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\..\chap4\dynaload
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\releaseo
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\typeiden
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
+	if test -f ../Makefile.$$(uname); then $(DLLPATHENV)=$$(cd $(OUTDIR)/lib; pwd) $(MAKE) -C .. -f Makefile.$$(uname) SOMBASE=$$(cd $(OUTDIR); pwd) $@; fi
+
+dist install:
+

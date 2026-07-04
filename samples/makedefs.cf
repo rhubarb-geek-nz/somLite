@@ -1,0 +1,4 @@
+NAME samples
+DEPENDS somtklib som
+PROVIDES samples
+VERSION 1.0

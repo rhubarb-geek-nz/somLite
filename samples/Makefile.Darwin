@@ -18,19 +18,11 @@
 #
 
 all test clean:
-	cd clau\book\chap2
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\chap3\datatype
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\except
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\metacls
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\methres
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\..\chap4\dynaload
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\releaseo
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
-	cd ..\typeiden
-	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap2; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap3/datatype; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap3/except; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap3/metacls; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap3/methres; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap4/dynaload; $(MAKE) -f Makefile.Darwin "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap4/releaseo; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" $@
+	cd clau/book/chap4/typeiden; $(MAKE) -f Makefile.Linux "SOMBASE=$(SOMBASE)" $@

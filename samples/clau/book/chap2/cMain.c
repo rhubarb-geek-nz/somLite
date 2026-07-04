@@ -33,4 +33,6 @@ int main(int argc, char *argv[], char *envp[])
    _printHello(myhello,ev);
 
    _somFree(myhello);
+
+   return 0;
 }
