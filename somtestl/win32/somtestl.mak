@@ -21,6 +21,7 @@
 
 OUTDIR=$(OUTDIR_TESTS)
 INTDIR=$(BUILDTYPE)
+TESTCASE_SOMBASE_BIN=F:\IBMCPPW\BIN
 
 APPNAME=somtestl
 
@@ -79,9 +80,8 @@ dist:
 test: test.$(PLATFORM)
 
 test.win32i86:
-	set PATH=%ProgramFiles(x86)%\IBM\som30nt\bin;%PATH%
-	rem if exist "%ProgramFiles(x86)%\IBM\som30nt\bin\som.dll" $(TARGET_EXE)
+	set PATH=$(TESTCASE_SOMBASE_BIN);%PATH%
+	if exist "$(TESTCASE_SOMBASE_BIN)\SOM.DLL" $(TARGET_EXE)
 
 test.win64amd test.win32arm test.win64arm:
-
 

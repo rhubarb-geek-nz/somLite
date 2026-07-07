@@ -19,8 +19,13 @@
  *
  */
 
+/**
+ * Purpose is to validate the release order of method tokens by compiling against
+ * project headers then running with a real version of SOMobjects 2.1 SOM.DLL
+ * use the class object itself to confirm the method names
+ */
+
 #define WIN32_DLLIMPORT	  __declspec(dllimport)
-#define MORE_THAN_SOM
 
 #include <rhbopt.h>
 #include <rhbsomex.h>
@@ -62,7 +67,6 @@ static void confirm_cleanup(struct class_data *cd);
 #define CHECK_MTOKEN_IGNORE(x,y) somPrintf("ignoring %s::%s\n",#x,#y); confirm_ignore(&cd_##x,_##x,#y,(somToken *)&(x##ClassData.y));
 
 #define END_CLASS(x)      confirm_cleanup(&cd_##x);  }
-
 
 static void check_som(void)
 {
@@ -305,7 +309,6 @@ static void confirm_class(struct class_data *cd,void *cds,SOMClass SOMSTAR cls,l
 		}
 	}
 
-
 	cd->ph=cdsp->tokens;
 
 	if (strcmp(p,name))
@@ -315,7 +318,9 @@ static void confirm_class(struct class_data *cd,void *cds,SOMClass SOMSTAR cls,l
 		pfn(cls,0);
 		exit(1);
 	}
+
 	somGetVersionNumbers(cls,&m1,&m2);
+
 	if ((m1!=major)||(m2!=minor))
 	{
 		somPrintf("actual %s(%ld,%ld) != expected (%ld,%ld)\n",
@@ -406,7 +411,6 @@ static void confirm_mtoken(struct class_data *cd,SOMClass SOMSTAR cls,somMToken 
 					}
 				}
 			}
-
 			
 			exit(1);
 		}
@@ -427,7 +431,6 @@ static void confirm_mtoken(struct class_data *cd,SOMClass SOMSTAR cls,somMToken 
 			somPrintf("mptr=%p\n",data.method);
 
 			somPrintf("%s::%s\n",c,name);
-
 
 			{
 				long i=somGetNumMethods(cls);
@@ -532,4 +535,3 @@ static void confirm_cleanup(struct class_data *cd)
 		exit(1);
 	}
 }
-
