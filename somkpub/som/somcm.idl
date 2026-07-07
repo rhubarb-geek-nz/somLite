@@ -51,7 +51,6 @@ interface SOMClassMgr : SOMObject
 	SOMClass somFindClsInFile(in somId classId,in long majorVersion,in long minorVersion,in string file);
 	void somMergeInto(in SOMObject targetObj);
 	long somSubstituteClass(in string origClassName,in string newClassName);
-/*	boolean somImportObject(in SOMObject objToBeShared);*/
 #ifdef __SOMIDL__
 	implementation
 	{
@@ -64,6 +63,7 @@ interface SOMClassMgr : SOMObject
 		SOMClassMgrDataPtr prev;
 		SOMClassMgrDataPtr next;
 		SOMClassMgr somClassMgr;
+		SOMObject interfaceRepository;
 #endif
 		releaseorder : 
 			somFindClsInFile,
@@ -87,10 +87,7 @@ interface SOMClassMgr : SOMObject
 			somRegisterThreadUsage,
 			somRegisterClassLibrary,
 			somJoinAffinityGroup,
-			somUnregisterClassLibrary,
-			somImportObject,
-			somCIBFromClassId,
-			somCopyOnImport;
+			somUnregisterClassLibrary;
 		callstyle = oidl;
 		majorversion = 1;
 		minorversion = 4;

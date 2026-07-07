@@ -21,20 +21,6 @@
 
 /* generalised pragmas for linking */
 
-/* _MSC_VER
-
-		1200 = MSVC6
-		1400 = MSVC8
-
-  */
-
-#if defined(_MSC_VER) && defined(_DEBUG)
-#	if (_MSC_VER < 1200)
-#		define USE_RHBOLE
-#	else
-#	endif
-#endif
-
 #ifdef LINK386_SOMOBJVA
 #	pragma comment(lib,"somobjva.lib")
 #endif
@@ -48,7 +34,5 @@
 #endif
 
 #ifdef LINK386_USER32
-#	ifndef _WIN32_WCE
-#		pragma comment(lib,"user32.lib")
-#	endif
+#	pragma comment(lib,"user32.lib")
 #endif

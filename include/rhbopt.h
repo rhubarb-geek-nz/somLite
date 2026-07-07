@@ -141,33 +141,10 @@
 #		define _PLATFORM_LITTLE_ENDIAN_
 #	endif
 
-#	if (_MSC_VER < 1200)
-	/* compiling with below MSVC 6 */
-#		ifdef _WIN32S
-#			define RHBOPT_SHARED_DATA
-#		else
-#			if 1
-#				define USE_THREADS
-#			endif
-
-#			ifdef USE_THREADS
-#				ifdef HAVE_PTHREAD_H
-#					define USE_PTHREADS
-#				else
-#					define USE_PTH		/* this to be ignored */ 
-#				endif
-#			endif
-#		endif
-#	else
 	/* compiling with MSVC 6 */
-#		define USE_THREADS  
-#		if defined(_DEBUG) && !defined(_ARM_)
-#			include <crtdbg.h>
-#		endif
-#	endif
-
-#	ifndef USE_THREADS
-#		define USE_SELECT
+#	define USE_THREADS
+#	if defined(_DEBUG) && !defined(_ARM_)
+#		include <crtdbg.h>
 #	endif
 
 #	ifdef __cplusplus
@@ -182,53 +159,29 @@
 
 	/* WINDOWS OPTIONS - end */
 #else   /* now not _WIN32 */
-#	ifdef _PLATFORM_MACINTOSH_
-#		include <MacTypes.h>
-#		ifndef GENERATINGCFM
-#			if defined(powerc) || defined(__powerc) || defined(__CFM68K__)
-#				ifndef __ASLM__
-#					define GENERATINGCFM   1
-#				endif
-#			endif
+#	ifdef __OS2__
+#		ifndef _PLATFORM_OS2_
+#			define _PLATFORM_OS2_
 #		endif
-#		if GENERATINGCFM
-			typedef long integer4;
-			typedef unsigned long uinteger4;
+#		define USE_THREADS
+#	else
+#		if defined(_REENTRANT) && (defined(HAVE_PTHREAD_H)||defined(HAVE_PTH_H))
 #			define USE_THREADS
-#			define USE_PTHREADS
-#			define USE_APPLE_SOM
-#			include <CodeFragments.h>
-#		else
+#		else   /* now not _REENTRANT */
 #			define USE_SELECT
-#			define USE_ASLM
-#			define RHBOPT_SHARED_DATA
-#			include <LibraryManager.h>
-#		endif
-#	else /* now not _PLATFORM_MACINTOSH_ */
-#		ifdef __OS2__
-#			ifndef _PLATFORM_OS2_
-#				define _PLATFORM_OS2_
-#			endif
-#			define USE_THREADS
+#		endif  /* _REENTRANT */
+#		ifdef _PLATFORM_UNIX_
+#			ifdef USE_THREADS
+#				ifdef HAVE_PTHREAD_H
+#					define USE_PTHREADS
+#				else
+#					error no other supported threading model
+#				endif
+#			endif /* USE_THREADS */
 #		else
-#			if defined(_REENTRANT) && (defined(HAVE_PTHREAD_H)||defined(HAVE_PTH_H))
-#				define USE_THREADS
-#			else   /* now not _REENTRANT */
-#				define USE_SELECT
-#			endif  /* _REENTRANT */
-#			ifdef _PLATFORM_UNIX_
-#				ifdef USE_THREADS
-#					ifdef HAVE_PTHREAD_H
-#						define USE_PTHREADS
-#					else
-#						error no other supported threading model
-#					endif
-#				endif /* USE_THREADS */
-#			else
-				#error unknown platform, not __OS2__, _PLATFORM_UNIX_, _PLATFORM_MACINTOSH_ or _WIN32
-#			endif /* not _PLATFORM_UNIX_ */
-#		endif /* not __OS2__ */
-#	endif /* not _PLATFORM_MACINTOSH_ */
+#			error unknown platform, not __OS2__, _PLATFORM_UNIX_ or _WIN32
+#		endif /* not _PLATFORM_UNIX_ */
+#	endif /* not __OS2__ */
 #endif  /* not _WIN32 */
 
 #ifndef SOM_STRICT_IDL

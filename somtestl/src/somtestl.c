@@ -93,14 +93,15 @@ static void check_som(void)
 	CHECK_MTOKEN(SOMObject,somResetObj)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultInit)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDestruct)
-	CHECK_MTOKEN_IGNORE(SOMObject,somComputeForwardVisitMask)
-	CHECK_MTOKEN_IGNORE(SOMObject,somComputeReverseVisitMask)
+	CHECK_MTOKEN_PRIVATE(SOMObject,somComputeForwardVisitMask)
+	CHECK_MTOKEN_PRIVATE(SOMObject,somComputeReverseVisitMask)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultCopyInit)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultConstCopyInit)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultAssign)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultConstAssign)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultVAssign)
 	CHECK_MTOKEN_PRIVATE(SOMObject,somDefaultConstVAssign)
+
 	END_CLASS(SOMObject)
 
 	CHECK_CLASS(SOMClass)				/* somcls.idl */
@@ -117,80 +118,69 @@ static void check_som(void)
 	CHECK_MTOKEN(SOMClass,somSupportsMethod)
 	CHECK_MTOKEN(SOMClass,somGetNumMethods)
 	CHECK_MTOKEN(SOMClass,somGetInstanceSize)
-	CHECK_MTOKEN_IGNORE(SOMClass,somGetInstanceOffset)
- 	CHECK_MTOKEN(SOMClass,somGetInstancePartSize)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somGetInstanceOffset)
+	CHECK_MTOKEN(SOMClass,somGetInstancePartSize)
 	CHECK_MTOKEN(SOMClass,somGetMethodIndex)
 	CHECK_MTOKEN(SOMClass,somGetNumStaticMethods)
- 	CHECK_MTOKEN(SOMClass,somGetPClsMtab)
+	CHECK_MTOKEN(SOMClass,somGetPClsMtab)
 	CHECK_MTOKEN(SOMClass,somGetClassMtab)
- 	CHECK_MTOKEN(SOMClass,somAddStaticMethod)
- 	CHECK_MTOKEN(SOMClass,somOverrideSMethod)
+	CHECK_MTOKEN(SOMClass,somAddStaticMethod)
+	CHECK_MTOKEN(SOMClass,somOverrideSMethod)
 	CHECK_MTOKEN(SOMClass,somAddDynamicMethod)
- 	CHECK_MTOKEN_IGNORE(SOMClass,somGetMethodOffset)
- 	CHECK_MTOKEN(SOMClass,somGetApplyStub)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somGetMethodOffset)
+	CHECK_MTOKEN_IGNORE(SOMClass,somGetApplyStub)
 	CHECK_MTOKEN(SOMClass,somFindSMethod)
-  	CHECK_MTOKEN(SOMClass,somFindSMethodOk)
- 	CHECK_MTOKEN(SOMClass,somGetMethodDescriptor)
- 	CHECK_MTOKEN(SOMClass,somGetNthMethodInfo)
- 	CHECK_MTOKEN(SOMClass,somSetClassData)
+	CHECK_MTOKEN(SOMClass,somFindSMethodOk)
+	CHECK_MTOKEN(SOMClass,somGetMethodDescriptor)
+	CHECK_MTOKEN(SOMClass,somGetNthMethodInfo)
+	CHECK_MTOKEN(SOMClass,somSetClassData)
 	CHECK_MTOKEN(SOMClass,somGetClassData)
- 	CHECK_MTOKEN(SOMClass,somNewNoInit)
- 	CHECK_MTOKEN(SOMClass,somRenewNoInit)
- 	CHECK_MTOKEN(SOMClass,somGetInstanceToken)
- 	CHECK_MTOKEN(SOMClass,somGetMemberToken)
- 	CHECK_MTOKEN_IGNORE(SOMClass,somSetMethodDescriptor)
- 	CHECK_MTOKEN(SOMClass,somGetMethodData)
-  	CHECK_MTOKEN(SOMClass,somOverrideMtab)
+	CHECK_MTOKEN(SOMClass,somNewNoInit)
+	CHECK_MTOKEN(SOMClass,somRenewNoInit)
+	CHECK_MTOKEN(SOMClass,somGetInstanceToken)
+	CHECK_MTOKEN(SOMClass,somGetMemberToken)
+	CHECK_MTOKEN(SOMClass,somSetMethodDescriptor)
+	CHECK_MTOKEN(SOMClass,somGetMethodData)
+	CHECK_MTOKEN(SOMClass,somOverrideMtab)
 	CHECK_MTOKEN(SOMClass,somGetMethodToken)
- 	CHECK_MTOKEN(SOMClass,somGetParents)
-	CHECK_MTOKEN_IGNORE(SOMClass,somGetPClsMtabs)
+	CHECK_MTOKEN(SOMClass,somGetParents)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somGetPClsMtabs)
 	CHECK_MTOKEN(SOMClass,somInitMIClass)
 	CHECK_MTOKEN(SOMClass,somGetVersionNumbers)
 	CHECK_MTOKEN(SOMClass,somLookupMethod)
- 	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somInstanceDataOffsets)
- 	CHECK_MTOKEN(SOMClass,somRenewNoZero)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somInstanceDataOffsets)
+	CHECK_MTOKEN(SOMClass,somRenewNoZero)
 	CHECK_MTOKEN(SOMClass,somRenewNoInitNoZero)
 	CHECK_MTOKEN(SOMClass,somAllocate)
 	CHECK_MTOKEN(SOMClass,somDeallocate)
 	CHECK_MTOKEN(SOMClass,somGetRdStub)
 	CHECK_MTOKEN(SOMClass,somGetNthMethodData)
-	CHECK_MTOKEN_IGNORE(SOMClass,somCloneClass)
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somMethodOffsets);
+	CHECK_MTOKEN_PRIVATE(SOMClass,somCloneClass)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somMethodOffsets)
 	CHECK_MTOKEN(SOMClass,_get_somDirectInitClasses)
-	CHECK_MTOKEN_PRIVATE(SOMClass,somClassAssert)
-	CHECK_MTOKEN_IGNORE(SOMClass,somGetInstanceInitMask)
-	CHECK_MTOKEN_IGNORE(SOMClass,somGetInstanceDestructionMask)
-	CHECK_MTOKEN_IGNORE(SOMClass,somCastObjCls);
-	CHECK_MTOKEN_IGNORE(SOMClass,somResetObjCls);
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somTrueClass);
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somCastedClass);
-	CHECK_MTOKEN_IGNORE(SOMClass,somRegLPMToken)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_set_somDirectInitClasses)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somGetInstanceInitMask)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somGetInstanceDestructionMask)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somCastObjCls)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somResetObjCls)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somTrueClass)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somCastedClass)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somRegLPMToken)
 	CHECK_MTOKEN(SOMClass,somDefinedMethod)
-	CHECK_MTOKEN_IGNORE(SOMClass,somAddMethod);
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somCClassData);
-	CHECK_MTOKEN_IGNORE(SOMClass,_set_somCClassData)
-	CHECK_MTOKEN_IGNORE(SOMClass,somClassOfNewClassWithParents);
-	CHECK_MTOKEN_IGNORE(SOMClass,_set_somClassDataOrder)
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somClassDataOrder)
-	CHECK_MTOKEN_IGNORE(SOMClass,somGetClassDataEntry)
-	CHECK_MTOKEN_IGNORE(SOMClass,somSetClassDataEntry)
-	CHECK_MTOKEN(SOMClass,_get_somDataAlignment)
-	CHECK_MTOKEN_IGNORE(SOMClass,somGetInstanceAssignmentMask)
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somDirectAssignClasses)
-	CHECK_MTOKEN_IGNORE(SOMClass,setUserPCallDispatch)
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somClassAllocate)
-	CHECK_MTOKEN_IGNORE(SOMClass,_get_somClassDeallocate)
-	CHECK_MTOKEN_PRIVATE(SOMClass,somGetMarshalPlan)
-	CHECK_MTOKEN_PRIVATE(SOMClass,somSetMarshalPlan)
-	CHECK_MTOKEN_PRIVATE(SOMClass,somGetMethodDataWithoutDescriptor)
-	CHECK_MTOKEN_PRIVATE(SOMClass,somJoin)
-	CHECK_MTOKEN_PRIVATE(SOMClass,somEndow)
-	CHECK_MTOKEN_IGNORE(SOMClass,somLookupTerminal)
-	CHECK_MTOKEN_IGNORE(SOMClass,somMethodImplOwner)
-	CHECK_MTOKEN_IGNORE(SOMClass,somSetUserPCallDispatch)
-	CHECK_MTOKEN_IGNORE(SOMClass,somMakeUserRdStub)
-	CHECK_MTOKEN_IGNORE(SOMClass,somGetMethodProc)
-	CHECK_MTOKEN_IGNORE(SOMClass,somImportedClass)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somAddMethod)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somCClassData)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_set_somCClassData)
+	CHECK_MTOKEN_IGNORE(SOMClass,somClassOfNewClassWithParents)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_set_somClassDataOrder)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somClassDataOrder)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somGetClassDataEntry)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somSetClassDataEntry)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somDataAlignment)
+	CHECK_MTOKEN_PRIVATE(SOMClass,somGetInstanceAssignmentMask)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somDirectAssignClasses)
+	CHECK_MTOKEN_PRIVATE(SOMClass,setUserPCallDispatch)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somClassAllocate)
+	CHECK_MTOKEN_PRIVATE(SOMClass,_get_somClassDeallocate)
 	END_CLASS(SOMClass)
 
 	CHECK_CLASS(SOMClassMgr)			/* somcm.idl */
@@ -211,21 +201,17 @@ static void check_som(void)
 	CHECK_MTOKEN(SOMClassMgr,_get_somRegisteredClasses)
 	CHECK_MTOKEN(SOMClassMgr,somBeginPersistentClasses)
 	CHECK_MTOKEN(SOMClassMgr,somEndPersistentClasses)
-	CHECK_MTOKEN_IGNORE(SOMClassMgr,somReleaseClasses)
-	CHECK_MTOKEN_IGNORE(SOMClassMgr,somRegisterThreadUsage)
+	CHECK_MTOKEN_PRIVATE(SOMClassMgr,somReleaseClasses)
+	CHECK_MTOKEN_PRIVATE(SOMClassMgr,somRegisterThreadUsage)
 	CHECK_MTOKEN(SOMClassMgr,somRegisterClassLibrary)
 	CHECK_MTOKEN(SOMClassMgr,somJoinAffinityGroup)
 	CHECK_MTOKEN(SOMClassMgr,somUnregisterClassLibrary)
-	CHECK_MTOKEN_PRIVATE(SOMClassMgr,somImportObject)
-	CHECK_MTOKEN_PRIVATE(SOMClassMgr,somCIBFromClassId)
-	CHECK_MTOKEN_PRIVATE(SOMClassMgr,somCopyOnImport)
 	END_CLASS(SOMClassMgr)
 }
 
 int main(int argc,char **argv)
 {
 	SOMClassMgr SOMSTAR mgr=somEnvironmentNew();
-	Environment ev;
 
 	somPrintf("SOM_WarnLevel=%d\n",SOM_WarnLevel);
 	somPrintf("SOM_TraceLevel=%d\n",SOM_TraceLevel);
@@ -233,8 +219,6 @@ int main(int argc,char **argv)
 	somPrintf("SOM_MaxThreads=%d\n",SOM_MaxThreads);
 	somPrintf("SOM_MajorVersion=%ld\n",SOM_MajorVersion);
 	somPrintf("SOM_MinorVersion=%ld\n",SOM_MinorVersion);
-
-	SOM_InitEnvironment(&ev);
 
 	check_som();
 
@@ -397,22 +381,11 @@ static void confirm_mtoken(struct class_data *cd,SOMClass SOMSTAR cls,somMToken 
 		somTD_SOMClass_somGetNumMethods somGetNumMethods=(somTD_SOMClass_somGetNumMethods)somResolveByName(cls,"somGetNumMethods");
 		somTD_SOMClass_somGetNthMethodData somGetNthMethodData=(somTD_SOMClass_somGetNthMethodData)somResolveByName(cls,"somGetNthMethodData");
 
-	/*	somPrintf("doing the getmethoddata...\n");*/
-
 		somGetMethodData(cls,id,&data);
-
-	/*	somPrintf("doing the init...\n");*/
 
 		if (token)
 		{
-			__try
-			{
-				m1=somResolve(&cd->obj.obj,token);
-			}
-			__except(1)
-			{
-				somPrintf("caught exception...\n");
-			}
+			m1=somResolve(&cd->obj.obj,token);
 		}
 
 		if ((!tok) || (!m1))
@@ -438,16 +411,7 @@ static void confirm_mtoken(struct class_data *cd,SOMClass SOMSTAR cls,somMToken 
 			exit(1);
 		}
 
-	/*	somPrintf("doing the resolve...\n");*/
-
-		__try
-		{
-			m2=somResolve(&cd->obj.obj,tok);
-		}
-		__except(1)
-		{
-			somPrintf("caught exception...\n");
-		}
+		m2=somResolve(&cd->obj.obj,tok);
 
 		if (m1 != m2)
 		{

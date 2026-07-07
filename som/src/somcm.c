@@ -263,30 +263,18 @@ SOM_Scope string  SOMLINK somcm_somGetInitFunction(
 SOM_Scope Repository SOMSTAR SOMLINK somcm__get_somInterfaceRepository(
 		SOMClassMgr SOMSTAR somSelf)
 {
+	SOMClassMgrData* somThis=SOMClassMgrGetData(somSelf);
 	Repository SOMSTAR rep=NULL;
-#ifdef RHBOPT_SHARED_DATA
-	struct som_thread_globals_t *ev=SOMKERN_get_thread_globals(1);
-	#define SOMKERN_repository   ev->repository
-#else
-	#define SOMKERN_repository   som_globals.repository
-#endif
 
 	somStartCriticalSection();
 
-	if (!SOMKERN_repository)
+	rep=somThis->interfaceRepository;
+
+	if (!rep)
 	{
 		SOMClass SOMSTAR cls=NULL;
 		char *p="Repository";
 
-/*		if (som_globals.closing) 
-		{
-			somEndCriticalSection();
-
-			somPrintf("won't load any repository while closing\n");
-
-			return 0;
-		}
-*/
 		somEndCriticalSection();
 
 		cls=SOMClassMgr_somFindClass(somSelf,&p,0,0);
@@ -298,56 +286,14 @@ SOM_Scope Repository SOMSTAR SOMLINK somcm__get_somInterfaceRepository(
 
 		somStartCriticalSection();
 
-		if (rep)
+		if (somThis->interfaceRepository)
 		{
-			if (SOMKERN_repository)
-			{
-#ifdef SOMObject_release
-				Environment ev;
-				somEndCriticalSection();
-				SOM_InitEnvironment(&ev);
-				SOMObject_release(rep,&ev);
-				SOM_UninitEnvironment(&ev);
-				somStartCriticalSection();
-#else
-				somEndCriticalSection();
-				SOMObject_somFree(rep);
-				somStartCriticalSection();
-#endif
-			}
-			else
-			{
-				SOMKERN_repository=rep;
-			}
+			rep=somThis->interfaceRepository;
 		}
-	}
-
-	/* should be an AddRef here */
-
-	rep=SOMKERN_repository;
-
-	if (rep)
-	{
-#ifdef SOMObject_duplicate
-		Environment ev;
-		SOM_InitEnvironment(&ev);
-		rep=SOMObject_duplicate(rep,&ev);
-		SOM_UninitEnvironment(&ev);
-#else
-	#ifdef SOMObject_somDuplicateReference
-		rep=SOMObject_somDuplicateReference(rep);
-	#else
-		#ifdef SOMRefObject_somDuplicateReference
-			somTD_SOMRefObject_somDuplicateReference td=
-					(somTD_SOMRefObject_somDuplicateReference)
-		#else
-			somTD_SOMClass_somNew td=
-					(somTD_SOMClass_somNew)
-		#endif
-						somResolveByName(rep,"somDuplicateReference");
-		if (td) rep=td(rep);
-	#endif				
-#endif
+		else
+		{
+			somThis->interfaceRepository=rep;
+		}
 	}
 
 	somEndCriticalSection();
@@ -359,61 +305,10 @@ SOM_Scope void  SOMLINK somcm__set_somInterfaceRepository(
 		   SOMClassMgr SOMSTAR somSelf, 
            Repository SOMSTAR somInterfaceRepository)
 {
-#ifdef RHBOPT_SHARED_DATA
-	struct som_thread_globals_t *ev=SOMKERN_get_thread_globals((boolean)(somInterfaceRepository ? 1 : 0));
-	if (!ev) return;
-#endif
-
+	SOMClassMgrData* somThis=SOMClassMgrGetData(somSelf);
 	somStartCriticalSection();
 
-	if (SOMKERN_repository != somInterfaceRepository)
-	{
-		SOMObject SOMSTAR old=SOMKERN_repository;
-
-		SOMKERN_repository=NULL;
-
-		if (somInterfaceRepository)
-		{
-#ifdef SOMObject_duplicate
-			Environment ev2;
-			SOM_InitEnvironment(&ev2);
-			SOMKERN_repository=SOMObject_duplicate(somInterfaceRepository,&ev2);
-			SOM_UninitEnvironment(&ev2);
-#else
-	#ifdef SOMObject_somDuplicateReference
-			SOMKERN_repository=SOMObject_somDuplicateReference(somInterfaceRepository);
-	#else
-		#ifdef SOMRefObject_somDuplicateReference
-			somTD_SOMRefObject_somDuplicateReference td=(somTD_SOMRefObject_somDuplicateReference)
-		#else
-			somTD_SOMClass_somNew td=(somTD_SOMClass_somNew)
-		#endif
-				somResolveByName(somInterfaceRepository,"somDuplicateReference");
-
-			if (td)
-			{
-				SOMKERN_repository=td(somInterfaceRepository);
-			}
-			else
-			{
-				SOMKERN_repository=somInterfaceRepository;
-			}
-	#endif
-#endif
-		}
-
-		if (old)
-		{
-#ifdef SOMObject_release
-			Environment ev;
-			SOM_InitEnvironment(&ev);
-			SOMObject_release(old,&ev);
-			SOM_UninitEnvironment(&ev);
-#else
-			SOMObject_somFree(old);
-#endif
-		}
-	}
+	somThis->interfaceRepository=somInterfaceRepository;
 
 	somEndCriticalSection();
 
@@ -600,6 +495,7 @@ SOM_Scope void  SOMLINK somcm_somMergeInto(
 
 		somThat->classList.dataset=somThis->classList.dataset;
 		somThis->classList.dataset=seq;
+		somThat->interfaceRepository=somThis->interfaceRepository;
 
 		SOMClassMgrObject=targetObj;
 

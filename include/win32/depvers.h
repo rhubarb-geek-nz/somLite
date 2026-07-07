@@ -16,6 +16,6 @@
 #define DEPVERS_som_STR4 "1.0.0.0\000\000"
 #define DEPVERS_somtkpkg_INT4 1,0,0,0
 #define DEPVERS_somtkpkg_STR4 "1.0.0.0\000\000"
-#define DEPVERS_somtkpkg_PRODUCTNAME "somFree Toolkit\000\000"
+#define DEPVERS_somtkpkg_PRODUCTNAME "somLite Toolkit\000\000"
 #define DEPVERS_somtest0_INT4 1,0,0,0
 #define DEPVERS_somtest0_STR4 "1.0.0.0\000\000"

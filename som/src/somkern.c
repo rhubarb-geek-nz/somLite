@@ -80,19 +80,6 @@ typedef struct SOMClassMgrData *SOMClassMgrDataPtr;
 #	else
 		static CRITICAL_SECTION som_global_mutex;
 #	endif
-#else
-	#if defined(_PLATFORM_MACINTOSH_) || defined(RHBOPT_SHARED_DATA) || defined(_WIN32S)
-	#else
-		static unsigned int som_critical_count;
-		static sigset_t som_critical_masks[64];
-		#ifdef somStartCriticalSection
-			static struct
-			{
-				const char *file;
-				int line;
-			} debugCritical[64];
-		#endif
-	#endif
 #endif
 
 /* internal routines that have now been made static */
@@ -213,10 +200,8 @@ SOM_Scope int SOMLINK SOMKERN_outchar(char c)
 #endif
 		if (c==7) return 0;
 
-
 		buf[0]=c;
 
-#ifndef _PLATFORM_MACINTOSH_
 #ifdef _WIN32
 		/* write to std out */
 		if (h!=INVALID_HANDLE_VALUE)
@@ -230,7 +215,6 @@ SOM_Scope int SOMLINK SOMKERN_outchar(char c)
 #else
 		/* write to stdout */
 		return write(1,buf,1);
-#endif
 #endif
 	}
 
@@ -255,43 +239,10 @@ SOM_Scope void SOMLINK SOMKERN_error(int e_num,const char * file,int line)
 #endif
 }
 
-#ifdef RHBOPT_SHARED_DATA
-#else
-	somTD_SOMOutCharRoutine * WIN32_DLLEXPORT SOMDLINK SOMOutCharRoutine=SOMKERN_outchar;
-	somTD_SOMError   * WIN32_DLLEXPORT SOMDLINK SOMError=SOMKERN_error;
-	#ifndef USE_THREADS
-		#define local_SOMOutCharRoutine		SOMOutCharRoutine
-	#endif
-#endif
+somTD_SOMOutCharRoutine * WIN32_DLLEXPORT SOMDLINK SOMOutCharRoutine=SOMKERN_outchar;
+somTD_SOMError   * WIN32_DLLEXPORT SOMDLINK SOMError=SOMKERN_error;
 
 #define SOMKERN_outchar do not use beyond here
-
-#ifdef SOM_RESOLVE_DATA
-	#define EXPORT_GLOBAL_DATA(x,y)   SOMEXTERN x * SOMLINK resolve_##y(void) { return &y; }
-
-	EXPORT_GLOBAL_DATA(somTD_SOMMalloc *,SOMMalloc)
-	EXPORT_GLOBAL_DATA(somTD_SOMCalloc *,SOMCalloc)
-	EXPORT_GLOBAL_DATA(somTD_SOMFree *,SOMFree)
-	EXPORT_GLOBAL_DATA(somTD_SOMRealloc *,SOMRealloc)
-	EXPORT_GLOBAL_DATA(somTD_SOMCreateMutexSem *,SOMCreateMutexSem)
-	EXPORT_GLOBAL_DATA(somTD_SOMRequestMutexSem *,SOMRequestMutexSem)
-	EXPORT_GLOBAL_DATA(somTD_SOMReleaseMutexSem *,SOMReleaseMutexSem)
-	EXPORT_GLOBAL_DATA(somTD_SOMDestroyMutexSem *,SOMDestroyMutexSem)
-	EXPORT_GLOBAL_DATA(SOMClassMgr SOMSTAR,SOMClassMgrObject)
-	EXPORT_GLOBAL_DATA(somTD_SOMGetThreadId *,SOMGetThreadId)
-	EXPORT_GLOBAL_DATA(somTD_SOMLoadModule *,SOMLoadModule)
-	EXPORT_GLOBAL_DATA(somTD_SOMDeleteModule *,SOMDeleteModule)
-	EXPORT_GLOBAL_DATA(somTD_SOMClassInitFuncName *,SOMClassInitFuncName)
-	EXPORT_GLOBAL_DATA(int,SOM_TraceLevel)
-	EXPORT_GLOBAL_DATA(int,SOM_WarnLevel)
-	EXPORT_GLOBAL_DATA(int,SOM_AssertLevel)
-	EXPORT_GLOBAL_DATA(long,SOM_MajorVersion)
-	EXPORT_GLOBAL_DATA(long,SOM_MinorVersion)
-	EXPORT_GLOBAL_DATA(long,SOM_MaxThreads)
-	EXPORT_GLOBAL_DATA(somToken,SOM_IdTable)
-	EXPORT_GLOBAL_DATA(long,SOM_IdTableSize)
-	EXPORT_GLOBAL_DATA(somTD_SOMError *,SOMError)
-#endif
 
 somMethodPtr SOMLINK somResolve(SOMObject SOMSTAR obj,somMToken mdata)
 {
@@ -347,115 +298,7 @@ SOMEXTERN somToken SOMLINK somDataResolve(SOMObject SOMSTAR obj, somDToken dataI
 
 void SOMLINK somEnvironmentEnd(void)
 {
-#ifdef RHBOPT_SHARED_DATA
-	if (som_globals.apps)
-	{
-		struct som_thread_globals_t *ev=som_globals.apps;
-#ifdef _WIN32
-		DWORD tid=GetCurrentThreadId();
-#else
-		ProcessSerialNumber psn;
-		if (GetCurrentProcess(&psn)) 
-		{
-			somPrintf("GetCurrentProcess failed\n");
-
-			return;
-		}
-#endif
-
-		somPrintf("somEnvironmentEnd - unhooking\n");
-
-		while (ev)
-		{
-			while (ev)
-			{
-#ifdef _WIN32
-				if (ev->tid==tid) break;
-#else
-				Boolean b=0;
-
-				if (!SameProcess(&psn,&ev->psn,&b))
-				{
-					if (b) break;
-				}
-#endif
-
-				ev=ev->next;
-			}
-
-			if (ev) 
-			{
-				somExceptionFree(&ev->ev);
-
-				if (ev->repository)
-				{
-					SOMObject SOMSTAR rep=ev->repository;
-					ev->repository=NULL;
-					SOMObject_somFree(rep);
-				}
-
-				if ((ev==som_globals.apps) && !ev->next)
-				{
-					somPrintf("tearing down class mgr\n");
-
-					somcm_teardown(SOMClassMgrObject);
-				}
-
-				if (ev==som_globals.apps)
-				{
-					som_globals.apps=ev->next;
-				}
-				else
-				{
-					struct som_thread_globals_t *p=som_globals.apps;
-
-					while (p)
-					{
-						if (p->next==ev)
-						{
-							p->next=ev->next;
-							break;
-						}
-						else
-						{
-							p=p->next;
-						}
-					}
-				}
-
-				SOMFree(ev);
-
-				ev=som_globals.apps;
-
-				if (!ev)
-				{
-					somPrintf("finally...\n");
-
-#ifdef _PLATFORM_MACINTOSH_
-					somaslm_unloadall();
-#endif
-				}
-			}
-		}
-	}
-#else
-	if (som_globals.repository)
-	{
-		SOMObject SOMSTAR o=som_globals.repository;
-		som_globals.repository=NULL;
-#ifdef SOMObject_somDestruct
-		SOMObject_somDestruct(o,1,0);
-#else
-		SOMObject_somFree(o);
-#endif
-	}
-#endif
-
-	if (SOMClassMgrObject
-#ifdef RHBOPT_SHARED_DATA
-		&& !som_globals.apps
-#endif
-		) 
+	if (SOMClassMgrObject)
 	{
 		somcm_teardown(SOMClassMgrObject);
 		SOMClassMgr_somFree(SOMClassMgrObject);
@@ -761,10 +604,6 @@ SOMClass SOMSTAR SOMLINK somBuildClass (
 static som_thread_globals_t *make_globals(void)
 {
 	som_thread_globals_t *ev=(som_thread_globals_t *)SOMCalloc(sizeof(*ev),1);
-	if (ev) 
-	{
-		ev->somOutCharRoutine=SOMOutCharRoutine;
-	}
 	return ev;
 }
 #endif
@@ -811,60 +650,9 @@ static som_thread_globals_t *SOMKERN_get_thread_globals(char make)
 	#endif
 	return ev;
 #else
-	#ifdef RHBOPT_SHARED_DATA
-		som_thread_globals_t *ev;
-#ifdef _WIN32
-		DWORD tid=GetCurrentThreadId();
-#else
-		ProcessSerialNumber psn;
-		if (GetCurrentProcess(&psn)) 
-		{
-			somPrintf("GetCurrentProcess failed,%s:%d\n",__FILE__,__LINE__);
-			return NULL;
-		}
-#endif
-		ev=som_globals.apps;
-		while (ev)
-		{
-#ifdef _WIN32
-			if (tid==ev->tid) break;
-#else
-			Boolean b=0;
-
-			if (!SameProcess(&ev->psn,&psn,&b))
-			{
-				if (b) break;
-			}
-#endif
-
-			ev=ev->next;
-		}
-
-		if (!ev)
-		{
-			if (make)
-			{
-				somPrintf("making app environment\n");
-				ev=SOMCalloc(sizeof(*ev),1);
-#ifdef _WIN32
-				ev->tid=tid;
-#else
-				ev->psn=psn;
-#endif
-				ev->next=som_globals.apps;
-				som_globals.apps=ev;
-
-				ev->somError=SOMKERN_error;
-				ev->somOutCharRoutine=SOMKERN_outchar;
-			}
-		}
-
-		return ev;
-	#else
-		static som_thread_globals_t ev;
+	static som_thread_globals_t ev;
 	
-		return &ev;
-	#endif
+	return &ev;
 #endif
 }
 
@@ -1049,7 +837,7 @@ static struct somMTokenData *SOMKERN_somMToken_by_name(somClassInfo info,somId i
 
 somMethodProc * SOMLINK somResolveByName(
 		SOMObject SOMSTAR obj,
-        const char *methodName)
+		const char *methodName)
 {
 	somMToken m=SOMKERN_somMToken_by_name(
 		somClassInfoFromMtab(somMethodTabFromObject(obj)),
@@ -1062,10 +850,7 @@ somMethodProc * SOMLINK somResolveByName(
 
 int SOMLINK somPrintf(const char * fmt, ...)
 {
-#if defined(RHBOPT_SHARED_DATA) || defined(USE_THREADS)
-som_thread_globals_t *tev=SOMKERN_get_thread_globals(0);
-somTD_SOMOutCharRoutine *local_SOMOutCharRoutine=tev ? tev->somOutCharRoutine : SOMOutCharRoutine;
-#endif
+	somTD_SOMOutCharRoutine *local_SOMOutCharRoutine=SOMOutCharRoutine;
 	int i=0;
 
 	if (local_SOMOutCharRoutine)
@@ -1783,7 +1568,7 @@ static unsigned long SOMKERN_total_defined_methods(somStaticClassInfo *sci)
 
 static void SOMKERN_UnbootStrap(void)
 {
-	som_thread_globals_t *ev=ev=SOMKERN_get_thread_globals(0);
+	som_thread_globals_t *ev=SOMKERN_get_thread_globals(0);
 
 	if (ev)
 	{
@@ -1797,20 +1582,9 @@ static void SOMKERN_UnbootStrap(void)
 #endif
 	}
 
-#ifdef RHBOPT_SHARED_DATA
-	if (!som_globals.apps)
+#ifdef SOM_DEBUG_MEMORY
+	som_dump_mem();
 #endif
-	{
-	#ifdef SOM_DEBUG_MEMORY
-		som_dump_mem();
-	#endif
-
-		/* this bombed when calling pthread_key_delete()
-			on linux 2.0.30 with glibc 2.0.6 and linuxthread0.7 */
-	#ifdef SOMKERN_DLL_TERM
-		SOM_dll_term();
-	#endif
-	}
 }
 
 SOMEXTERN void SOMLINK somRegisterClassLibrary (char * libraryName,
@@ -1833,22 +1607,8 @@ SOMEXTERN boolean SOMLINK somAbnormalEnd (void)
 
 SOMEXTERN void SOMLINK somSetOutChar(somTD_SOMOutCharRoutine *outch)
 {
-#if defined(RHBOPT_SHARED_DATA) || defined(USE_THREADS)
-	if (outch)
-	{
-		som_thread_globals_t *tev=SOMKERN_get_thread_globals(1);
-		if (tev) tev->somOutCharRoutine=outch;
-	}
-	else
-	{
-		som_thread_globals_t *tev=SOMKERN_get_thread_globals(0);
-		if (tev) tev->somOutCharRoutine=outch;
-	}
-#else
 	SOMOutCharRoutine=outch;
-#endif
 }
-
 
 SOMEXTERN void SOMLINK somConstructClass (
                     somTD_classInitRoutine *classInitRoutine,
@@ -1867,7 +1627,7 @@ SOMEXTERN void SOMLINK somConstructClass (
 SOMEXTERN SOMObject SOMSTAR SOMLINK somTestCls(
 		SOMObject SOMSTAR obj, 
 		SOMClass SOMSTAR classObj,
-        const char * fileName, int lineNumber)
+		const char * fileName, int lineNumber)
 {
 	if (obj)
 	{
@@ -1901,9 +1661,6 @@ SOMEXTERN void SOMLINK somStartCriticalSection(void)
 #else
 	/* sigset stuff */
 
-	#if defined(_PLATFORM_MACINTOSH_) || defined(RHBOPT_SHARED_DATA) || defined(_WIN32S)
-
-	#else
 	static sigset_t *gBlockedSignalMask;
 
 	#if defined(_WIN32) && !defined(_WIN32S)
@@ -1974,7 +1731,6 @@ SOMEXTERN void SOMLINK somStartCriticalSection(void)
 #endif
 		}
 	}
-	#endif
 #endif
 }
 
@@ -1987,26 +1743,15 @@ SOMEXTERN void SOMLINK somEndCriticalSection(void)
 		LeaveCriticalSection(&som_global_mutex);
 #	endif
 #else
-	#if defined(_PLATFORM_MACINTOSH_) || defined(RHBOPT_SHARED_DATA) || defined(_WIN32S)
-	#else
-		#if defined(_WIN32) && !defined(_WIN32S)
-			if (som_tidMain!=GetCurrentThreadId()) return;
-		#endif
+	#ifdef _WIN32
+		if (som_tidMain!=GetCurrentThreadId()) return;
+	#endif
 
-		if (som_critical_count)
-		{
-			som_critical_count--;
+	if (som_critical_count)
+	{
+		som_critical_count--;
 
-			if (sigprocmask(SIG_SETMASK,som_critical_masks+som_critical_count,NULL))
-			{
-#ifdef SIGSYS
-				raise(SIGSYS);
-#else
-				raise(SIGABRT);
-#endif
-			}
-		}
-		else
+		if (sigprocmask(SIG_SETMASK,som_critical_masks+som_critical_count,NULL))
 		{
 #ifdef SIGSYS
 			raise(SIGSYS);
@@ -2014,7 +1759,15 @@ SOMEXTERN void SOMLINK somEndCriticalSection(void)
 			raise(SIGABRT);
 #endif
 		}
-	#endif
+	}
+	else
+	{
+#ifdef SIGSYS
+		raise(SIGSYS);
+#else
+		raise(SIGABRT);
+#endif
+	}
 #endif
 }
 
@@ -2082,7 +1835,7 @@ SOMEXTERN void SOMLINK somSetExpectedIds(unsigned long numIds)
 }
 
 SOMEXTERN void SOMLINK somTest(int condition, int severity,const char * fileName,
-                               int lineNum, const char * msg)
+                               int lineNum,const char * msg)
 {
 	if (!condition)
 	{
@@ -2093,10 +1846,7 @@ SOMEXTERN void SOMLINK somTest(int condition, int severity,const char * fileName
 
 SOMEXTERN int SOMLINK somVprintf(const char * fmt, va_list ap)
 {
-#if defined(RHBOPT_SHARED_DATA) || defined(USE_THREADS)
-som_thread_globals_t *tev=SOMKERN_get_thread_globals(0);
-somTD_SOMOutCharRoutine *local_SOMOutCharRoutine=tev ? tev->somOutCharRoutine : SOMOutCharRoutine;
-#endif
+	somTD_SOMOutCharRoutine *local_SOMOutCharRoutine=SOMOutCharRoutine;
 
 	if (local_SOMOutCharRoutine)
 	{
@@ -2141,18 +1891,13 @@ somTD_SOMOutCharRoutine *local_SOMOutCharRoutine=tev ? tev->somOutCharRoutine : 
  */
 SOMEXTERN void SOMLINK somPrefixLevel (long level)
 {
-#if defined(RHBOPT_SHARED_DATA) || defined(USE_THREADS)
-som_thread_globals_t *tev=SOMKERN_get_thread_globals(0);
-somTD_SOMOutCharRoutine *local_SOMOutCharRoutine=tev ? tev->somOutCharRoutine : SOMOutCharRoutine;
-#endif
+somTD_SOMOutCharRoutine *local_SOMOutCharRoutine=SOMOutCharRoutine;
 
 	if (local_SOMOutCharRoutine)
 	{
 		if (level)
 		{
-			unsigned long i;
-
-			i=level << 1;
+			unsigned long i=level << 1;
 
 			while (i--)
 			{
@@ -2270,13 +2015,7 @@ static somMToken SOMKERN_index_to_somMToken(somMethodTabPtr mtab,unsigned int i)
 
 SOMEXTERN SOMClassMgr SOMSTAR SOMLINK somMainProgram(void)
 {
-	SOMClassMgr SOMSTAR mgr=somEnvironmentNew();
-
-#ifdef RHBOPT_SHARED_DATA
-	SOMKERN_get_thread_globals(1);
-#endif
-
-	return mgr;
+	return somEnvironmentNew();
 }
 
 struct somDTSInfo
@@ -2572,18 +2311,6 @@ static void somcm_teardown(SOMClassMgr SOMSTAR somSelf)
 	}
 }
 
-#ifdef SOM_RESOLVE_DATA
-SOMEXTERN somTD_SOMOutCharRoutine ** SOMLINK resolve_SOMOutCharRoutine(void)
-{
-#ifdef RHBOPT_SHARED_DATA
-	som_thread_globals_t *tev=SOMKERN_get_thread_globals(1);
-	return tev ? &tev->somOutCharRoutine : NULL;
-#else
-	return &SOMOutCharRoutine;
-#endif
-}
-#endif /* SOM_RESOLVE_DATA */
-
 #ifdef somStartCriticalSection
 #undef somStartCriticalSection
 SOMEXTERN void SOMLINK somStartCriticalSection(void)
@@ -2673,6 +2400,8 @@ SOM_Scope void SOMLINK somcm_somDestruct(SOMClassMgr SOMSTAR somSelf,
 			--(somThis->classList.dataset._length)];
 		kdp->count--;
 	}
+
+	somThis->interfaceRepository=NULL;
 
 	somEndCriticalSection();
 

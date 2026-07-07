@@ -226,3 +226,7 @@ These install into /usr/lib. the remainder install into /usr/local/somlite.
 
 ## Postscript
 I found the memory allocation rules for full SOM 3.0 very onerous and in the days of managed and reference counted languages and appear arcane. Microsoft's COM has sticter rules and there is rarely doubt about who owns what. After some Objective-C programming on Mac OS X I was struck with how similar it was to SOM, but with the difference that SOM worked across multiple languages. Objective-C had the advantage that it could add reference counting at the compiler stage. This is for those of you who think the system should have an object model at the binary layer for compiled native code, where you have the freedom to call `SOMClass::somLoadClassFile` to extend your application.
+
+## Contributions
+
+The goal of this project is to be as close to SOM 2.1 som.dll as reasonable. If there is any major difference in the behaviour then I welcome contributions, but make them small. Each PR should be about a single behaviour that is different so it can be evaluated on its own merits.

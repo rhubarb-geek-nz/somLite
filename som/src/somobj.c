@@ -266,8 +266,13 @@ SOM_Scope void  SOMLINK somobj_somDumpSelfInt(
 		SOMObject SOMSTAR somSelf, 
         long level)
 {
+#ifdef SOMObject_somRelease
+	somPrefixLevel(level);
+	somPrintf("count=%ld\n",(long)SOMObjectGetData(somSelf)->lUsage);
+#else
 	SOM_IgnoreWarning(somSelf);
 	SOM_IgnoreWarning(level);
+#endif
 }
 
 #ifdef SOMObject_somCanDelete
@@ -321,6 +326,131 @@ SOM_Scope double SOMLINK somobj_somDispatchD(SOMObject SOMSTAR somSelf,somId id,
 	if (SOMObject_somDispatch(somSelf,(somToken *)(void *)&dbl,id ? id : desc,ap)) return dbl;
 	return 0.0;
 }
+
+/* the following are migrated from SOMDObject */
+#ifdef SOMObject_release
+SOM_Scope void SOMLINK somobj_release(SOMObject SOMSTAR somSelf,Environment *ev)
+{
+}
+#endif
+
+#ifdef SOMObject_duplicate
+SOM_Scope SOMObject SOMSTAR SOMLINK somobj_duplicate(SOMObject SOMSTAR somSelf,Environment *ev)
+{
+	return somSelf;
+}
+#endif
+
+#ifdef SOMObject_get_implementation
+SOM_Scope ImplementationDef SOMSTAR SOMLINK somobj_get_implementation(SOMObject SOMSTAR somSelf,Environment *ev)
+{
+	return NULL;
+}
+#endif
+
+#ifdef SOMObject_create_request
+SOM_Scope ORBStatus SOMLINK somobj_create_request(
+	SOMObject SOMSTAR somSelf,
+	/* out */ Environment *ev,
+	/* in */ Context SOMSTAR ctx,
+	/* in */ Identifier operation,
+	/* in */ NVList SOMSTAR arg_list,
+	/* inout */ NamedValue *result,
+	/* out */ Request SOMSTAR *request,
+	/* in */ Flags req_flags)
+{
+	RHBOPT_throw_StExcep(ev,NO_IMPLEMENT,NotImplemented,NO);
+
+	return SOMDERROR_NotImplemented;
+}
+#endif
+
+#ifdef SOMObject_create_request_args
+SOM_Scope ORBStatus SOMLINK somobj_create_request_args(
+	SOMObject SOMSTAR somSelf,
+	/* out */ Environment *ev,
+	/* in */ Identifier operation,
+	/* out */ NVList SOMSTAR *arg_list,
+	/* out */ NamedValue *result)
+{
+	RHBOPT_throw_StExcep(ev,NO_IMPLEMENT,NotImplemented,NO);
+
+	return SOMDERROR_NotImplemented;
+}
+#endif
+
+#ifdef SOMObject_get_interface
+struct somobj_get_interface
+{
+	somId idLookup;
+	Repository SOMSTAR rep;
+	char *clsId;
+};
+
+RHBOPT_cleanup_begin(somobj_get_interface_cleanup,pv)
+
+struct somobj_get_interface *data=pv;
+
+	if (data->clsId) SOMFree(data->clsId);
+	if (data->idLookup) SOMFree(data->idLookup);
+	if (data->rep)
+	{
+		Environment ev;
+		SOM_InitEnvironment(&ev);
+		SOMObject_release(data->rep,&ev);
+		SOM_UninitEnvironment(&ev);
+	}
+
+RHBOPT_cleanup_end
+
+SOM_Scope InterfaceDef SOMSTAR SOMLINK somobj_get_interface(
+	SOMObject SOMSTAR somSelf,
+	/* out */ Environment *ev)
+{
+struct somobj_get_interface data={NULL,NULL,NULL};
+InterfaceDef SOMSTAR ret=NULL;
+char *p=SOMObject_somGetClassName(somSelf);
+size_t len=strlen(p);
+
+	RHBOPT_cleanup_push(somobj_get_interface_cleanup,&data);
+
+	data.clsId=SOMMalloc(len+3);
+	data.clsId[0]=':';
+	data.clsId[1]=':';
+	memcpy(data.clsId+2,p,len+1);
+
+	data.idLookup=somIdFromString("lookup_id");
+
+	data.rep=SOMClassMgr__get_somInterfaceRepository(SOMClassMgrObject);
+
+	if (data.rep && (NO_EXCEPTION==ev->_major))
+	{
+		if (!somva_SOMObject_somDispatch(data.rep,
+						(somToken *)(void *)&ret,
+						data.idLookup,
+						data.rep,ev,data.clsId))
+		{
+			RHBOPT_throw_StExcep(ev,BAD_OPERATION,DispatchError,NO);
+		}
+	}
+	else
+	{
+		RHBOPT_throw_StExcep(ev,INTF_REPOS,IRNotFound,NO);
+	}
+
+	RHBOPT_cleanup_pop();
+
+	return ret;
+}
+#endif
+
+#ifdef SOMObject_is_proxy
+SOM_Scope boolean SOMLINK somobj_is_proxy(SOMObject SOMSTAR somSelf,
+										  Environment *ev)
+{
+	return 0;
+}
+#endif
 
 #ifdef _DEBUG
 static struct somParentClassInfo *somobj_get_info_for(

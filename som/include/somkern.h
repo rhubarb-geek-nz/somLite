@@ -384,29 +384,11 @@ typedef struct som_globals_t
 	#endif
 #endif
 	boolean dll_alive;
-#ifdef RHBOPT_SHARED_DATA
-	struct som_thread_globals_t *apps;
-#else
-	SOMObject SOMSTAR repository;
-#endif
 } som_globals_t;
 
 typedef struct som_thread_globals_t
 {
 	Environment ev;
-#ifdef RHBOPT_SHARED_DATA
-	#ifdef _WIN32
-		unsigned long tid;
-	#else
-		ProcessSerialNumber psn;
-	#endif
-	struct som_thread_globals_t *next;
-	SOMObject SOMSTAR repository;
-	somTD_SOMError *somError;
-#endif
-#if defined(RHBOPT_SHARED_DATA) || defined(USE_THREADS)
-	somTD_SOMOutCharRoutine *somOutCharRoutine;
-#endif
 	unsigned short persistent_ids;
 	char somLocateClassFile[260];
 } som_thread_globals_t;
@@ -421,37 +403,6 @@ typedef struct som_thread_globals_t
 
 #define SOMKERN_guard_memory		SOMKERN_guard
 #define SOMKERN_unguard_memory		SOMKERN_unguard
-
-#ifdef _PLATFORM_MACINTOSH_
-	#ifdef USE_ASLM
-		struct somshlb_t *dlopen(char *,int);
-		void *dlsym(struct somshlb_t *,const char *);
-		void dlclose(struct somshlb_t *);
-	#endif
-#endif
-
-#ifdef SOM_RESOLVE_DATA
-	extern somTD_SOMCalloc				*SOMCalloc;
-	extern somTD_SOMMalloc				*SOMMalloc;
-	extern somTD_SOMRealloc				*SOMRealloc;
-	extern somTD_SOMFree				*SOMFree;
-	extern somTD_SOMCreateMutexSem		*SOMCreateMutexSem;
-	extern somTD_SOMRequestMutexSem		*SOMRequestMutexSem;
-	extern somTD_SOMReleaseMutexSem		*SOMReleaseMutexSem;
-	extern somTD_SOMDestroyMutexSem		*SOMDestroyMutexSem;
-	extern somTD_SOMGetThreadId			*SOMGetThreadId;
-	extern somTD_SOMLoadModule			*SOMLoadModule;
-	extern somTD_SOMDeleteModule		*SOMDeleteModule;
-	extern somTD_SOMClassInitFuncName   *SOMClassInitFuncName;
-
-	extern SOMClassMgr SOMSTAR SOMClassMgrObject;
-
-	#ifdef RHBOPT_SHARED_DATA
-		#define SOMError	 (SOMKERN_get_thread_globals(0)->somError)
-	#else
-		extern somTD_SOMError	  *SOMError;
-	#endif
-#endif
 
 #include <somderr.h>
 #include <stexcep.h>

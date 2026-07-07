@@ -45,7 +45,7 @@ typedef SOMObject CORBAObject;
 
 typedef unsigned char octet;
 typedef char *string;
-typedef char *Identifier;	/* originally in somcorba.h */
+typedef char *Identifier;
 
 typedef enum exception_type 
 {
