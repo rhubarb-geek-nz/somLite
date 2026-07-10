@@ -55,53 +55,30 @@
 #	endif
 #endif
 
-#ifdef USE_APPLE_SOM
-#	define SOMInitModule_proto(modname)  SOMEXTERN void SOMLINK modname##_SOMInitModule(long major,long minor,char *classname)
-#	define SOMInitModule_call(modname,major,minor,cls)    modname##_SOMInitModule(major,minor,cls)
-
-#	define SOMInitModule_begin(modname)  \
-		SOMEXTERN void SOMLINK SOMInitModule_proto(modname); \
-		SOMEXTERN void SOMLINK SOMInitModule_proto(modname) {
-
-#	define	SOMInitModule_new(cls)	somNewClassByTT( (somClassDataStructure *) & cls##ClassData)
-
-#	define SOMInitModule_end			}
+#if defined(BUILD_STATIC)
+#	define SOMInitModule_export(modname)
 #else
-#	define somNewClassReference(cls)  (cls##ClassData.classObject ? \
-			cls##ClassData.classObject : \
-			cls##NewClass(cls##_MajorVersion,cls##_MinorVersion))
-
-#	ifdef PORT_FOR_MAC
-#		ifdef SOMObject_somFree
-#			undef SOMObject_somFree
-#		endif
-#	endif
-
-#	if defined(BUILD_STATIC)
-#		define SOMInitModule_export(modname)
+#	ifdef SOMDLLEXPORT
+#		define SOMInitModule_export(modname) SOMEXTERN SOMDLLEXPORT void SOMLINK SOMInitModule \
+			(long major,long minor,char *cls) { SOMInitModule_call(modname,major,minor,cls); } 
 #	else
-#		ifdef SOMDLLEXPORT
-#			define SOMInitModule_export(modname) SOMEXTERN SOMDLLEXPORT void SOMLINK SOMInitModule \
-				(long major,long minor,char *cls) { SOMInitModule_call(modname,major,minor,cls); } 
-#		else
-#			define SOMInitModule_export(modname) SOMEXTERN void SOMLINK SOMInitModule \
-				(long major,long minor,char *cls) { SOMInitModule_call(modname,major,minor,cls); } 
-#		endif
+#		define SOMInitModule_export(modname) SOMEXTERN void SOMLINK SOMInitModule \
+			(long major,long minor,char *cls) { SOMInitModule_call(modname,major,minor,cls); } 
 #	endif
+#endif
 
-#	define SOMInitModule_proto(modname)  SOMEXTERN void SOMLINK modname##_SOMInitModule(long major,long minor,char *classname)
-#	define SOMInitModule_call(modname,major,minor,cls)    modname##_SOMInitModule(major,minor,cls)
-#	define SOMInitModule_begin(modname)  SOMInitModule_proto(modname); \
+#define SOMInitModule_proto(modname)  SOMEXTERN void SOMLINK modname##_SOMInitModule(long major,long minor,char *classname)
+#define SOMInitModule_call(modname,major,minor,cls)    modname##_SOMInitModule(major,minor,cls)
+#define SOMInitModule_begin(modname)  SOMInitModule_proto(modname); \
 										  SOMInitModule_export(modname) \
 										  SOMInitModule_proto(modname) {
 
-#	define SOMInitModule_new(cls)	cls##NewClass(cls##_MajorVersion,cls##_MinorVersion)
+#define SOMInitModule_new(cls)	cls##NewClass(cls##_MajorVersion,cls##_MinorVersion)
 
-#	define SOMInitModule_end			}
+#define SOMInitModule_end			}
 
-#	ifndef RHBOPT_ASSERT_FAILED
-#		define RHBOPT_ASSERT_FAILED(a,b,c)  somAssert(0,SOM_Fatal,a,b,c)
-#	endif
+#ifndef RHBOPT_ASSERT_FAILED
+#	define RHBOPT_ASSERT_FAILED(a,b,c)  somAssert(0,SOM_Fatal,a,b,c)
 #endif
 
 #ifdef USE_THREADS
@@ -112,17 +89,6 @@
 #		define SOM_CATCH_ALL		CATCH_ALL
 #		define SOM_ENDTRY			ENDTRY	
 #	endif
-#endif
-
-#if defined(USE_APPLE_SOM) && defined(SOMSTAR)
-/* this the internal layout as used by SOMobjects for MacOS 2.0.8 */
-/* it appears to the same as used by other platforms */
-struct somMethodTabStruct 
-{
-	SOMClass		SOMSTAR	classObject;
-	somClassInfo			*classInfo;
-	char					*className;
-};
 #endif
 
 #ifdef _DEBUG_X
@@ -152,34 +118,6 @@ struct somMethodTabStruct
 
 #ifndef RHBOPT_throw_ODExceptionMessage
 #	define RHBOPT_throw_ODExceptionMessage(ev,what,m) ODSetSOMException(ev,kODErr##what,m)
-#endif
-
-#ifdef _PLATFORM_MACINTOSH_
-#	include <MacTypes.h>
-#		ifdef __cplusplus
-			extern "C" {
-#		endif
-		/* implemented in rhbpkern */
-		extern void somStartCriticalSection(void);
-		extern void somEndCriticalSection(void);
-
-		/* not in Mac headers, implemented in stdc.c */
-		extern int strcasecmp(const char *,const char *);
-
-#		ifdef BUILD_RHBPKERN
-			#pragma export list somStartCriticalSection,somEndCriticalSection
-#		else
-			#pragma import list somStartCriticalSection,somEndCriticalSection
-#		endif
-#		ifdef __cplusplus
-			}
-#		endif
-#	define RHBOPT_CFM_init(shlb_name,param_name)  \
-			OSErr shlb_name##_CFM_init(CFragInitBlockPtr); \
-			OSErr shlb_name##_CFM_init(CFragInitBlockPtr param_name)
-#	define RHBOPT_CFM_term(shlb_name) \
-			void shlb_name##_CFM_term(void); \
-			void shlb_name##_CFM_term(void)
 #endif
 
 #ifndef RHBOPT_ASSERT_FAILED

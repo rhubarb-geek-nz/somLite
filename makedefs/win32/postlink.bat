@@ -24,9 +24,7 @@ if Z%1==Z goto theend
 
 if not exist %1 goto failed
 
-set VERSION_EXE=%RHBTOOLS_BIN%\version.exe
-
-if exist "%VERSION_EXE%" "%VERSION_EXE%" %1
+PowerShell ..\..\toolbox\version.ps1 %1
 
 if errorlevel 1 goto failed
 

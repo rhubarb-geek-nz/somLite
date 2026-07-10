@@ -49,13 +49,13 @@ clean:
 			 $(INTDIR)\$(APPNAME).res	\
 			 $(OUTDIR)\$(APPNAME).lib
 	
-$(TARGET_EXE): $(OBJS) $(OUTDIR) $(INTDIR)\$(APPNAME).res
+$(TARGET_EXE): $(OBJS) $(OUTDIR) $(INTDIR)\$(APPNAME).res $(TARGET_DEF)
 	$(CC) $(CC_OUT_EXE)$@ $(OBJS)	\
 		$(CC_OUT_PDB)$(TARGET_PDB)	\
 		$(CC_LINK)					\
 		$(LD_SUBSYSTEM_CONSOLE)		\
 		$(LDFLAGS)					\
-		$(LD_DEF)$(TARGET_DEF) 				\
+		$(LD_DEF)$(TARGET_DEF) 		\
 		$(INTDIR)\$(APPNAME).res
 	$(POSTLINK_EXE) $@
 

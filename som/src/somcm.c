@@ -55,6 +55,21 @@ RHBOPT_cleanup_begin(somcm_somLocateClassFile_cleanup,pv)
 
 struct somcm_somLocateClassFile *data=pv;
 
+	if (data->rep)
+	{
+#ifdef SOMObject_release
+		Environment ev;
+		SOM_InitEnvironment(&ev);
+		SOMObject_release(data->rep,&ev);
+		SOM_UninitEnvironment(&ev);
+#else
+		static char *somRelease="somRelease";
+		somToken token=NULL;
+
+		somva_SOMObject_somDispatch(data->rep,&token,&somRelease,data->rep);
+#endif
+	}
+
 	if (data->result)
 	{
 		SOMFree(data->result);

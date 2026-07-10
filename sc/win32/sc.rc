@@ -25,7 +25,7 @@ BEGIN
             VALUE "FileDescription", "SOM IDL compiler front end\0"
             VALUE "FileVersion", DEPVERS_sc_STR4
             VALUE "InternalName", "sc\0"
-            VALUE "LegalCopyright", "© Roger Brown. 2007\0"
+            VALUE "LegalCopyright", "Copyright © Roger Brown. 2007\0"
     	    VALUE "LegalTrademarks", "SOMobjects is a trademark of IBM\0"
             VALUE "OriginalFilename", "SC.EXE\0"
             VALUE "ProductName", DEPVERS_somtkpkg_PRODUCTNAME

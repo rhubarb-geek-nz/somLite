@@ -40,6 +40,7 @@ The following were removed
 * The migrated `SOMDObject` methods
 * `somcpp` used the Visual Studio `CL.EXE /E` for the pre-preprocessr, this is replaced by one written in C#
 * `Subversion`, it is now hosted in `git`
+* Legacy binary toolkit
 * All the rest
 
 ## What was kept?
@@ -63,6 +64,10 @@ $ make -f Makefile.Linux "SOMBASE=/usr/lib/somlite"
 ## Rewrite of somcpp
 
 Instead of using `CL.EXE /E` a new implementation in [C#](toolbox2/somcpp/somcpp.cs) using [rhubarb-geek-nz.cpp](https://github.com/rhubarb-geek-nz/cpp) is used. This is compiled using `net48`.
+
+## Removal of legacy toolkit
+
+The dependency on [rhbtools](https://rhbtools.sf.net) as been removed and PowerShell is used in Windows builds for tasks such build order determination and `config.h` generation.
 
 ## Packaging on Linux
 

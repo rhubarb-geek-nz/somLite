@@ -22,7 +22,7 @@ BEGIN
             VALUE "FileDescription", "somtk test program\0"
             VALUE "FileVersion", "1.0.0.0\0"
             VALUE "InternalName", "somtestl\0"
-            VALUE "LegalCopyright", "© Roger Brown. 2007\0"
+            VALUE "LegalCopyright", "Copyright © Roger Brown. 2007\0"
             VALUE "OriginalFilename", "SOMTESTL.EXE\0"
             VALUE "ProductName", "somtk\0"
             VALUE "ProductVersion", "1.0.0.0\0"

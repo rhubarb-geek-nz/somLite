@@ -186,7 +186,7 @@
 
 #ifndef SOM_STRICT_IDL
 #	ifndef __cplusplus
-#		if (!defined(_PLATFORM_MACINTOSH_)) && (!defined(__OS2__))
+#		if !defined(__OS2__)
 #			define SOM_STRICT_IDL 
 #		endif
 #	endif
@@ -316,9 +316,7 @@
 #		define RHBOPT_cleanup_call(_pfn,_pv)	_pfn(_pv,0)
 #	endif
 #else
-#	if !defined(_PLATFORM_MACINTOSH_)
-#		include <rhbseh.h>
-#	endif
+#	include <rhbseh.h>
 #	if defined(__STDC__) || defined(__cplusplus) || defined(_WIN32)
 	typedef void *__RHBOPT_cleanup_ptr;
 	typedef void (*__RHBOPT_cleanup_proc)(__RHBOPT_cleanup_ptr);
@@ -389,11 +387,6 @@
 #	endif
 #endif
 
-#ifndef HAVE_SOCKLEN_T
-#	define HAVE_SOCKLEN_T
-	typedef int socklen_t;
-#endif
-
 #if defined(_PLATFORM_LITTLE_ENDIAN_) && defined(_PLATFORM_BIG_ENDIAN_)
 	#error cannot be both big and little endian
 #endif
@@ -416,33 +409,13 @@
 		,unsigned long,void *);
 #endif /* _WIN32 */
 
-#if (!defined(_PLATFORM_MACINTOSH_))
-#	ifdef _WIN32
-#		if !defined(_WIN32S)
-#			define USE_SIGNALS
-#		endif
-#	else
-#		if !defined(_WIN16)
-#			define USE_SIGNALS
-#		endif
+#define USE_SIGNALS
+
+#ifdef USE_SIGNALS
+#	if defined(USE_PTHREADS) || !defined(USE_THREADS)
+#		define USE_SIGACTION
+#		define USE_POSIX_SIGNALS
 #	endif
-
-#	ifdef USE_SIGNALS
-#		if defined(USE_PTHREADS) || !defined(USE_THREADS)
-#			define USE_SIGACTION
-#			define USE_POSIX_SIGNALS
-#		endif
-#	endif
-#endif
-
-#if defined(_DEBUG) && 0
-/* included so that tracing works... */
-#	include <stdio.h>
-#	include <string.h>
-
-#	define  sprintf		do not use
-#	define	strcat		do not use
-#	define	strcpy		do not use
 #endif
 
 #endif /* __RHBOPT_H__ */

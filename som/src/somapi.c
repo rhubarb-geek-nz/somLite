@@ -143,11 +143,7 @@ static void somAssertFailed(void)
 					EXCEPTION_NONCONTINUABLE,0,NULL);
 		#endif
 	#else
-		#ifdef _PLATFORM_MACINTOSH_
-			RAISE(abortErr);
-		#else
-			abort();
-		#endif
+		abort();
 	#endif
 #endif
 }

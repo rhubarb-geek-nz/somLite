@@ -370,14 +370,10 @@ int main(int argc,char **argv)
 
 					if ((*q=='/')||(*q=='\\')||(*q==':')) *q=0;
 
-#ifdef _PLATFORM_MACINTOSH_
-					strncat(out_file,":",sizeof(out_file)-1);
-#else
-	#ifdef _WIN32
+#ifdef _WIN32
 					strncat(out_file,"\\",sizeof(out_file)-1);
-	#else
+#else
 					strncat(out_file,"/",sizeof(out_file)-1);
-	#endif
 #endif
 				}
 

@@ -19,9 +19,8 @@
 
 !include $(MAKEDEFS)
 
-SC=$(SOMTOOLS_BIN)\sc.exe
-PDL=$(SOMTOOLS_BIN)\pdl.exe
-IDLTOOL=$(RHBTOOLS_BIN)\idltool.exe
+SC=sc.exe
+PDL=pdl.exe
 
 SOM_IDL=		..\..\somd\somdtype.idl			\
 				..\..\somd\stexcep.idl
@@ -63,14 +62,16 @@ $(SOMIDL_HEADERS) $(SOMIDL_IDL):
 	mkdir $@
 
 $(PRODUCTS_PDL): $(SOMIDL_IDL) $(SOM_IDL)
-	"$(IDLTOOL)" "$(PDL)" ..\..\somd -o $@
+	SET PATH=$(SOMTOOLS_BIN);$(PATH)
+	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(PDL)" ..\..\somd ..\..\somir -o $@ <NUL:
 
 $(PRODUCTS_SC): $(SOMIDL_HEADERS) $(PRODUCTS_PDL)
-	"$(IDLTOOL)" "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL)
+	SET PATH=$(SOMTOOLS_BIN);$(PATH)
+	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) <NUL:
 
 $(SOMDTYPE_SC): $(SOMIDL_HEADERS) $(PRODUCTS_PDL)
-	"$(IDLTOOL)" "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) -DEMIT_SOMDTYPES
-
+	SET PATH=$(SOMTOOLS_BIN);$(PATH)
+	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) -DEMIT_SOMDTYPES <NUL:
 
 dist:
 

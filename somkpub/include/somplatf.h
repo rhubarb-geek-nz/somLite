@@ -26,20 +26,6 @@
 #ifndef somplatf_h
 #define somplatf_h
 
-#ifdef _PLATFORM_MACINTOSH_
-#	if GENERATINGCFM
-#		ifdef USE_APPLE_SOM
-#			error put the somincl folder last in include chain
-#		endif
-#	else
-#		define SOM_RESOLVE_DATA
-#	endif
-#else
-#	if defined(_WIN32S) || defined(_WIN16)
-#		define SOM_RESOLVE_DATA
-#	endif
-#endif
-
 #ifndef SOMLINK
 #	ifdef _WIN32
 #		if 1

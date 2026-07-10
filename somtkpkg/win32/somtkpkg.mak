@@ -30,7 +30,6 @@ TARGET_MSI=$(OUTDIR_DIST)\$(APPNAME).msi
 DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\net8.0\ddf2wxs.dll
 MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\net8.0\makezip.dll
 DEPVERS_H=..\..\include\win32\depvers.h
-SC=$(SOMTOOLS_BIN)\sc.exe
 
 all:
 
@@ -64,7 +63,7 @@ $(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(OUTDIR_TMP)\som.lib
 	echo .Set MaxDiskFileCount=0 >> $@
 	echo .Set MaxDiskSize=0 >> $@
 	echo .Set DestinationDir=include >> $@
-	"$(RHBTOOLS_BIN)\find.exe" $(OUTDIR_TMP)\include -type f >> $@
+	PowerShell.exe /C "Get-ChildItem $(OUTDIR_TMP)\include -File -Recurse | ForEach-Object { $$_.FullName }" >>$@
 	echo .Set DestinationDir=bin >> $@
 	for %d in ( sc pdl somipc somcpp ) do echo $(OUTDIR_BIN)\%d.exe >> $@
 	for %d in ( som ) do echo $(OUTDIR_BIN)\%d.dll >> $@

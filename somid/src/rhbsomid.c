@@ -25,14 +25,8 @@
 	#include <windows.h>
 #endif
 
-#define SOMDServer_VA_EXTERN
-#define SOMMProxyForObject_VA_EXTERN
-
 #ifdef BUILD_SOM
 	#include <somkern.h>
-/*	#define Flags		somkern_Flags
-	#define ORBStatus	somkern_ORBStatus
-	#define NamedValue	somkern_NamedValue*/
 #endif
 
 #include <som.h>
@@ -100,23 +94,10 @@ SOMEXTERN void SOMLINK
 			somId *pid=(somId *)foreign_addr;
 			somId id=*pid;
 			somToken token=NULL;
-#ifdef USE_APPLE_SOM		
-			data.token=somMakeStringFromId(id);
-#else
-			char *p=somStringFromId(id);
-#endif
 			data.mid=somIdFromString("write_string");
+			char *p=somStringFromId(id);
 
-/*			CosStream_StreamIO_write_string(stream,ev,p);*/
-
-			somva_SOMObject_somDispatch(stream,&token,data.mid,
-				stream,ev,
-#ifdef USE_APPLE_SOM		
-				data.token
-#else
-				p
-#endif
-				);
+			somva_SOMObject_somDispatch(stream,&token,data.mid,stream,ev,p);
 		}
 		break;
 	case SOMD_OpDemarshal:
@@ -125,12 +106,9 @@ SOMEXTERN void SOMLINK
 			somId *pid=(somId *)foreign_addr;
 			data.mid=somIdFromString("read_string");
 
-	/*		token=CosStream_StreamIO_read_string(stream,ev);*/
-
 			*pid=NULL;
 
-			somva_SOMObject_somDispatch(stream,&data.token,data.mid,
-				stream,ev);
+			somva_SOMObject_somDispatch(stream,&data.token,data.mid,stream,ev);
 
 			if (ev->_major)
 			{

@@ -19,8 +19,7 @@
 
 !include $(MAKEDEFS)
 
-SC=$(SOMTOOLS_BIN)\sc.exe
-IDLTOOL=$(RHBTOOLS_BIN)\idltool.exe
+SC=sc.exe
 
 SOM_INTDIR=..\..\som\$(PLATFORM)\$(BUILDTYPE)
 SOMKERNP_KIH=$(SOM_INTDIR)\somkernp.kih
@@ -33,16 +32,17 @@ SOM_HEADERS=	$(SOM_INTDIR)\somobj.h		\
 				$(SOM_INTDIR)\somcm.ih		\
 				$(SOM_INTDIR)\rhbsomuk.h
 
-OUTPUTS=	$(SOMKERNP_KIH) $(SOM_HEADERS)
+OUTPUTS=$(SOMKERNP_KIH) $(SOM_HEADERS)
 
-all: 	$(SOM_INTDIR) $(OUTPUTS)
+all: $(SOM_INTDIR) $(OUTPUTS)
 
-$(SOMKERNP_KIH): "$(SC)"  ..\..\somkpub\som\somobj.idl  ..\..\somkpub\som\somcls.idl  ..\..\somkpub\som\somcm.idl
-	"$(IDLTOOL)" "$(SC)" ..\..\som -o $@ -p -D __GENERATE_SOM__  -I ..\..\somkpub\som -I ..\..\somidl
-	dir $@
+$(SOMKERNP_KIH): "$(SOMTOOLS_BIN)\$(SC)" ..\..\somkpub\som\somobj.idl ..\..\somkpub\som\somcls.idl ..\..\somkpub\som\somcm.idl
+	SET PATH=$(SOMTOOLS_BIN);$(PATH)
+	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(SC)" ..\..\som -o $@ -p -D__GENERATE_SOM__ -I ..\..\somkpub\som,..\..\somidl <NUL:
 
-$(SOM_HEADERS):
-	"$(IDLTOOL)" "$(SC)" ..\..\somkpub\som ..\..\somcdr -o $@ -p -I..\..\somkpub\som -I..\..\somidl
+$(SOM_HEADERS): "$(SOMTOOLS_BIN)\$(SC)"
+	SET PATH=$(SOMTOOLS_BIN);$(PATH)
+	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(SC)" ..\..\somkpub\som ..\..\somcdr -o $@ -p -I ..\..\somkpub\som,..\..\somidl <NUL:
 
 clean:
 	$(CLEAN) $(OUTPUTS) 
@@ -50,10 +50,5 @@ clean:
 $(SOM_INTDIR):
 	mkdir $@
 
-dist:
-
-
-
-
-test:
+dist test:
 

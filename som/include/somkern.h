@@ -73,13 +73,6 @@
 
 #include <rhbsomkd.h>
 
-#ifdef _PLATFORM_MACINTOSH_
-	#include <Processes.h>
-	#ifdef USE_ASLM
-		extern void somaslm_unloadall(void);
-	#endif
-#endif
-
 typedef unsigned short SOMKERN_mtoken_index_t;
 typedef unsigned long SOMKERN_data_index_t;
 

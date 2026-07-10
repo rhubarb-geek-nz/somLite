@@ -37,6 +37,7 @@ OBJS=	$(INTDIR)\rhbidl.obj		\
 
 TARGET_EXE=$(OUTDIR)\$(APPNAME).exe
 TARGET_PDB=$(OUTDIR)\$(APPNAME).pdb
+TARGET_DEF=..\$(PLATFORM_DEF)\$(APPNAME).def
 
 PARTOPTS=	$(STDOPTXX)					\
 			/DHAVE_CONFIG_HPP			\
@@ -59,13 +60,15 @@ clean:
 			 $(OUTDIR)\$(APPNAME).lib	\
 			 $(OUTDIR)\$(APPNAME).exp
 	
-$(TARGET_EXE): $(OBJS) $(OUTDIR) $(INTDIR)\$(APPNAME).res
-	$(CC) $(CC_OUT_EXE)$@ $(OBJS)		\
-		  $(CC_OUT_PDB)$(TARGET_PDB)	\
-		  $(CC_LINK)					\
-		  $(LD_SUBSYSTEM_CONSOLE)		\
-		  $(LD_ENTRY_MAIN) \
-		  $(LDFLAGS) $(INTDIR)\$(APPNAME).res
+$(TARGET_EXE): $(OBJS) $(OUTDIR) $(INTDIR)\$(APPNAME).res $(TARGET_DEF)
+	$(CC) $(CC_OUT_EXE)$@ $(OBJS)	\
+		$(CC_OUT_PDB)$(TARGET_PDB)	\
+		$(CC_LINK)					\
+		$(LD_SUBSYSTEM_CONSOLE)		\
+		$(LD_ENTRY_MAIN) 			\
+		$(LDFLAGS) 					\
+		$(LD_DEF)$(TARGET_DEF) 		\
+		$(INTDIR)\$(APPNAME).res
 	$(POSTLINK_EXE) $@
 
 $(INTDIR)\rhbidl.obj: ..\src\rhbidl.cpp $(INTDIR)

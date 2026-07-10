@@ -43,16 +43,12 @@ PLATFORM_MAKEFILE=win32
 CC=cl.exe
 !ENDIF
 
-XARGS_EXE=$(RHBTOOLS_BIN)\xargs.exe
-FIND_EXE=$(RHBTOOLS_BIN)\find.exe
-DEPENDS_EXE=$(RHBTOOLS_BIN)\depends.exe
+XARGS_PS1=..\..\toolbox\xargs.ps1
 
 MAKEDEFS_LST=..\$(PLATFORM)\$(BUILDTYPE)\makedefs.lst
-MAKEDEFS_CFL=..\$(PLATFORM)\$(BUILDTYPE)\makedefs.cfl
 
 STD_DIRS=$(OUTDIR_BASE)			\
 		 $(OUTDIR_BIN)			\
-		 $(OUTDIR_SBIN)			\
 		 $(OUTDIR_INCLUDE)		\
 		 $(OUTDIR_LIB)			\
 		 $(OUTDIR_TESTS)		\
@@ -71,16 +67,13 @@ clean:
 	set BUILDTYPE=$(BUILDTYPE)
 	set MAKEDEFS=$(MAKEDEFS)
 	set PLATFORM_HOST=$(PLATFORM_HOST)
-	set RHBTOOLS_BIN=$(RHBTOOLS_BIN)
 	set SOMTOOLS_BIN=$(SOMTOOLS_BIN)
 	cd ..\..\makedefs\win32
-	if exist $(MAKEDEFS_LST) if exist "$(XARGS_EXE)" "$(XARGS_EXE)" -n 1 makepart.bat clean <$(MAKEDEFS_LST) 
+	if exist $(MAKEDEFS_LST) PowerShell.exe -ExecutionPolicy Bypass -c "Get-Content $(MAKEDEFS_LST) | ..\..\toolbox\xargs.ps1 makepart.bat clean"
 	$(CLEAN) $(MAKEDEFS_LST)
-	$(CLEAN) $(MAKEDEFS_CFL)
 	$(CLEAN) $(OUTDIR_BIN)\*.lib
 	$(CLEAN) $(OUTDIR_BIN)\*.exp
 	if exist $(OUTDIR_BIN) rmdir $(OUTDIR_BIN)
-	if exist $(OUTDIR_SBIN) rmdir $(OUTDIR_SBIN)
 	if exist $(OUTDIR_INCLUDE) rmdir $(OUTDIR_INCLUDE)
 	if exist $(OUTDIR_LIB) rmdir $(OUTDIR_LIB)
 	if exist $(OUTDIR_TESTS) rmdir $(OUTDIR_TESTS)
@@ -96,10 +89,9 @@ allparts:
 	set MAKEDEFS=$(MAKEDEFS)
 	set PLATFORM_MAKEFILE=$(PLATFORM_MAKEFILE)
 	set PLATFORM_HOST=$(PLATFORM_HOST)
-	set RHBTOOLS_BIN=$(RHBTOOLS_BIN)
 	set SOMTOOLS_BIN=$(SOMTOOLS_BIN)
 	cd ..\..\makedefs\win32
-	"$(XARGS_EXE)" -n 1 <$(MAKEDEFS_LST) makepart.bat all
+	PowerShell.exe -ExecutionPolicy Bypass -c "Get-Content $(MAKEDEFS_LST) | ..\..\toolbox\xargs.ps1 makepart.bat all"
 
 dist test: 
 	set MAKE=$(MAKE)
@@ -109,10 +101,9 @@ dist test:
 	set MAKEDEFS=$(MAKEDEFS)
 	set PLATFORM_MAKEFILE=$(PLATFORM_MAKEFILE)
 	set PLATFORM_HOST=$(PLATFORM_HOST)
-	set RHBTOOLS_BIN=$(RHBTOOLS_BIN)
 	set SOMTOOLS_BIN=$(SOMTOOLS_BIN)
 	cd ..\..\makedefs\win32
-	"$(XARGS_EXE)" -n 1 <$(MAKEDEFS_LST) makepart.bat $@
+	PowerShell.exe -ExecutionPolicy Bypass -c "Get-Content $(MAKEDEFS_LST) | ..\..\toolbox\xargs.ps1 makepart.bat $@"
 
 makepart:
 	set PART=$(PART)
@@ -125,7 +116,6 @@ makepart:
 	set BUILDARCH=$(BUILDARCH) 
 	set BUILDTYPE=$(BUILDTYPE) 
 	set MAKEDEFS=$(MAKEDEFS)
-	set RHBTOOLS_BIN=$(RHBTOOLS_BIN)
 	set SOMTOOLS_BIN=$(SOMTOOLS_BIN)
 	set CC=$(CC)
 	set CPP=$(CC)
@@ -137,18 +127,14 @@ checkenv:
 	if "$(OUTDIR_DIST)" == "" exit 1
 	if "$(OUTDIR_BASE)" == "" exit 1
 	if "$(OUTDIR_BIN)" == "" exit 1
-	if "$(OUTDIR_SBIN)" == "" exit 1
 	if "$(OUTDIR_LIB)" == "" exit 1
 	if "$(OUTDIR_TOOLS)" == "" exit 1
 	if "$(OUTDIR_DLL)" == "" exit 1
 	if "$(OUTDIR_TESTS)" == "" exit 1
 	if "$(OUTDIR_INCLUDE)" == "" exit 1
 
-$(MAKEDEFS_LST): $(MAKEDEFS_CFL)
-	"$(DEPENDS_EXE)" <$(MAKEDEFS_CFL) >$@
-
-$(MAKEDEFS_CFL): "$(FIND_EXE)" "$(DEPENDS_EXE)"
-	"$(FIND_EXE)" ..\.. -name makedefs.cf >$@
+$(MAKEDEFS_LST): ..\..\toolbox\depends.ps1
+	PowerShell.exe -ExecutionPolicy Bypass ..\..\toolbox\depends.ps1 -Path ..\.. >$@
 
 sign: "$(OUTDIR_BIN)\som.dll" "$(OUTDIR_BIN)\somipc.exe" "$(OUTDIR_BIN)\sc.exe" "$(OUTDIR_BIN)\somcpp.exe" "$(OUTDIR_BIN)\pdl.exe"
 	signtool sign /a /sha1 601A8B683F791E51F647D34AD102C38DA4DDB65F /fd SHA256 /t http://timestamp.digicert.com "$(OUTDIR_BIN)\som.dll"

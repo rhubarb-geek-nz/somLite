@@ -19,10 +19,6 @@
 
 !include $(MAKEDEFS)
 
-SC=$(SOMTOOLS_BIN)\sc.exe
-PDL=$(SOMTOOLS_BIN)\pdl.exe
-IDLTOOL=$(RHBTOOLS_BIN)\idltool.exe
-
 SOM_IDL=..\som\somobj.idl ..\som\somcls.idl ..\som\somcm.idl
 SOMIDL_IDL=..\..\somidl
 SOMIDL_HEADERS=..\..\somidl\$(PLATFORM)
@@ -41,8 +37,6 @@ PRODUCTS_PDL=	$(SOMIDL_IDL)\somobj.idl	\
 
 all:		$(PRODUCTS_PDL) $(PRODUCTS_SC) 
 
-
-
 clean:
 	$(CLEAN) $(PRODUCTS_SC) $(PRODUCTS_PDL)
 
@@ -50,14 +44,14 @@ $(SOMIDL_HEADERS) $(SOMIDL_IDL):
 	mkdir $@
 
 $(PRODUCTS_PDL): $(SOMIDL_IDL) $(SOM_IDL)
-	"$(IDLTOOL)" "$(PDL)" ..\som -o $@
+	set PATH=$(SOMTOOLS_BIN);$(PATH)
+	PowerShell.exe ..\..\toolbox\idltool.ps1 pdl ..\som -o $@ <NUL:
 
 $(PRODUCTS_SC): $(SOMIDL_HEADERS) $(SOM_IDL)
-	"$(IDLTOOL)" "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL)
-
+	set PATH=$(SOMTOOLS_BIN);$(PATH)
+	PowerShell.exe ..\..\toolbox\idltool.ps1 sc $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) <NUL:
 
 dist:
-
 
 test:
 

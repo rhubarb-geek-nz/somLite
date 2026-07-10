@@ -60,14 +60,8 @@
 	#endif
 #endif
 
-#ifdef _PLATFORM_MACINTOSH_
-	#include <Errors.h>
-	#define HAVE_DLFCN_H
-#endif
-
 SOMInitModule_begin(som)
 SOMInitModule_end
-
 
 #if defined(_WIN32) && defined(UNICODE)
 static wchar_t *toWideString(const char *p,void *buf,size_t buflen)

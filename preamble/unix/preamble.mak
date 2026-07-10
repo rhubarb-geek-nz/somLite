@@ -28,13 +28,11 @@ DIRS=	$(OUTDIR) \
 		$(OUTDIR_TOOLS) \
 		$(OUTDIR_TESTS) \
 		$(OUTDIR_BIN) \
-		$(OUTDIR_SBIN) \
 		$(OUTDIR_SHLIB) \
 		$(OUTDIR_IMPLIB) \
 		$(OUTDIR_REFLIB) \
 		$(OUTDIR)/otherlib \
-		$(OUTDIR)/include	\
-		$(OUTDIR_FRAMEWORKS)
+		$(OUTDIR)/include
 
 all:
 	for DIR in $(DIRS); \

@@ -1,3 +1,4 @@
+#!/bin/sh -e
 #
 #  Copyright 2008, Roger Brown
 #
@@ -15,23 +16,22 @@
 #
 #  You should have received a copy of the GNU Lesser General Public License
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
-#
 
-COMMONOPTS=/W3 /MD /Zp8 /Zi /DNDEBUG /DWIN32 /D_WIN32_DCOM /D_WIN32_WINNT=0x600 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE /D_PLATFORM_LITTLE_ENDIAN_ /D_PLATFORM_WIN32_
-STDOPT=$(COMMONOPTS) /WX 
-STDOPTXX=$(COMMONOPTS)  /EHa
-CC=cl.exe /nologo
-CXX=$(CC)  
-CC_OUT_EXE=/Zi /Fe
-CC_OUT_DLL=/Zi /LD /Fe
-LDFLAGS=/MACHINE:IX86 /INCREMENTAL:NO /NOLOGO /DEBUG
-LDFLAGS_NXCOMPAT=/NXCOMPAT:NO
-MKTYPLIB=midl.exe /mktyplib203
-MKTYPLIB_FLAGS=
-CONFIG_OPTS=/WX $(COMMONOPTS)
-RCFLAGS=/DNDEBUG
-PLATFORM_DEF=win32
-POSTLINK_EXE=..\..\makedefs\$(PLATFORM)\postlink.bat 1
-POSTLINK_DLL=..\..\makedefs\$(PLATFORM)\postlink.bat 2
+cd $(dirname $0)/../..
 
-!INCLUDE ..\..\makedefs\$(PLATFORM_DEF)\makedefs.mk
+pwd
+
+cpp -DLIST_OPTIONS config/src/config2.c | while read A B
+do
+	case "$A" in
+		'#'* | '' )
+			;;
+		* )
+			C=$(find * -type f | grep -v config/src/config2.c | xargs grep $A | wc -l)
+			if test "$C" -eq 0
+			then
+				echo $A $C
+			fi
+			;;
+	esac
+done

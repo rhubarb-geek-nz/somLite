@@ -24,7 +24,7 @@
 #include <rhbopt.h>
 
 #ifdef _WIN32
-	#include <windows.h>
+#	include <windows.h>
 #endif
 
 #define RHBSOMKD_STATIC
@@ -44,22 +44,17 @@
 #include <somkern.h>
 
 #ifdef HAVE_UNISTD_H
-	#include <unistd.h>
+#	include <unistd.h>
 #endif
 
 /*	#include <errno.h>*/
 
 #ifdef HAVE_SIGNAL_H
-	#include <signal.h>
+#	include <signal.h>
 #endif
 
-#ifdef _PLATFORM_MACINTOSH_
-	#include <Errors.h>
-	#define HAVE_DLFCN_H
-#else
-	#if !defined(USE_THREADS) && !defined(HAVE_RAISE)
-		static int raise(int x) { return kill(getpid(),x); }
-	#endif
+#if !defined(USE_THREADS) && !defined(HAVE_RAISE)
+static int raise(int x) { return kill(getpid(),x); }
 #endif
 
 typedef RHBSOMUT_KeyDataSet SOMClassMgrList;
@@ -227,15 +222,7 @@ SOM_Scope void SOMLINK SOMKERN_error(int e_num,const char * file,int line)
 #ifdef _WIN32
 	RaiseException(e_num,EXCEPTION_NONCONTINUABLE,0,NULL);
 #else
-	#ifdef _PLATFORM_MACINTOSH_
-		#ifdef USE_ASLM
-			RAISE(e_num);
-		#else
-			pthread_exit(PTHREAD_CANCELED);
-		#endif
-	#else
-		kill(getpid(),SIGUSR1);
-	#endif
+	kill(getpid(),SIGUSR1);
 #endif
 }
 

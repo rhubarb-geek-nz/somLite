@@ -44,7 +44,7 @@ BEGIN
             VALUE "FileDescription", "PDL compiler\0"
             VALUE "FileVersion", DEPVERS_pdl_STR4
             VALUE "InternalName", "pdl\0"
-            VALUE "LegalCopyright", "© Roger Brown. 2002-2009\0"
+            VALUE "LegalCopyright", "Copyright © Roger Brown. 2002-2009\0"
             VALUE "OriginalFilename", "PDL.EXE\0"
             VALUE "ProductName", DEPVERS_somtkpkg_PRODUCTNAME
             VALUE "ProductVersion", DEPVERS_somtkpkg_STR4

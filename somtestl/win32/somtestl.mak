@@ -31,6 +31,7 @@ OBJS=	$(INTDIR)\$(APPNAME).obj	\
 TARGET_EXE=$(OUTDIR)\$(APPNAME).exe
 TARGET_PDB=$(OUTDIR)\$(APPNAME).pdb
 TARGET_MAP=$(INTDIR)\$(APPNAME).map
+TARGET_DEF=..\$(PLATFORM_DEF)\$(APPNAME).def
 
 PARTOPTS=	$(STDOPT)					\
 			/DHAVE_CONFIG_H				\
@@ -53,14 +54,18 @@ clean:
 			 $(TARGET_MAP)				\
 			 $(OBJS)					\
 			 $(INTDIR)\$(APPNAME).res	\
-			 $(OUTDIR)\$(APPNAME).lib
+			 $(OUTDIR)\$(APPNAME).lib	\
+			 $(OUTDIR)\$(APPNAME).exp
 	
-$(TARGET_EXE): $(OBJS) $(OUTDIR) $(INTDIR)\$(APPNAME).res
-	$(CC) $(CC_OUT_EXE)$@ $(OBJS) \
-		$(CC_OUT_PDB)$(TARGET_PDB)	\
-		$(CC_LINK) \
-		$(LD_SUBSYSTEM_CONSOLE) \
-		$(LDFLAGS) $(LDFLAGS_NXCOMPAT) $(INTDIR)\$(APPNAME).res
+$(TARGET_EXE): $(OBJS) $(OUTDIR) $(INTDIR)\$(APPNAME).res $(TARGET_DEF)
+	$(CC) $(CC_OUT_EXE)$@ $(OBJS)		\
+		$(CC_OUT_PDB)$(TARGET_PDB)		\
+		$(CC_LINK)						\
+		$(LD_SUBSYSTEM_CONSOLE)			\
+		$(LD_DEF)$(TARGET_DEF)			\
+		$(LDFLAGS)						\
+		$(LDFLAGS_NXCOMPAT) 			\
+		$(INTDIR)\$(APPNAME).res
 	$(POSTLINK_EXE) $@
 
 $(INTDIR)\$(APPNAME).obj: ..\src\$(APPNAME).c $(INTDIR)

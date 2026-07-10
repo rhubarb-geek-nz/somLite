@@ -25,12 +25,10 @@ if exist %2 mt.exe -manifest %2.manifest -outputresource:%2;#%1
 if errorlevel 1 goto theend
 del %2.manifest
 :theend
-set VERSION_EXE=%RHBTOOLS_BIN%\version.exe
-if exist "%VERSION_EXE%" "%VERSION_EXE%" %2 >NUL:
+PowerShell ..\..\toolbox\version.ps1 %2
 if errorlevel 1 goto failed
 goto theend
 :failed
 echo %2
 exit 1
 :theend
-
