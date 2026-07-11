@@ -61,15 +61,15 @@ clean:
 $(SOMIDL_HEADERS) $(SOMIDL_IDL):
 	mkdir $@
 
-$(PRODUCTS_PDL): $(SOMIDL_IDL) $(SOM_IDL)
+$(PRODUCTS_PDL): $(SOMIDL_IDL) $(SOM_IDL) "$(SOMTOOLS_BIN)\$(PDL)"
 	SET PATH=$(SOMTOOLS_BIN);$(PATH)
 	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(PDL)" ..\..\somd ..\..\somir -o $@ <NUL:
 
-$(PRODUCTS_SC): $(SOMIDL_HEADERS) $(PRODUCTS_PDL)
+$(PRODUCTS_SC): $(SOMIDL_HEADERS) $(PRODUCTS_PDL) "$(SOMTOOLS_BIN)\$(SC)"
 	SET PATH=$(SOMTOOLS_BIN);$(PATH)
 	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) <NUL:
 
-$(SOMDTYPE_SC): $(SOMIDL_HEADERS) $(PRODUCTS_PDL)
+$(SOMDTYPE_SC): $(SOMIDL_HEADERS) $(PRODUCTS_PDL) "$(SOMTOOLS_BIN)\$(SC)"
 	SET PATH=$(SOMTOOLS_BIN);$(PATH)
 	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) -DEMIT_SOMDTYPES <NUL:
 

@@ -43,15 +43,13 @@ dist: $(TARGET_CAB) $(TARGET_MSI) $(TARGET_ZIP)
 $(INTDIR) $(OUTDIR_TMP):
 	mkdir $@
 
+IDLSTEMS=somobj somcls somcm
+
 $(OUTDIR_TMP)\include: $(OUTDIR_TMP)
 	mkdir $@
-	copy ..\..\somtk\include\*.h $@	
-	copy ..\..\somkpub\include\*.xh $@	
-	copy ..\..\somkpub\include\*.h $@	
-	copy ..\..\somidl\*.idl $@	
-	copy ..\..\somidl\$(PLATFORM)\*.xh $@
-	copy ..\..\somidl\$(PLATFORM)\*.h $@
-	copy ..\..\somidl\$(PLATFORM)\somcls.api $@
+	copy ..\..\somkpub\include\*.* $@
+	for %d in ( $(IDLSTEMS) ) do copy ..\..\somidl\%d.idl $@
+	for %d in ( $(IDLSTEMS) ) do copy ..\..\somidl\$(PLATFORM)\%d.* $@
 
 $(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(OUTDIR_TMP)\som.lib
 	echo .Set CabinetName1=$(APPNAME).cab > $@

@@ -34,3 +34,4 @@ all test clean:
 	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
 	cd ..\typeiden
 	$(MAKE) -f Makefile.Win32 "SOMBASE=$(SOMBASE)" $@
+	cd ..\..\..\..

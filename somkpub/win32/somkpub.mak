@@ -22,6 +22,8 @@
 SOM_IDL=..\som\somobj.idl ..\som\somcls.idl ..\som\somcm.idl
 SOMIDL_IDL=..\..\somidl
 SOMIDL_HEADERS=..\..\somidl\$(PLATFORM)
+SC=sc.exe
+PDL=pdl.exe
 
 PRODUCTS_SC=	$(SOMIDL_HEADERS)\somobj.h	\
 				$(SOMIDL_HEADERS)\somobj.xh	\
@@ -43,13 +45,13 @@ clean:
 $(SOMIDL_HEADERS) $(SOMIDL_IDL):
 	mkdir $@
 
-$(PRODUCTS_PDL): $(SOMIDL_IDL) $(SOM_IDL)
+$(PRODUCTS_PDL): $(SOMIDL_IDL) $(SOM_IDL) "$(SOMTOOLS_BIN)\$(PDL)"
 	set PATH=$(SOMTOOLS_BIN);$(PATH)
-	PowerShell.exe ..\..\toolbox\idltool.ps1 pdl ..\som -o $@ <NUL:
+	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(PDL)" ..\som -o $@ <NUL:
 
-$(PRODUCTS_SC): $(SOMIDL_HEADERS) $(SOM_IDL)
+$(PRODUCTS_SC): $(SOMIDL_HEADERS) $(SOM_IDL) "$(SOMTOOLS_BIN)\$(SC)"
 	set PATH=$(SOMTOOLS_BIN);$(PATH)
-	PowerShell.exe ..\..\toolbox\idltool.ps1 sc $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) <NUL:
+	PowerShell.exe ..\..\toolbox\idltool.ps1 "$(SC)" $(SOMIDL_IDL) -o $@ -I$(SOMIDL_IDL) <NUL:
 
 dist:
 

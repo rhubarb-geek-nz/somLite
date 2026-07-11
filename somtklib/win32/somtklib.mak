@@ -20,6 +20,7 @@
 !include $(MAKEDEFS)
 
 SOMTKLIB=$(OUTDIR_LIB)\som.lib
+SOMLIBSRC=$(OUTDIR_DLL)\som.lib
 
 SOMKPUB_INCLUDE= \
 	$(OUTDIR_INCLUDE)\som.h \
@@ -49,14 +50,10 @@ SOMIDL_PUBLIC= \
 
 HEADERS=$(SOMIDL_PUBLIC) $(SOMKPUB_INCLUDE) $(SOMIDL_PLATFORM)
 
-all: $(SOMTKLIB) $(HEADERS) $(OUTDIR_LIB)\som.lib
+all: $(SOMTKLIB) $(HEADERS)
 
-SOMLIBS=$(OUTDIR_LIB)\somobjva.lib \
-		$(OUTDIR_DLL)\som.lib 
-
-$(SOMTKLIB): $(SOMLIBS)
-	if exist $@ del $@
-	lib  $(SOMLIBS) /OUT:$@ 
+$(SOMTKLIB): $(SOMLIBSRC)
+	COPY /Y $(SOMLIBSRC) $@
 
 clean:
 	$(CLEAN) $(SOMTKLIB) $(HEADERS)

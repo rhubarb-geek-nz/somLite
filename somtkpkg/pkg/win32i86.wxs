@@ -33,7 +33,7 @@
         <File Id="som.dll" KeyPath="yes" />
       </Component>
       <Component Id="som.lib" Guid="*" Directory="INSTALLDIR2" Win64="no" >
-        <File Id="somlite.lib" KeyPath="yes" />
+        <File Id="som.lib" KeyPath="yes" />
       </Component>
       <Component Id="somobj.idl" Guid="*" Directory="INSTALLDIR3" Win64="no" >
         <File Id="somobj.idl" KeyPath="yes" />
