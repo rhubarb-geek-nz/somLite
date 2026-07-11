@@ -175,9 +175,6 @@ static int do_emit(
 		/*		printf("This should be the IR generator\n",buf);*/
 				RHBir_emitter emitter(&r,&out);
 				emitter.generate(&out,root_idl);
-#ifdef _PLATFORM_MACINTOSH_
-				fsetfileinfo(buf,SOMIR_CREATOR,SOMIR_TYPE);
-#endif
 				default_emitflag=old_emit;
 			}
 			else
@@ -261,24 +258,10 @@ void bomb(const char *p)
 		exit(1);
 #	endif
 #else
-#ifdef _PLATFORM_MACINTOSH_xxx
-	if (p)
-	{
-		unsigned char buf[256];
-		buf[0]=strlen(p);
-		if (*p) memcpy(&buf[1],p,buf[0]);
-		DebugStr(buf);
-	}
-	else
-	{
-		DebugStr("\p");
-	}
-#else
 	fprintf(stderr,"SC: fatal: %s\n",p);
 	fflush(stdout);
 	fflush(stderr);
 	exit(1);
-#endif
 #endif
 }
 

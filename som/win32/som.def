@@ -92,21 +92,11 @@ EXPORTS
 			somExceptionFree
 			somSetException
 			somGetGlobalEnvironment
-			somIdMarshal
 			somStartCriticalSection
 			somEndCriticalSection
 			SOMOutCharRoutine
 			somCheckArgs
 			somFreeThreadData
-			somva_SOMObject_somDispatchV
-			somva_SOMObject_somDispatchL
-			somva_SOMObject_somDispatchA
-			somva_SOMObject_somDispatchD
 			somva_SOMObject_somDispatch
 			somva_SOMObject_somClassDispatch
-			va_SOMObject_somDispatchV		PRIVATE
-			va_SOMObject_somDispatchL		PRIVATE
-			va_SOMObject_somDispatchA		PRIVATE
-			va_SOMObject_somDispatchD		PRIVATE
 			va_SOMObject_somDispatch		PRIVATE
-			va_SOMObject_somClassDispatch	PRIVATE

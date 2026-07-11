@@ -4207,22 +4207,6 @@ void RHBheader_emitter::generate_new_class(RHBoutput *out,RHBinterface *iface,RH
 	dump_nest(out,2);
 	out_printf(out,"somtminorVersion);\n");
 
-	if (iface->_parents.length())
-	{
-		if (0)
-		{
-			unsigned long k=0;
-
-			while (k < iface->_parents.length())
-			{
-				dump_nest(out,1);
-				get_c_name(iface->_parents.get(k),n,sizeof(n));
-				out_printf(out,"somReleaseClassReference(%s_classObject);\n",n);
-				k++;
-			}
-		}
-	}
-
 /*	dump_nest(out,1);
 	get_c_name(iface,n);
 	i=sprintf(buf,"return %s_classObject;\n",n);
@@ -7838,75 +7822,12 @@ boolean RHBheader_emitter::is_operation_procedure(RHBoperation *op)
 	return 0;
 }
 
-#ifdef _PLATFORM_MACINTOSH_
-void RHBheader_emitter::align_begin(RHBoutput *out,boolean user_data,int nest)
-#else
 void RHBheader_emitter::align_begin(RHBoutput *,boolean,int)
-#endif
 {
-#ifdef _PLATFORM_MACINTOSH_
-	char buf[256];
-	int i;
-	dump_nest(out,nest);
-	i=sprintf(buf,"#ifdef _PLATFORM_MACINTOSH_\n");
-	out->write(buf,i);
-
-	dump_nest(out,nest+1);
-	i=sprintf(buf,"#if powerc\n");
-	out->write(buf,i);
-
-	dump_nest(out,nest+2);
-	if (user_data)
-	{
-		i=sprintf(buf,"#pragma options align=mac68k\n");
-	}
-	else
-	{
-		i=sprintf(buf,"#pragma options align=power\n");
-	}
-
-	out->write(buf,i);
-
-	dump_nest(out,nest+1);
-	i=sprintf(buf,"#endif /* powerc */\n");
-	out->write(buf,i);
-
-	dump_nest(out,nest);
-	i=sprintf(buf,"#endif /* _PLATFORM_MACINTOSH_ */\n");
-	out->write(buf,i);
-#endif
 }
 
-#ifdef _PLATFORM_MACINTOSH_
-void RHBheader_emitter::align_end(RHBoutput *out,boolean user_data,int nest)
-#else
 void RHBheader_emitter::align_end(RHBoutput *,boolean,int)
-#endif
 {
-#ifdef _PLATFORM_MACINTOSH_
-	char buf[256];
-	int i;
-
-	dump_nest(out,nest);
-	i=sprintf(buf,"#ifdef _PLATFORM_MACINTOSH_\n");
-	out->write(buf,i);
-
-	dump_nest(out,nest+1);
-	i=sprintf(buf,"#if powerc\n");
-	out->write(buf,i);
-
-	dump_nest(out,nest+2);
-	i=sprintf(buf,"#pragma options align=reset\n");
-	out->write(buf,i);
-
-	dump_nest(out,nest+1);
-	i=sprintf(buf,"#endif /* powerc */\n");
-	out->write(buf,i);
-
-	dump_nest(out,nest);
-	i=sprintf(buf,"#endif /* _PLATFORM_MACINTOSH_ */\n");
-	out->write(buf,i);
-#endif
 }
 
 int RHBheader_emitter::is_unsigned(RHBtype *typ)

@@ -21,7 +21,6 @@ include $(MAKEDEFS)
 
 TARGET=$(OUTDIR_SHLIB)/$(DLLPREFIX)som$(DLLSUFFIX)
 OBJS=$(INTDIR)/somkern.o \
-	 $(INTDIR)/rhbsomid.o \
 	 $(INTDIR)/somalloc.o \
 	 $(INTDIR)/somobjva.o \
 	 $(INTDIR)/somapi.o \
@@ -56,9 +55,6 @@ $(TARGET): $(OBJS)
 		`$(SHLB_MAP) som som` \
 		$(STDLIB) \
 		$(LINKDLL_TAIL)
-
-$(INTDIR)/rhbsomid.o: ../../somid/src/rhbsomid.c 
-	$(CC_DLL) $(CC_OPT) -c ../../somid/src/rhbsomid.c -o $@
 
 $(INTDIR)/somalloc.o: ../src/somalloc.c 
 	$(CC_DLL) $(CC_OPT) -c ../src/somalloc.c -o $@ 

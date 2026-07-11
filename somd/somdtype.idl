@@ -28,18 +28,9 @@
 
 enum completion_status {YES,NO,MAYBE};
 
-#ifdef EMIT_SOMDTYPES
-#pragma somemittypes on
-#endif
-
-#ifdef EMIT_SOMDTYPES
-#pragma somemittypes off
-#endif
-
 module SOMD
 {
-	enum marshaling_direction_t {DirCall,DirReply};
-	enum marshaling_op_t {OpMarshal,OpDemarshal,OpFreeStorage};
+	const string SOMDVersion = "2.1";
 };
 
 #endif /* somdtype_idl */

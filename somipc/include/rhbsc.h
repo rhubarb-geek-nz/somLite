@@ -81,7 +81,7 @@ typedef struct U_KeyUnion
 		#define _PLATFORM_WIN32_
 	#endif
 #else
-	#if (!defined(_PLATFORM_MACINTOSH_)) && (!defined(__OS2__)) && (!defined(_PLATFORM_UNIX_))
+	#if (!defined(__OS2__)) && (!defined(_PLATFORM_UNIX_))
 		/* previously used to look for 'unix' first */
 		#define _PLATFORM_UNIX_
 	#endif

@@ -57,7 +57,6 @@ OBJS=	$(INTDIR)\somkern.obj	\
 		$(INTDIR)\somkpath.obj	\
 		$(INTDIR)\sommutex.obj	\
 		$(INTDIR)\somapi.obj	\
-		$(INTDIR)\rhbsomid.obj	\
 		$(INTDIR)\link386.obj
 
 all: $(TARGET_DLL)
@@ -97,9 +96,6 @@ $(INTDIR)\somkpath.obj: ..\src\somkpath.c $(INTDIR)
 
 $(INTDIR)\somthunk.obj: ..\win32\somthunk.c $(INTDIR)
 	$(CC) /c $(PARTOPTS) $(CC_OUT_OBJ)$@ ..\win32\somthunk.c
-
-$(INTDIR)\rhbsomid.obj: ..\..\somid\src\rhbsomid.c $(INTDIR)
-	$(CC) /c $(PARTOPTS) $(CC_OUT_OBJ)$@ ..\..\somid\src\rhbsomid.c
 
 $(INTDIR)\link386.obj: ..\win32\link386.c $(INTDIR)
 	$(CC) /c $(PARTOPTS) $(CC_OUT_OBJ)$@ ..\win32\link386.c
