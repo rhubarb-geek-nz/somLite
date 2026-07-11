@@ -24,9 +24,9 @@ INTDIR=$(BUILDTYPE)
 OUTDIR_TMP=$(INTDIR)\content
 MAKEDEFS_CFS=..\..\makedefs\$(PLATFORM)\$(BUILDTYPE)\makedefs.cfl
 TARGET_DDF=$(INTDIR)\somtkpkg.ddf
-TARGET_CAB=$(OUTDIR_DIST)\$(APPNAME).cab
-TARGET_ZIP=$(OUTDIR_DIST)\$(APPNAME).zip
-TARGET_MSI=$(OUTDIR_DIST)\$(APPNAME).msi
+TARGET_CAB=$(OUTDIR_DIST)\$(APPNAME)-$(VSCMD_ARG_TGT_ARCH).cab
+TARGET_ZIP=$(OUTDIR_DIST)\$(APPNAME)-$(VSCMD_ARG_TGT_ARCH).zip
+TARGET_MSI=$(OUTDIR_DIST)\$(APPNAME)-$(VSCMD_ARG_TGT_ARCH).msi
 DDF2WXS_DLL=..\..\toolbox2\ddf2wxs\bin\$(BUILDTYPE)\net8.0\ddf2wxs.dll
 MAKEZIP_DLL=..\..\toolbox2\makezip\bin\$(BUILDTYPE)\net8.0\makezip.dll
 DEPVERS_H=..\..\include\win32\depvers.h
@@ -35,7 +35,7 @@ all:
 
 clean:
 	if exist $(OUTDIR_TMP) rmdir /S /Q $(OUTDIR_TMP)
-	$(CLEAN) "$(TARGET_MSI)" "$(TARGET_CAB)" "$(TARGET_ZIP)" "$(TARGET_DDF)" setup.inf setup.rpt "$(OUTDIR_DIST)\$(APPNAME).wixpdb" 
+	$(CLEAN) "$(TARGET_MSI)" "$(TARGET_CAB)" "$(TARGET_ZIP)" "$(TARGET_DDF)" setup.inf setup.rpt "$(OUTDIR_DIST)\$(APPNAME)-$(VSCMD_ARG_TGT_ARCH).wixpdb"
 	$(CLEAN) somlite.wxs somlite.wixobj "$(TARGET_DDF).cabinet"
 	
 dist: $(TARGET_CAB) $(TARGET_MSI) $(TARGET_ZIP)
@@ -52,7 +52,7 @@ $(OUTDIR_TMP)\include: $(OUTDIR_TMP)
 	for %d in ( $(IDLSTEMS) ) do copy ..\..\somidl\$(PLATFORM)\%d.* $@
 
 $(TARGET_DDF): $(OUTDIR_TMP)\include ..\win32\somtkpkg.mak $(OUTDIR_TMP)\som.lib
-	echo .Set CabinetName1=$(APPNAME).cab > $@
+	echo .Set CabinetName1=$(APPNAME)-$(VSCMD_ARG_TGT_ARCH).cab > $@
 	echo .Set DiskDirectory1=$(OUTDIR_DIST) >> $@
 	echo .Set CabinetFileCountThreshold=0 >> $@
 	echo .Set FolderFileCountThreshold=0 >> $@
