@@ -61,7 +61,7 @@ foreach ($run in (@{
 
 	$now = Get-Date
 
-	"/* Generated $now */" > $HDR	
+	Set-Content -Value "/* Generated $now */" -LiteralPath $HDR	-Encoding OEM
 
 	try
 	{
@@ -96,7 +96,7 @@ foreach ($run in (@{
 
 					if ($LastExitCode -eq 0)
 					{
-						"#define $NAME 1" >> $HDR
+						Add-Content -Value "#define $NAME 1" -LiteralPath $HDR -Encoding OEM
 
 						Write-Host $name
 					}
