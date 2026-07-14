@@ -61,7 +61,7 @@ foreach ($run in (@{
 
 	$now = Get-Date
 
-	Set-Content -Value "/* Generated $now */" -LiteralPath $HDR	-Encoding OEM
+	Set-Content -Value "/* Generated $now */" -LiteralPath $HDR -Encoding OEM
 
 	try
 	{

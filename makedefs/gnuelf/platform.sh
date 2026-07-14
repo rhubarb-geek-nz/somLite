@@ -394,17 +394,12 @@ STRIP=strip
 
 if test -z "$PKGBASE"
 then
-	case "$PLATFORM" in
-		*-*-netbsd* )
-			PKGBASE=usr/pkg/somlite
-			;;
-		*-*-freebsd* | *-*-openbsd* )
-			PKGBASE=usr/local/somlite
-			;;
-		* )
-			PKGBASE=usr/lib/somlite
-			;;
-	esac
+	if test -n "$PREFIX"
+	then
+		PKGBASE=$(echo $PREFIX | sed 's/^\///')
+	else
+		PKGBASE=usr/local
+	fi
 fi
 
 platform_cleanup

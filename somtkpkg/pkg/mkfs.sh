@@ -70,33 +70,6 @@ case "$INTDIR" in
 	;;
 esac
 
-if test -z "$PKGBASE"
-then
-	case `uname` in
-	Aix | aix )
-		PKGBASE=usr/lpp/somtk
-		;;
-	* )
-		PKGBASE=opt/somtk
-		;;
-	esac
-fi
-
-first()
-{
-	echo $1
-}
-
-last()
-{
-	last_v=
-	for last_d in $@
-	do
-		last_v="$last_d"
-	done
-	echo $last_v
-}
-
 copyBinFile()
 {
 	for y in $@

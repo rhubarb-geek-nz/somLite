@@ -20,7 +20,11 @@
 include $(MAKEDEFS)
 
 all test clean:
-	if test -f ../Makefile.$$(uname); then $(DLLPATHENV)=$$(cd $(OUTDIR)/lib; pwd) $(MAKE) -C .. -f Makefile.$$(uname) SOMBASE=$$(cd $(OUTDIR); pwd) $@; fi
+	case "$(PLATFORM_PROTO)" in \
+		"gnuelf" ) $(DLLPATHENV)=$$(cd $(OUTDIR)/lib; pwd) $(MAKE) -C .. -f Makefile.Linux SOMBASE=$$(cd $(OUTDIR); pwd) $@; ;; \
+		"darwin" ) $(DLLPATHENV)=$$(cd $(OUTDIR)/lib; pwd) $(MAKE) -C .. -f Makefile.Darwin SOMBASE=$$(cd $(OUTDIR); pwd) $@; ;; \
+		*) ;; \
+	esac
 
 dist install:
 

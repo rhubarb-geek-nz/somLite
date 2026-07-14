@@ -25,7 +25,6 @@ MAKEDEFS_DIR=makedefs/unix
 default: all
 
 all clean config install dist test: nosuch $(MAKEDEFS_DIR)/$(MAKEDEFS_SH)
-	chmod +x $(MAKEDEFS_DIR)/$(MAKEDEFS_SH)
 	cd $(MAKEDEFS_DIR); \
 	MAKE="$(MAKE)" \
 	CXX="$(CXX)" \
@@ -45,10 +44,6 @@ all clean config install dist test: nosuch $(MAKEDEFS_DIR)/$(MAKEDEFS_SH)
 	OUTDIR="$(OUTDIR)" \
 	./$(MAKEDEFS_SH) $@
 
-generic:
-	PLATFORM=generic PLATFORM_HOST=generic $(MAKE)
-
 nosuch:
-
 
 ## EOF ##

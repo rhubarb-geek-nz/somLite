@@ -64,5 +64,7 @@ dist:
 		MAKE="$(MAKE)" ../pkg/$(PLATFORM_PROTO).sh -r "$(OUTDIR)" -d "$(OUTDIR_DIST)" -t "$(INTDIR)"; \
 	fi
 
-install test:
+test:
 
+install:
+	../pkg/install.sh "OUTDIR=$(OUTDIR)" "PREFIX=$(PREFIX)" "DESTDIR=$(DESTDIR)" "PLATFORM=$(PLATFORM)"

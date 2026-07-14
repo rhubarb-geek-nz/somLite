@@ -19,10 +19,6 @@
 
 include $(MAKEDEFS)
 
-TARGET=$(OUTDIR_LIB)/libsomlite.a
-TMPLIB=$(INTDIR)/libsomlite.a
-STRIP=
-
 SOMKPUB_INCLUDE= \
 	$(OUTDIR)/include/som.h \
 	$(OUTDIR)/include/som.xh \
@@ -51,8 +47,8 @@ SOMIDL_PUBLIC= \
 
 HEADERS=$(SOMIDL_PUBLIC) $(SOMKPUB_INCLUDE) $(SOMIDL_PLATFORM)
 
-all: $(TARGET) $(HEADERS)
-	ls $(HEADERS) $(TARGET) >/dev/null
+all: $(HEADERS)
+	ls $(HEADERS) >/dev/null
 
 dist:
 	if test -f ../$(PLATFORM_PROTO)/dist.mak; then $(MAKE) -f ../$(PLATFORM_PROTO)/dist.mak BUILDTYPE=$(BUILDTYPE) PLATFORM=$(PLATFORM); fi
@@ -62,30 +58,6 @@ install test:
 clean:
 	$(CLEAN) $(TARGET) $(TMPLIB) $(INTDIR)/lib*.so $(HEADERS)
 	if test -f ../$(PLATFORM_PROTO)/dist.mak; then $(MAKE) -f ../$(PLATFORM_PROTO)/dist.mak clean BUILDTYPE=$(BUILDTYPE) PLATFORM=$(PLATFORM); fi
-
-$(TARGET): $(TMPLIB)
-	if test -f "$(TMPLIB)"; then mv "$(TMPLIB)" $@;	fi
-
-$(TMPLIB):
-	for d in som; \
-	do \
-		for e in so dylib; \
-		do \
-			if test -f "$(OUTDIR_LIB)/lib$$d.$$e"; \
-			then \
-				cp "$(OUTDIR_LIB)/lib$$d.$$e" "$(INTDIR)/lib$$d.$$e"; \
-				if test "$(STRIP)" != ""; then $(STRIP) "$(INTDIR)/lib$$d.$$e"; fi; \
-			fi; \
-		done; \
-	done
-	cd $(INTDIR); \
-	FOUND=; for d in lib*.so lib*.dylib; do if test -f "$$d"; then FOUND="$$FOUND $$d"; fi; done; \
-	if test "$$FOUND" != ""; \
-	then \
-		$(AR) $(ARFLAGS) `basename $@` $$FOUND; \
-		rm $$FOUND; \
-		if test "$(RANLIB)" != ""; then $(RANLIB) `basename $@`; fi; \
-	fi
 
 $(SOMKPUB_INCLUDE):
 	cp ../../somkpub/include/$$(basename $@) $@

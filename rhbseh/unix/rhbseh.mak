@@ -19,17 +19,26 @@
 
 include $(MAKEDEFS)
 
-TOOLS=	$(SHLB_EXP)				\
-		$(SHLB_MAP)				\
-		$(SHLB_REF)				\
-		$(SHLB_ENT)				\
-		$(SHLB_DLO)				\
-		$(ARLB_REF)
+OBJS=$(INTDIR)/rhbseh.o
+TARGET=$(OUTDIR_SHLIB)/$(SHLIBPREFIX)rhbseh$(SHLIBSUFFIX) 
 
-all: $(TOOLS)
-	if test "$(SHLIBPREFIX)" = ""; then exit 1; fi
-	if test "$(SHLIBSUFFIX)" = ""; then exit 1; fi
-	if test "$(DLLSUFFIX)" = ""; then exit 1; fi
+all: $(TARGET)
 
-clean dist install test:
+clean:
+	$(CLEAN) $(TARGET) $(OBJS)
+
+$(TARGET): $(OBJS)
+	if test -f "$@"; then rm "$@"; fi
+	$(LINKDLL) $(LINKDLL_HEAD) \
+		-o $@\
+		$(OBJS) \
+		`$(SHLB_EXP) rhbseh rhbseh` \
+		`$(SHLB_MAP) rhbseh rhbseh` \
+		$(STDLIB) \
+		$(LINKDLL_TAIL)
+
+$(INTDIR)/rhbseh.o: ../src/rhbseh.c 
+	$(CC_DLL) $(STDOPT) $(STDINCL) -I../include $(RHBSEH_CFLAGS) -DBUILD_RHBSEH -c ../src/rhbseh.c -o $@
+
+dist install test:
 

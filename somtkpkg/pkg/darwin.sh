@@ -1,4 +1,4 @@
-#!/bin/sh -ex
+#!/bin/sh -e
 
 . ../version.sh
 
@@ -43,62 +43,12 @@ rm -rf "$ROOTDIR"
 
 mkdir "$ROOTDIR"
 
-mkdir -p "$ROOTDIR/bin" "$ROOTDIR/lib" "$ROOTDIR/include"
-
-for d in h xh
-do
-	cp ../../somkpub/include/*.$d  "$ROOTDIR/include"
-done
-
-for d in somobj somcls somcm
-do
-	cp ../../somidl/$d.idl "$ROOTDIR/include"
-	cp ../../somidl/$PLATFORM/$d.* "$ROOTDIR/include"
-done
-
-for d in sc pdl somipc somcpp
-do
-	cp "$OUTDIR/bin/$d"  "$ROOTDIR/bin/$d"
-done
+DESTDIR="$ROOTDIR" ../pkg/install.sh
 
 (
-	cd "$OUTDIR/lib"
-	tar cf - libsom.*
-) | (
-	cd "$ROOTDIR/lib"
-	tar xvf -
-)
-
-(
+	set -e
 	cd "$ROOTDIR"
-	find * | xargs ls -ld
-)
-
-case "$MACOSX_DEPLOYMENT_TARGET" in
-10.2 )
-		(
-			cd "$ROOTDIR"
-			tar cf - *
-		) | (
-			gzip > "$OUTDIR_DIST/somlite-$VERSION-$PLATFORM.tar.gz"
-		)
-	;;
-* )
-	if ../../toolbox/pkgtool.sh gtar
-	then
-		GTAR=`../../toolbox/pkgtool.sh gtar`
-
-		if test "$GTAR" != ""
-		then
-			(
-				cd "$ROOTDIR"
-				$GTAR --owner=0 --group=0 --mode=-w --create --file - *
-			) | (
-				gzip > "$OUTDIR_DIST/somlite-$VERSION-$PLATFORM.tar.gz"
-			)
-		fi
-	fi
-	;;
-esac
+	tar --owner=0 --group=0 --mode=-w --create --file - $(find * -type f) $(find * -type l)
+) | bzip2 > "$OUTDIR_DIST/somlite-$VERSION-$PLATFORM.tar.bz2"
 
 echo done

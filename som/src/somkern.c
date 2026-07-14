@@ -75,6 +75,9 @@ typedef struct SOMClassMgrData *SOMClassMgrDataPtr;
 #	else
 		static CRITICAL_SECTION som_global_mutex;
 #	endif
+#else
+	static unsigned int som_critical_count;
+	static sigset_t som_critical_masks[64];
 #endif
 
 /* internal routines that have now been made static */
@@ -102,7 +105,9 @@ static void SOMKERN_end_thread(void *evv);
 static void SOMClass_unregistered(SOMClass SOMSTAR somSelf,somMethodTabPtr mtabs);
 static som_thread_globals_t *SOMKERN_get_thread_globals(char make);
 static struct somParentClassInfo *SOMKERN_get_this_class(somMethodTabPtr p);
+#ifdef USE_THREADS
 static som_globals_t som_globals;
+#endif
 static unsigned long SOMKERN_total_defined_methods(somStaticClassInfo *sci);
 static somMToken SOMKERN_index_to_somMToken(somMethodTabPtr mtab,unsigned int i);
 #ifndef SOMKERN_resolve
