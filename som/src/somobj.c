@@ -298,35 +298,6 @@ SOM_Scope void  SOMLINK somobj_somFree(SOMObject SOMSTAR somSelf)
 #endif
 }
 
-/* VLAD type specific dispatchers, obsolete */
-
-SOM_Scope void SOMLINK somobj_somDispatchV(SOMObject SOMSTAR somSelf,somId id,somId desc,va_list ap)
-{
-	somToken token=NULL;
-	SOMObject_somDispatch(somSelf,&token,id ? id : desc,ap);
-}
-
-SOM_Scope somToken SOMLINK somobj_somDispatchA(SOMObject SOMSTAR somSelf,somId id,somId desc,va_list ap)
-{
-	somToken token=NULL;
-	if (SOMObject_somDispatch(somSelf,&token,id ? id : desc,ap)) return token;
-	return NULL;
-}
-
-SOM_Scope long SOMLINK somobj_somDispatchL(SOMObject SOMSTAR somSelf,somId id,somId desc,va_list ap)
-{
-	long l=0;
-	if (SOMObject_somDispatch(somSelf,(somToken *)(void *)&l,id ? id : desc,ap)) return l;
-	return 0;
-}
-
-SOM_Scope double SOMLINK somobj_somDispatchD(SOMObject SOMSTAR somSelf,somId id,somId desc,va_list ap)
-{
-	double dbl=0.0;
-	if (SOMObject_somDispatch(somSelf,(somToken *)(void *)&dbl,id ? id : desc,ap)) return dbl;
-	return 0.0;
-}
-
 static unsigned long somobj_get_num_parents(SOMObject SOMSTAR somSelf,
 											SOMClass SOMSTAR cls)
 {

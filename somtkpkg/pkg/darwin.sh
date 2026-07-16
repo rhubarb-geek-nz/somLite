@@ -48,7 +48,7 @@ DESTDIR="$ROOTDIR" ../pkg/install.sh
 (
 	set -e
 	cd "$ROOTDIR"
-	tar --owner=0 --group=0 --mode=-w --create --file - $(find * -type f) $(find * -type l)
+	tar --owner=0 --group=0 --create --file - $(find * -type f) $(find * -type l)
 ) | bzip2 > "$OUTDIR_DIST/somlite-$VERSION-$PLATFORM.tar.bz2"
 
 echo done

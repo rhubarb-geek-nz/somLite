@@ -135,14 +135,6 @@ interface SOMObject
 	void somDumpSelf(in long level);
 	void somDumpSelfInt(in long level);
 
-#ifdef __PRIVATE__
-	/* obsolete methods, use somDispatch */
-	void somDispatchV(in somId methodId,in somId descriptor,in va_list ap);
-	long somDispatchL(in somId methodId,in somId descriptor,in va_list ap);
-	somToken somDispatchA(in somId methodId,in somId descriptor,in va_list ap);
-	double somDispatchD(in somId methodId,in somId descriptor,in va_list ap);
-#endif
-
 	/* SOM 2.1 style constructors/destructors */
 
 	void somDefaultInit(inout somInitCtrl ctrl);

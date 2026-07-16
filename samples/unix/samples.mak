@@ -21,8 +21,8 @@ include $(MAKEDEFS)
 
 all test clean:
 	case "$(PLATFORM_PROTO)" in \
-		"gnuelf" ) $(DLLPATHENV)=$$(cd $(OUTDIR)/lib; pwd) $(MAKE) -C .. -f Makefile.Linux SOMBASE=$$(cd $(OUTDIR); pwd) $@; ;; \
-		"darwin" ) $(DLLPATHENV)=$$(cd $(OUTDIR)/lib; pwd) $(MAKE) -C .. -f Makefile.Darwin SOMBASE=$$(cd $(OUTDIR); pwd) $@; ;; \
+		"gnuelf" ) $(MAKE) -C .. -f Makefile.Linux SOMBASE=$$(cd $(OUTDIR); pwd) $@; ;; \
+		"darwin" ) $(MAKE) -C .. -f Makefile.Darwin SOMBASE=$$(cd $(OUTDIR); pwd) $@; ;; \
 		*) ;; \
 	esac
 
