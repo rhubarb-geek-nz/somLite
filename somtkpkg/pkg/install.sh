@@ -35,7 +35,7 @@ do
 	install -d "$DESTDIR/$PREFIX/$d"
 done
 
-install "$OUTDIR/bin/sc" "$OUTDIR/bin/somcpp" "$OUTDIR/bin/somipc" "$DESTDIR/$PREFIX/bin"
+install "$OUTDIR/bin/pdl" "$OUTDIR/bin/sc" "$OUTDIR/bin/somcpp" "$OUTDIR/bin/somipc" "$DESTDIR/$PREFIX/bin"
 
 find "$OUTDIR/lib" -name "libsom.*" -type f | while read N
 do
