@@ -67,9 +67,13 @@ mkdir "$ROOTDIR"
 
 DESTDIR="$ROOTDIR" ../pkg/install.sh
 
+PREFIX=$(cd $ROOTDIR; find * -type d -name bin | while read N; do M=$(dirname $N); echo "/$M"; done)
+
+echo PREFIX=$PREFIX
+
 (
 	set -e
-	cd "$ROOTDIR"
+	cd "$ROOTDIR$PREFIX"
 	tar --owner=0 --group=0 --create --file - $(find * -type f) $(find * -type l)
 ) | bzip2 > "$OUTDIR_DIST/somlite-$VERSION-$OSNAME$OSVERS.tar.bz2"
 
@@ -80,10 +84,6 @@ then
 	rm -rf "$INTDIR/sdk" "$INTDIR/tools"
 
 	mkdir "$INTDIR/sdk" "$INTDIR/tools"
-
-	PREFIX=$(cd $ROOTDIR; find * -type d -name bin | while read N; do M=$(dirname $N); echo "/$M"; done)
-
-	echo PREFIX=$PREFIX
 
 	mv "$ROOTDIR$PREFIX/man" "$INTDIR/tools/man"
 	mv "$ROOTDIR$PREFIX/bin" "$INTDIR/tools/bin"
