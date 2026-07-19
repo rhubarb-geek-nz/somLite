@@ -215,7 +215,7 @@ lrwxr-xr-x  0 root   wheel       0 Jul  2 22:20 libsom.so.1 -> libsom.so.1.0
 
 These install into /usr/lib. the remainder install into /usr/pkg/somlite.
 
-## Packagine on OpenBSD
+## Packaging on OpenBSD
 
 Native packages are created on OpenBSD
 
@@ -235,3 +235,11 @@ I found the memory allocation rules for full SOM 3.0 very onerous and in the day
 ## Contributions
 
 The goal of this project is to be as close to SOM 2.1 som.dll as reasonable. If there are any major differences in the behaviour then I welcome contributions, but make them small. Each PR should be about a single behaviour that is different so it can be evaluated on its own merits.
+
+## Win32 assembly
+
+On the i386 on Windows assembly language is used because a mechanism was designed to avoid the client calling somResolve for each method. The method token appears as a pointer to a function to the original method. The assembly language calls somResolve on the caller's behalf and invokes the resolved method implementation. This mechanism has not been extended to other platforms or architectures. The i386 solution requires NXCOMPAT to be used when using the original IBM libraries. This implementation puts the method tokens in executable data.
+
+## Watcom Compiler
+
+You are welcome to use the Watcom compiler. It has been noted that the 'any' type is not handled correctly by the Watcom compiler on Win32. On OS/2 with the C Set/2 compiler this was returned by pointer as it is a 64-bit structure. On Win32 i386 the calling convention specifies that 64-bit bit values including structures are returned in registers.

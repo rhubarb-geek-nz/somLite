@@ -67,4 +67,4 @@ dist:
 test:
 
 install:
-	../pkg/install.sh "OUTDIR=$(OUTDIR)" "PREFIX=$(PREFIX)" "DESTDIR=$(DESTDIR)" "PLATFORM=$(PLATFORM)"
+	OUTDIR="$(OUTDIR)" PREFIX="$(PREFIX)" DESTDIR="$(DESTDIR)" PLATFORM="$(PLATFORM)" ../pkg/install.sh

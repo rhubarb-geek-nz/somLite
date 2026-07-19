@@ -22,7 +22,7 @@ thinfile()
 {
 	RC=1
 
-	if lipo -info "$1"
+	if lipo -info "$1" >/dev/null 2>/dev/null
 	then
 		OUTPUT=`lipo -info "$1"`
 		case "$OUTPUT" in
@@ -37,80 +37,64 @@ thinfile()
 	return $RC
 }
 
-mergedirs()
-{
-	ARCHLIST=$@
+if test -z "$PLATFORM"
+then
+	PLATFORM=$(config/unix/config.guess)
+fi
 
-	echo ARCHLIST=$ARCHLIST
+test -n "$PLATFORM"
+ls -ld "products/$PLATFORM"
+test -d "products/$PLATFORM"
 
-	for d in $ARCHLIST
-	do
-		(
-			if test -d "$d"
-			then
-				cd "$d"
-			
-				find . -type f | while read M
-				do
-					if thinfile "$M" >/dev/null
-					then
-						echo "$M"
-					fi
-				done
-			fi		
-		) | (
-			while read N
-			do
-				echo XXXX  handle file "$N"
-				FILELIST=
-				for e in $ARCHLIST
-				do
-					if test -f "$e/$N"
-					then
-						FILELIST="$FILELIST $e/$N"
-					fi
-				done
+OSVERS="$(uname -r)"
 
-				if lipo $FILELIST -create -output lipo.tmp
-				then
-					lipo -info lipo.tmp
+ARCH_LIST="ppc i386 ppc64 x86_64 arm64"
 
-					for e in $FILELIST
-					do
-						rm "$e"
-						ln lipo.tmp "$e"
-					done
+PLATFORM_LIST=
 
-					rm lipo.tmp
-				fi
-			done
-		)
-	done
-}
-
-for group in products 
+for ARCH in $ARCH_LIST
 do
-	if test -d "$group"
+	OTHER="$ARCH-apple-darwin$OSVERS"
+
+	if test -d "products/$OTHER"
 	then
-		(
-			cd "$group"
-
-			for platform in *
-			do
-				if test -d "$platform"
-				then
-					(
-						cd "$platform"
-					
-						ARCHLIST=`echo *`
-
-						if test `echo $ARCHLIST | wc -w` -gt 1
-						then
-							mergedirs $ARCHLIST
-						fi
-					)
-				fi
-			done
-		)
+		PLATFORM_LIST="$PLATFORM_LIST $OTHER"
 	fi
 done
+
+echo source from $PLATFORM_LIST
+
+(
+	set -e
+	cd "products/$PLATFORM"
+	find * -type f | while read N
+	do
+		if thinfile "$N"
+		then
+			echo "$N"
+		fi
+	done
+) | (
+	set -e
+
+	while read N
+	do
+		SRCLIST=
+
+		for P in $PLATFORM_LIST
+		do
+			lipo -info "products/$P/$N"
+			SRCLIST="$SRCLIST products/$P/$N"
+		done
+
+		if test -n "$SRCLIST"
+		then
+			TGTFILE="products/$PLATFORM/$N"
+			TMPFILE="$TGTFILE.tmp"
+
+			lipo $SRCLIST -create -output "$TMPFILE"
+			mv "$TMPFILE" "$TGTFILE"
+			lipo -info "$TGTFILE"
+		fi
+	done
+)

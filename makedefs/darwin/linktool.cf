@@ -16,7 +16,7 @@ darwinSetSoname()
 		then
 			echo_n "-Wl,-install_name,$1 "
 		else
-			echo_n "-Wl,-install_name,$PREFIX/lib/$1 "
+			echo_n "-Wl,-install_name,@rpath/$1 "
 		fi
 		if test "$VERSION" != ""
 		then
