@@ -101,8 +101,13 @@ copyLibFile()
 			cd `dirname "$y"`
 			tar cf - `basename "$y"`
 		) | (
+			BN=`basename "$y"`
 			cd "$INTDIR/$PKGNAME/$PKGBASE/$LIBDIRNAME"
 			tar xvf -
+			if test -f "$BN"
+			then
+				chmod -x "$BN"
+			fi
 		)
 	done
 }

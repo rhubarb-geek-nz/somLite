@@ -7,6 +7,8 @@ then
 	VERSION=0.0.0.1
 fi
 
+MYDIR=$(dirname "$0")
+
 FLAG=
 
 INTDIR=.
@@ -81,9 +83,9 @@ if which pkgbuild
 then
 	echo ROOTDIR=$ROOTDIR
 
-	rm -rf "$INTDIR/sdk" "$INTDIR/tools"
+	rm -rf "$INTDIR/sdk" "$INTDIR/tools" "$INTDIR/pkg"
 
-	mkdir "$INTDIR/sdk" "$INTDIR/tools"
+	mkdir "$INTDIR/sdk" "$INTDIR/tools" "$INTDIR/pkg"
 
 	mv "$ROOTDIR$PREFIX/man" "$INTDIR/tools/man"
 	mv "$ROOTDIR$PREFIX/bin" "$INTDIR/tools/bin"
@@ -95,16 +97,23 @@ then
 
 	mv "$ROOTDIR$PREFIX/lib/libsom.dylib" "$INTDIR/sdk/lib/libsom.dylib"
 
-	while read SRCDIR IDENT PKG
+	while read SRCDIR IDENT
 	do
-		pkgbuild --root "$SRCDIR" --identifier "$IDENT" --version "$VERSION" --install-location "$PREFIX" "$OUTDIR_DIST/$PKG-$VERSION-$OSNAME$OSVERS.pkg"
+		pkgbuild --root "$SRCDIR" --identifier "$IDENT" --version "$VERSION" --install-location "$PREFIX" "$INTDIR/pkg/$IDENT"
+		PACKAGELIST="--package $INTDIR/pkg/$IDENT"
 	done << EOF
-$ROOTDIR$PREFIX nz.geek.rhubarb.somlite.rte somlite-rte
-$INTDIR/sdk nz.geek.rhubarb.somlite.sdk somlite-sdk
-$INTDIR/tools nz.geek.rhubarb.somlite.tools somlite-tools
+$ROOTDIR$PREFIX nz.geek.rhubarb.somlite.rte
+$INTDIR/sdk nz.geek.rhubarb.somlite.sdk
+$INTDIR/tools nz.geek.rhubarb.somlite.tools
 EOF
 
-	rm -rf "$INTDIR/sdk" "$INTDIR/tools"
+	productbuild --synthesize $(for d in "$INTDIR/pkg/nz.geek.rhubarb.somlite."*; do echo "--package $d"; done) "$INTDIR/distribution.xml"
+
+	"$MYDIR/darwin.ps1" -distribution "$INTDIR/distribution.xml" -title "somLite $VERSION"
+
+	productbuild --distribution "$INTDIR/distribution.xml" --package-path "$INTDIR/pkg" "$OUTDIR_DIST/somlite-$VERSION-$OSNAME$OSVERS.pkg"
+
+	rm -rf "$INTDIR/sdk" "$INTDIR/tools" "$INTDIR/pkg" "$INTDIR/distribution.xml"
 fi
 
 ls -l "$OUTDIR_DIST"

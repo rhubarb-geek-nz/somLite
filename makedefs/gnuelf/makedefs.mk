@@ -49,4 +49,4 @@ LINKAPPXX=LIBPREFIX=$(DLLPREFIX) LIBSUFFIX=$(DLLSUFFIX) ../../toolbox/adlib.sh .
 LINKDLL_HEAD=-shared
 LINKDLL_TAIL=-lc
 LINKAPP_HEAD=-Wl,-rpath-link,$(OUTDIR_SHLIB) `echo >$(INTDIR)/shlb_imp` $(CC_NO_UNDEFS)
-LINKAPP_TAIL=`if test -f $(INTDIR)/shlb_imp; then rm $(INTDIR)/shlb_imp; fi; if test -n "$(PKGBASE)"; then echo -Wl,-rpath,/$(PKGBASE)/lib; fi`
+LINKAPP_TAIL=`if test -f $(INTDIR)/shlb_imp; then rm $(INTDIR)/shlb_imp; fi;`

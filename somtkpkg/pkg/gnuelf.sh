@@ -271,15 +271,19 @@ fi
 
 		cd "$OUTDIR"
 
-		mkdir tmp tmp/bin tmp/lib tmp/include
+		mkdir tmp tmp/bin tmp/lib tmp/include tmp/man tmp/man/man1
 
 		cp include/* tmp/include
 
-		for d in sc somipc cpp somcpp pdl
+		for d in sc somipc somcpp pdl
 		do
 			if test -f "bin/$d"
 			then
 				cp "bin/$d" "tmp/bin/$d"
+			fi
+			if test -f "man/$d.1.gz"
+			then
+				cp "man/$d.1.gz" "tmp/man/man1/$d.1.gz"
 			fi
 		done
 
@@ -297,14 +301,18 @@ fi
 			tar xf -
 		)
 
+		chmod -R go-w tmp
+		chmod -R go+r tmp
+		chmod -x tmp/lib/libsom.*
+
 		if test -z "$GTAR"
 		then
 			(
 				cd tmp
-				tar cf - bin include lib
+				tar cf - $(find * -type f) $(find * -type l)
 			) | gzip > "dist/somlite-$VERSION-$MACHINE.tar.gz"
 		else
-			$GTAR --owner=0 --group=0 --create --gzip --file "dist/somlite-$VERSION-$MACHINE.tar.gz" -C tmp bin lib include
+			$GTAR --owner=0 --group=0 --create --gzip --file "dist/somlite-$VERSION-$MACHINE.tar.gz" -C tmp $(cd tmp; find * -type f ; find * -type l)
 		fi
 
 		rm -rf tmp

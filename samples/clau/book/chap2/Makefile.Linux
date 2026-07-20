@@ -32,5 +32,5 @@ clean:
 	rm -rf cppHello cHello *.o *.xh *.xih *.h
 
 test:
-	./cHello
-	./cppHello
+	LD_LIBRARY_PATH=$(SOMBASE)/lib ./cHello
+	LD_LIBRARY_PATH=$(SOMBASE)/lib ./cppHello

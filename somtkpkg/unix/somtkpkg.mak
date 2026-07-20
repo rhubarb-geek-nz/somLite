@@ -58,6 +58,7 @@ clean:
 		if test "$$?" != "0"; then exit 1; fi \
 	fi
 	MAKE="$(MAKE)" ../pkg/clean.sh "$(INTDIR)"
+	for d in pkg tgz bz2 tar.gz tar; do for d in "$(OUTDIR_DIST)/som"*.$*$$d; do if test -f "$$d"; then rm "$$d"; fi; done; done
 
 dist:
 	if test -x ../pkg/$(PLATFORM_PROTO).sh; then \
