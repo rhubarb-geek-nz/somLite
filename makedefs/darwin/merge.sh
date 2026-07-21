@@ -37,6 +37,25 @@ thinfile()
 	return $RC
 }
 
+which()
+{
+	(
+		IFS=':'
+		for d in $PATH
+		do
+			if test -x "$d/$1" && test -f "$d/$1"
+			then
+				echo "$d/$1"
+				return 0
+			fi
+		done
+
+		return 1
+	)
+
+	return $?
+}
+
 if test -z "$PLATFORM"
 then
 	PLATFORM=$(config/unix/config.guess)
@@ -64,17 +83,14 @@ done
 
 echo source from $PLATFORM_LIST
 
-(
-	set -e
-
-	cd products
-
+if which codesign
+then
 	for d in $PLATFORM_LIST
 	do
-		set -e
-
 		(
-			cd $d
+			set -e
+
+			cd products/$d
 
 			LIST=$(find * -type f | while read N; do if thinfile "$N"; then if codesign -dvvv "$N" 2>&1 | grep "^Authority=Apple Root CA\$" >/dev/null ; then : ; else echo "$N" ; fi ; fi; done)
 
@@ -88,7 +104,7 @@ echo source from $PLATFORM_LIST
 			fi
 		)
 	done
-)
+fi
 
 (
 	set -e
