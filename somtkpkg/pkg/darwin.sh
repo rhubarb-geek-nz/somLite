@@ -99,7 +99,7 @@ then
 
 	while read SRCDIR IDENT
 	do
-		pkgbuild --root "$SRCDIR" --identifier "$IDENT" --version "$VERSION" --install-location "$PREFIX" "$INTDIR/pkg/$IDENT"
+		pkgbuild --root "$SRCDIR" --identifier "$IDENT" --version "$VERSION" --install-location "$PREFIX" --sign "Developer ID Installer: $APPLE_DEVELOPER" "$INTDIR/pkg/$IDENT"
 		PACKAGELIST="--package $INTDIR/pkg/$IDENT"
 	done << EOF
 $ROOTDIR$PREFIX nz.geek.rhubarb.somlite.rte
@@ -109,9 +109,9 @@ EOF
 
 	productbuild --synthesize $(for d in "$INTDIR/pkg/nz.geek.rhubarb.somlite."*; do echo "--package $d"; done) "$INTDIR/distribution.xml"
 
-	"$MYDIR/darwin.ps1" -distribution "$INTDIR/distribution.xml" -title "somLite $VERSION"
+	"$MYDIR/darwin.py" "$INTDIR/distribution.xml" "somLite $VERSION"
 
-	productbuild --distribution "$INTDIR/distribution.xml" --package-path "$INTDIR/pkg" "$OUTDIR_DIST/somlite-$VERSION-$OSNAME$OSVERS.pkg"
+	productbuild --distribution "$INTDIR/distribution.xml" --package-path "$INTDIR/pkg" --sign "Developer ID Installer: $APPLE_DEVELOPER" "$OUTDIR_DIST/somlite-$VERSION-$OSNAME$OSVERS.pkg"
 
 	rm -rf "$INTDIR/sdk" "$INTDIR/tools" "$INTDIR/pkg" "$INTDIR/distribution.xml"
 fi

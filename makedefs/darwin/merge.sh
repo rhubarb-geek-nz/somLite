@@ -66,6 +66,32 @@ echo source from $PLATFORM_LIST
 
 (
 	set -e
+
+	cd products
+
+	for d in $PLATFORM_LIST
+	do
+		set -e
+
+		(
+			cd $d
+
+			LIST=$(find * -type f | while read N; do if thinfile "$N"; then if codesign -dvvv "$N" 2>&1 | grep "^Authority=Apple Root CA\$" >/dev/null ; then : ; else echo "$N" ; fi ; fi; done)
+
+			ARCH=$( echo $d | ( IFS=- ;  while read A B; do echo $A; done )  )
+
+			echo to sign $ARCH = $LIST
+
+			if test -n "$LIST"
+			then
+				codesign --sign "Developer ID Application: $APPLE_DEVELOPER" --prefix "nz.geek.rhubarb.somlite.$ARCH." $LIST
+			fi
+		)
+	done
+)
+
+(
+	set -e
 	cd "products/$PLATFORM"
 	find * -type f | while read N
 	do
