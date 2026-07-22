@@ -12,12 +12,7 @@ darwinSetSoname()
 {
 	case $1 in
 	*.dylib )
-		if test -z "$PREFIX"
-		then
-			echo_n "-Wl,-install_name,$1 "
-		else
-			echo_n "-Wl,-install_name,@rpath/$1 "
-		fi
+		echo_n "-Wl,-install_name,@rpath/$1 "
 		if test "$VERSION" != ""
 		then
 			case "$VERSION" in

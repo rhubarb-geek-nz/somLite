@@ -22,37 +22,34 @@ test "$0" = "makedefs/unix/makeall.sh"
 
 case "$(uname)" in
 	Linux )
-		make
-		make test
-		make dist PREFIX=/usr/lib/somlite
+		for d in all test dist
+		do
+			make $d PREFIX=/usr/lib/somlite
+		done
 		;;
 	Darwin )
-		(
-			set -ex
-			PREFIX=/usr/local/share/somlite
-			make "PREFIX=$PREFIX"
-			make test
-			makedefs/darwin/makeall.sh "PREFIX=$PREFIX"
-			makedefs/darwin/merge.sh
-			make dist "PREFIX=$PREFIX"
-		)
+		make
+		make test
+		makedefs/darwin/makeall.sh
+		makedefs/darwin/merge.sh
+		make dist PREFIX=/usr/local/share/somlite
 		;;
 	NetBSD )
 		for d in all test dist
 		do
-			make PREFIX=/usr/pkg/somlite $d
+			make $d PREFIX=/usr/pkg/somlite
 		done
 		;;
 	FreeBSD )
 		for d in all test dist
 		do
-			make PREFIX=/usr/local/somlite $d
+			make $d PREFIX=/usr/local/somlite
 		done
 		;;
 	OpenBSD )
 		for d in all test dist
 		do
-			make PREFIX=/usr/local/somlite $d
+			make $d PREFIX=/usr/local/somlite
 		done
 		;;
 	* )
