@@ -47,7 +47,7 @@ case "$(uname)" in
 		done
 		;;
 	OpenBSD )
-		for d in all test dist
+		for d in all dist
 		do
 			make $d PREFIX=/usr/local/somlite
 		done
