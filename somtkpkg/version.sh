@@ -1,8 +1,8 @@
 #!/bin/sh -x
 #
-#  Copyright 2008, Roger Brown
+#  Copyright 2026, Roger Brown
 #
-#  This file is part of Roger Brown's Toolkit.
+#  This file is part of rhubarb-geek-nz/somLite.
 #
 #  This program is free software: you can redistribute it and/or modify it
 #  under the terms of the GNU Lesser General Public License as published by the
@@ -18,4 +18,4 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
-VERSION=1.0
+VERSION=1.0.0

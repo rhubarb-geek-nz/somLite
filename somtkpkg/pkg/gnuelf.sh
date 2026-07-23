@@ -36,8 +36,6 @@ then
 	fi
 fi
 
-test -n "$PKGBASE"
-
 FLAG=
 
 INTDIR=.
@@ -58,6 +56,9 @@ do
 		-t )
 			INTDIR="$d"
 			;;
+		-p )
+			PREFIX="$d"
+			;;
 		* )
 			unknown option $d
 			exit 1
@@ -66,7 +67,14 @@ do
 	fi
 done
 
-../pkg/mkfs.sh -d "$OUTDIR_DIST" -t "$INTDIR" -r "$OUTDIR" -h "../../somidl/$PLATFORM"
+if test -z "$PREFIX"
+then
+	PKGBASE=usr/local
+else
+	PKGBASE=$(echo "$PREFIX" | sed 's/^\///')
+fi
+
+../pkg/mkfs.sh -d "$OUTDIR_DIST" -t "$INTDIR" -r "$OUTDIR" -h "../../somidl/$PLATFORM" -p "$PREFIX"
 
 find "$INTDIR" -print | xargs ls -ld
 

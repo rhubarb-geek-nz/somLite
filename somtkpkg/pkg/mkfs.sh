@@ -49,6 +49,9 @@ do
 		-h )
 			HEADERSRC="$d"
 			;;
+		-p )
+			PREFIX="$d"
+			;;
 		* )
 			echo unknown option $d
 			exit 1
@@ -69,6 +72,13 @@ case "$INTDIR" in
 	INTDIR=`pwd`/$INTDIR
 	;;
 esac
+
+if test -z "$PREFIX"
+then
+	PKGBASE=usr/local
+else
+	PKGBASE=$(echo "$PREFIX" | sed 's/^\///')
+fi
 
 copyBinFile()
 {

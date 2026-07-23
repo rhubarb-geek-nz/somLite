@@ -18,43 +18,31 @@
 #  along with this program.  If not, see <http://www.gnu.org/licenses/>
 #
 
+#  This script is intended as the overarching build script and the additional
+#  arguments will be passed to make
+#
+#  The recommendations are
+#
+#  Darwin  - makedefs/unix/makeall.sh PREFIX=/usr/local/share/somlite
+#  Linux   - makedefs/unix/makeall.sh PREFIX=/usr/lib/somlite
+#  NetBSD  - makedefs/unix/makeall.sh PREFIX=/usr/pkg/somlite
+#  OpenBSD - makedefs/unix/makeall.sh PREFIX=/usr/local/somlite
+#  FreeBSD - makedefs/unix/makeall.sh PREFIX=/usr/local/somlite
+
 test "$0" = "makedefs/unix/makeall.sh"
 
 case "$(uname)" in
-	Linux )
-		for d in all test dist
-		do
-			make $d PREFIX=/usr/lib/somlite
-		done
-		;;
 	Darwin )
-		make
-		make test
-		makedefs/darwin/makeall.sh
-		makedefs/darwin/merge.sh
-		make dist PREFIX=/usr/local/share/somlite
-		;;
-	NetBSD )
-		for d in all test dist
-		do
-			make $d PREFIX=/usr/pkg/somlite
-		done
-		;;
-	FreeBSD )
-		for d in all test dist
-		do
-			make $d PREFIX=/usr/local/somlite
-		done
-		;;
-	OpenBSD )
-		for d in all dist
-		do
-			make $d PREFIX=/usr/local/somlite
-		done
+		make $@
+		make test $@
+		makedefs/darwin/makeall.sh $@
+		makedefs/darwin/merge.sh $@
+		make dist $@
 		;;
 	* )
-		make
-		make test
-		make dist
+		for d in all test dist
+		do
+			make $d $@
+		done
 		;;
 esac

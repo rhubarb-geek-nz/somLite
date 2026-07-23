@@ -62,7 +62,7 @@ clean:
 
 dist:
 	if test -x ../pkg/$(PLATFORM_PROTO).sh; then \
-		MAKE="$(MAKE)" ../pkg/$(PLATFORM_PROTO).sh -r "$(OUTDIR)" -d "$(OUTDIR_DIST)" -t "$(INTDIR)"; \
+		MAKE="$(MAKE)" ../pkg/$(PLATFORM_PROTO).sh -r "$(OUTDIR)" -d "$(OUTDIR_DIST)" -t "$(INTDIR)" -p "$(PREFIX)" ; \
 	fi
 
 test:

@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+#Requires -PSEdition Desktop
 #
 #  Copyright 2026, Roger Brown
 #

@@ -47,6 +47,9 @@ do
 		-t )
 			INTDIR="$d"
 			;;
+		-p )
+			PREFIX="$d"
+			;;
 		* )
 			unknown option $d
 			exit 1
